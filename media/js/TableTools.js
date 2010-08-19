@@ -40,6 +40,7 @@ var TableToolsInit = {
 	"sSwfPath": "media/swf/ZeroClipboard.swf",
 	"iButtonHeight": 30,
 	"iButtonWidth": 30,
+	"oSkipColumns": {},
 	"sCsvBoundary": "'",
 	"_iNextId": 1 /* Internal useage - but needs to be global */
 };
@@ -629,7 +630,7 @@ function TableTools ( oInit )
 		/* Titles */
 		for ( i=0, iLen=_DTSettings.aoColumns.length ; i<iLen ; i++ )
 		{
-			if ( _oSettings.bIncHiddenColumns === true || _DTSettings.aoColumns[i].bVisible )
+			if ( ( _oSettings.bIncHiddenColumns === true || _DTSettings.aoColumns[i].bVisible ) && !_oSettings.oSkipColumns[_DTSettings.aoColumns[i].sClass] )
 			{
 				sLoopData = _DTSettings.aoColumns[i].sTitle.replace(/\n/g," ").replace( /<.*?>/g, "" );
 				if ( sLoopData.indexOf( '&' ) != -1 )
@@ -649,7 +650,7 @@ function TableTools ( oInit )
 			/* Columns */
 			for ( i=0, iLen=_DTSettings.aoColumns.length ; i<iLen ; i++ )
 			{
-				if ( _oSettings.bIncHiddenColumns === true || _DTSettings.aoColumns[i].bVisible )
+				if ( ( _oSettings.bIncHiddenColumns === true || _DTSettings.aoColumns[i].bVisible ) && !_oSettings.oSkipColumns[_DTSettings.aoColumns[i].sClass] )
 				{
 					/* Convert to strings (with small optimisation) */
 					var mTypeData = _DTSettings.aoData[ _DTSettings.aiDisplay[j] ]._aData[ i ];
@@ -688,8 +689,8 @@ function TableTools ( oInit )
 		{
 			for ( i=0, iLen=_DTSettings.aoColumns.length ; i<iLen ; i++ )
 			{
-				if ( _DTSettings.aoColumns[i].nTf !== null &&
-					(_oSettings.bIncHiddenColumns === true || _DTSettings.aoColumns[i].bVisible) )
+				if ( _DTSettings.aoColumns[i].nTf !== null && 
+					( ( _oSettings.bIncHiddenColumns === true || _DTSettings.aoColumns[i].bVisible ) && !_oSettings.oSkipColumns[_DTSettings.aoColumns[i].sClass] ) )
 				{
 					sLoopData = _DTSettings.aoColumns[i].nTf.innerHTML.replace(/\n/g," ").replace( /<.*?>/g, "" );
 					if ( sLoopData.indexOf( '&' ) != -1 )
