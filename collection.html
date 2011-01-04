@@ -17,7 +17,18 @@
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
 				$('#example').dataTable( {
-					"sDom": 'T<"clear">lfrtip'
+					"sDom": 'T<"clear">lfrtip',
+					"oTableTools": {
+						"aButtons": [
+							"copy",
+							"print",
+							{
+								"sExtends":    "collection",
+								"sButtonText": "Save",
+								"aButtons":    [ "csv", "xls", "pdf" ]
+							}
+						]
+					}
 				} );
 			} );
 		</script>
@@ -25,12 +36,13 @@
 	<body id="dt_example">
 		<div id="container">
 			<div class="full_width big">
-				TableTools example
+				TableTools example - button collections
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>This example shows the basic initialisation of TableTools by simply including the 'T' marker in DataTables' sDom parameter. This tell DataTables to insert the TableTools toolbar in that location. Remember to include the Javascript and CSS source files as well!</p>
-			<p>It is worth noting that you might need to <a href="swf_path.html">set the <i>sSwfPath</i> parameter</a> to tell TableTools where to find the SWF file for copy and file save.</p>
+			<p>TableTools provides the ability to group buttons into a hidden drop down list, which is activated by clicking on a top-level button. This is achieved by extending the 'collection' predefined button type and setting it's <i>aButtons</i> parameter with the same options as the top level buttons (note that you cannot currently use a collection within a collection).</p>
+			<p>The example below shows the file save buttons grouped into a collection, while the copy and print buttons are left on the top level.</p>
+			
 			
 			<h1>Live example</h1>
 			<div id="demo">
@@ -462,7 +474,18 @@
 			<h1>Initialisation code</h1>
 			<pre>$(document).ready( function () {
 	$('#example').dataTable( {
-		"sDom": 'T&lt;"clear"&gt;lfrtip'
+		"sDom": 'T&lt;"clear"&gt;lfrtip',
+		"oTableTools": {
+			"aButtons": [
+				"copy",
+				"print",
+				{
+					"sExtends":    "collection",
+					"sButtonText": "Save",
+					"aButtons":    [ "csv", "xls", "pdf" ]
+				}
+			]
+		}
 	} );
 } );</pre>
 

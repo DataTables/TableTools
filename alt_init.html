@@ -9,6 +9,9 @@
 			@import "../../media/css/demo_page.css";
 			@import "../../media/css/demo_table.css";
 			@import "media/css/TableTools.css";
+			tr.selected {
+				background-color: red !important;
+			}
 		</style>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.dataTables.js"></script>
@@ -16,21 +19,30 @@
 		<script type="text/javascript" charset="utf-8" src="media/js/TableTools.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
-				$('#example').dataTable( {
-					"sDom": 'T<"clear">lfrtip'
+				var oTable = $('#example').dataTable();
+				var oTableTools = new TableTools( oTable, {
+					"buttons": [
+						"copy",
+						"csv",
+						"xls",
+						"pdf",
+						{ "type": "print", "buttonText": "Print me!" }
+					]
 				} );
+				
+				$('#demo').before( oTableTools.dom.container );
 			} );
 		</script>
 	</head>
 	<body id="dt_example">
 		<div id="container">
 			<div class="full_width big">
-				TableTools example
+				TableTools example - initialisation with 'new TableTools()'
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>This example shows the basic initialisation of TableTools by simply including the 'T' marker in DataTables' sDom parameter. This tell DataTables to insert the TableTools toolbar in that location. Remember to include the Javascript and CSS source files as well!</p>
-			<p>It is worth noting that you might need to <a href="swf_path.html">set the <i>sSwfPath</i> parameter</a> to tell TableTools where to find the SWF file for copy and file save.</p>
+			<p>Typically when working with TableTools, the initialisation and insertion into the DOM will be done automatically by DataTables, through the use of the sDom parameter. However, it is also possible to initialise TableTools manually as shown in the example below. Once initialised you can insert the TableTools tool bar node anywhere you wish into the DOM using the <i>instance</i>.dom.container parameter.</p>
+			
 			
 			<h1>Live example</h1>
 			<div id="demo">
@@ -461,9 +473,18 @@
 			
 			<h1>Initialisation code</h1>
 			<pre>$(document).ready( function () {
-	$('#example').dataTable( {
-		"sDom": 'T&lt;"clear"&gt;lfrtip'
+	var oTable = $('#example').dataTable();
+	var oTableTools = new TableTools( oTable, {
+		"buttons": [
+			"copy",
+			"csv",
+			"xls",
+			"pdf",
+			{ "type": "print", "buttonText": "Print me!" }
+		]
 	} );
+	
+	$('#demo').before( oTableTools.dom.container );
 } );</pre>
 
 

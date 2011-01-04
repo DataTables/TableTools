@@ -17,7 +17,7 @@
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
 				$('#example').dataTable( {
-					"sDom": 'T<"clear">lfrtip'
+					"sDom": 'T<"clear">lfrtip<"clear spacer">T'
 				} );
 			} );
 		</script>
@@ -25,12 +25,12 @@
 	<body id="dt_example">
 		<div id="container">
 			<div class="full_width big">
-				TableTools example
+				TableTools example - multiple toolbars
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>This example shows the basic initialisation of TableTools by simply including the 'T' marker in DataTables' sDom parameter. This tell DataTables to insert the TableTools toolbar in that location. Remember to include the Javascript and CSS source files as well!</p>
-			<p>It is worth noting that you might need to <a href="swf_path.html">set the <i>sSwfPath</i> parameter</a> to tell TableTools where to find the SWF file for copy and file save.</p>
+			<p>Like all DataTables control elements, TableTools can have multiple instances specified in the <i>sDom</i> parameter of DataTables. This will create two TableTools toolbars next to the table, providing the same functions. An example of when this might be useful is to show the toolbar both above and below the table - as is done in this example.</p>
+			
 			
 			<h1>Live example</h1>
 			<div id="demo">
@@ -462,7 +462,7 @@
 			<h1>Initialisation code</h1>
 			<pre>$(document).ready( function () {
 	$('#example').dataTable( {
-		"sDom": 'T&lt;"clear"&gt;lfrtip'
+		"sDom": 'T&lt;"clear"&gt;lfrtip&lt;"clear spacer"&gt;T'
 	} );
 } );</pre>
 

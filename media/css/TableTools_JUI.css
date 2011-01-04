@@ -1,6 +1,6 @@
 /*
  * File:        TableTools.css
- * Description: Styles for TableTools 2
+ * Description: Styles for TableTools 2 with JUI theming
  * Author:      Allan Jardine (www.sprymedia.co.uk)
  * Language:    Javascript
  * License:     LGPL / 3 point BSD
@@ -9,6 +9,10 @@
  * Copyright 2010 Allan Jardine, all rights reserved.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *
+ * Notes:
+ *   Generally speaking, please refer to the TableTools.css file - this file contains basic
+ *   modifications to that 'master' stylesheet for ThemeRoller.
  *
  * CSS name space:
  *   DTTT                  DataTables TableTools
@@ -21,7 +25,6 @@
  *
  * Style sheet provides:
  *   CONTAINER             TableTools container element and styles applying to all components
- *   BUTTON_STYLES         Action specific button styles
  *   SELECTING             Row selection styles
  *   COLLECTIONS           Drop down list (collection) styles
  *   PRINTING              Print display styles
@@ -34,16 +37,15 @@
  * TableTools container element and styles applying to all components
  */
 div.DTTT_container {
-	float: right;
-	margin-bottom: 1em;
+	float: left;
 }
 
 button.DTTT_button {
 	position: relative;
 	float: left;
-	height: 30px;
+	height: 24px;
 	margin-right: 3px;
-	padding: 3px 5px;
+	padding: 3px 10px;
 	border: 1px solid #d0d0d0;
 	background-color: #fff;
 	cursor: pointer;
@@ -55,91 +57,6 @@ button.DTTT_button::-moz-focus-inner {
 	padding: 0;
 }
 
-
-/*
- * BUTTON_STYLES
- * Action specific button styles
- */
-
-button.DTTT_button_csv {
-	padding-right: 30px;
-	background: url(../images/csv.png) no-repeat center right;
-}
-
-button.DTTT_button_csv_hover {
-	padding-right: 30px;
-	border: 1px solid #999;
-	background: #f0f0f0 url(../images/csv_hover.png) no-repeat center right;
-}
-
-
-button.DTTT_button_xls {
-	padding-right: 30px;
-	background: url(../images/xls.png) no-repeat center right;
-}
-
-button.DTTT_button_xls_hover {
-	padding-right: 30px;
-	border: 1px solid #999;
-	background: #f0f0f0 url(../images/xls_hover.png) no-repeat center right;
-}
-
-
-button.DTTT_button_copy {
-	padding-right: 30px;
-	background: url(../images/copy.png) no-repeat center right;
-}
-
-button.DTTT_button_copy_hover {
-	padding-right: 30px;
-	border: 1px solid #999;
-	background: #f0f0f0 url(../images/copy_hover.png) no-repeat center right;
-}
-
-
-button.DTTT_button_pdf {
-	padding-right: 30px;
-	background: url(../images/pdf.png) no-repeat center right;
-}
-
-button.DTTT_button_pdf_hover {
-	padding-right: 30px;
-	border: 1px solid #999;
-	background: #f0f0f0 url(../images/pdf_hover.png) no-repeat center right;
-}
-
-
-button.DTTT_button_print {
-	padding-right: 30px;
-	background: url(../images/print.png) no-repeat center right;
-}
-
-button.DTTT_button_print_hover {
-	padding-right: 30px;
-	border: 1px solid #999;
-	background: #f0f0f0 url(../images/print_hover.png) no-repeat center right;
-}
-
-
-button.DTTT_button_text {
-}
-
-button.DTTT_button_text_hover {
-	border: 1px solid #999;
-	background-color: #f0f0f0;
-}
-
-
-button.DTTT_button_collection {
-	padding-right: 17px;
-	background: url(../images/collection.png) no-repeat center right;
-}
-
-button.DTTT_button_collection_hover {
-	padding-right: 17px;
-	border: 1px solid #999;
-	background: #f0f0f0 url(../images/collection_hover.png) no-repeat center right;
-}
 
 
 /*
@@ -192,23 +109,24 @@ tr.DTTT_selected.even td.sorting_3 {
 
 div.DTTT_collection {
 	width: 150px;
-	padding: 3px;
-	border: 1px solid #ccc;
 	background-color: #f3f3f3;
 	overflow: hidden;
 	z-index: 2002;
+	
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 }
 
 div.DTTT_collection_background {
-	background: transparent url(../images/background.png) repeat top left;
+	background: url(../images/background.png) repeat top left;
 	z-index: 2001;
 }
 
 div.DTTT_collection button.DTTT_button {
 	float: none;
 	width: 100%;
-	margin-bottom: 2px;
-	background-color: white;
+	margin-bottom: -0.1em;
 }
 
 

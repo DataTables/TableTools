@@ -95,6 +95,7 @@ ZeroClipboard.Client.prototype = {
 	handCursorEnabled: true, // whether to show hand cursor, or default pointer cursor
 	cssEffects: true, // enable CSS mouse effects on dom container
 	handlers: null, // user event handlers
+	loadingTimer: null,
 	
 	glue: function(elem, title) {
 		// glue to DOM element
@@ -114,19 +115,24 @@ ZeroClipboard.Client.prototype = {
 		this.div = document.createElement('div');
 		var style = this.div.style;
 		style.position = 'absolute';
-		style.left = '0px';
-		style.top = '0px';
-		style.width = '' + box.width + 'px';
-		style.height = '' + box.height + 'px';
+		style.left = (this.domElement.offsetLeft)+'px';
+		//style.left = (this.domElement.offsetLeft+2)+'px';
+		style.top = this.domElement.offsetTop+'px';
+		style.width = (box.width) + 'px';
+		//style.width = (box.width-4) + 'px';
+		style.height = box.height + 'px';
 		style.zIndex = zIndex;
-		if ( typeof title != "undefined" ) {
+		if ( typeof title != "undefined" && title != "" ) {
 			this.div.title = title;
 		}
 		
 		// style.backgroundColor = '#f00'; // debug
-		this.domElement.appendChild(this.div);
+		this.domElement.parentNode.appendChild(this.div);
 		
 		this.div.innerHTML = this.getHTML( box.width, box.height );
+		this.loadingTimer = setTimeout( function () {
+			throw( 'Unable to load SWF file - please check the SWF path' );
+		}, 10000 )
 	},
 	
 	getHTML: function(width, height) {
@@ -254,7 +260,13 @@ ZeroClipboard.Client.prototype = {
 	receiveEvent: function(eventName, args) {
 		// receive event from flash
 		eventName = eventName.toString().toLowerCase().replace(/^on/, '');
-				
+		
+		// Cancel loading timer
+		if ( this.loadingTimer !== null ) {
+			clearTimeout( this.loadingTimer );
+			this.loadingTimer = null;
+		}
+		
 		// special behavior for certain events
 		switch (eventName) {
 			case 'load':
@@ -287,7 +299,7 @@ ZeroClipboard.Client.prototype = {
 			
 			case 'mouseover':
 				if (this.domElement && this.cssEffects) {
-					this.domElement.addClass('hover');
+					//this.domElement.addClass('hover');
 					if (this.recoverActive) this.domElement.addClass('active');
 				}
 				break;
@@ -299,7 +311,7 @@ ZeroClipboard.Client.prototype = {
 						this.domElement.removeClass('active');
 						this.recoverActive = true;
 					}
-					this.domElement.removeClass('hover');
+					//this.domElement.removeClass('hover');
 				}
 				break;
 			

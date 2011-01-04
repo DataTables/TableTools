@@ -7,8 +7,9 @@
 		<title>TableTools example</title>
 		<style type="text/css" title="currentStyle">
 			@import "../../media/css/demo_page.css";
-			@import "../../media/css/demo_table.css";
-			@import "media/css/TableTools.css";
+			@import "../../media/css/demo_table_jui.css";
+			@import "../../examples/examples_support/themes/smoothness/jquery-ui-1.8.4.custom.css";
+			@import "media/css/TableTools_JUI.css";
 		</style>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.dataTables.js"></script>
@@ -17,7 +18,19 @@
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
 				$('#example').dataTable( {
-					"sDom": 'T<"clear">lfrtip'
+					"bJQueryUI": true,
+					"sPaginationType": "full_numbers",
+					"sDom": '<"H"Tfr>t<"F"ip>',
+					"oTableTools": {
+						"aButtons": [
+							"copy", "csv", "xls", "pdf",
+							{
+								"sExtends":       "collection",
+								"sButtonText": "Save",
+								"aButtons":    [ "csv", "xls", "pdf" ]
+							}
+						]
+					}
 				} );
 			} );
 		</script>
@@ -25,12 +38,12 @@
 	<body id="dt_example">
 		<div id="container">
 			<div class="full_width big">
-				TableTools example
+				TableTools example - jQuery UI theming
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>This example shows the basic initialisation of TableTools by simply including the 'T' marker in DataTables' sDom parameter. This tell DataTables to insert the TableTools toolbar in that location. Remember to include the Javascript and CSS source files as well!</p>
-			<p>It is worth noting that you might need to <a href="swf_path.html">set the <i>sSwfPath</i> parameter</a> to tell TableTools where to find the SWF file for copy and file save.</p>
+			<p>Like DataTables, TableTools can be styled by a jQuery UI theme. The required classes for the theming with TableTools are added automatically when the <i>bJQueryUI</i> option is detected from DataTables. This example shows that in action, and also defines a button collection to show the themeing there.</p>
+			
 			
 			<h1>Live example</h1>
 			<div id="demo">
@@ -462,7 +475,19 @@
 			<h1>Initialisation code</h1>
 			<pre>$(document).ready( function () {
 	$('#example').dataTable( {
-		"sDom": 'T&lt;"clear"&gt;lfrtip'
+		"bJQueryUI": true,
+		"sPaginationType": "full_numbers",
+		"sDom": '&lt;"H"Tfr&gt;t&lt;"F"ip&gt;',
+		"oTableTools": {
+			"aButtons": [
+				"copy", "csv", "xls", "pdf",
+				{
+					"type":       "collection",
+					"buttonText": "Save",
+					"buttons":    [ "csv", "xls", "pdf" ]
+				}
+			]
+		}
 	} );
 } );</pre>
 

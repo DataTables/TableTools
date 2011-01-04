@@ -16,6 +16,8 @@
 		<script type="text/javascript" charset="utf-8" src="media/js/TableTools.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
+				TableTools.DEFAULTS.aButtons = [ "copy", "csv", "xls" ];
+				
 				$('#example').dataTable( {
 					"sDom": 'T<"clear">lfrtip'
 				} );
@@ -25,12 +27,12 @@
 	<body id="dt_example">
 		<div id="container">
 			<div class="full_width big">
-				TableTools example
+				TableTools example - changing the initialisation defaults
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>This example shows the basic initialisation of TableTools by simply including the 'T' marker in DataTables' sDom parameter. This tell DataTables to insert the TableTools toolbar in that location. Remember to include the Javascript and CSS source files as well!</p>
-			<p>It is worth noting that you might need to <a href="swf_path.html">set the <i>sSwfPath</i> parameter</a> to tell TableTools where to find the SWF file for copy and file save.</p>
+			<p>TableTools provides the ability to override the default initialisation parameters that are used when creating a new instance. This this particularly useful if you have multiple tables which you want to have the same TableTools behaviour - rather than declaring the structure multiple times, you can just set the defaults once. This example shows how to alter the default buttons.</p>
+			
 			
 			<h1>Live example</h1>
 			<div id="demo">
@@ -461,6 +463,8 @@
 			
 			<h1>Initialisation code</h1>
 			<pre>$(document).ready( function () {
+	TableTools.DEFAULTS.aButtons = [ "copy", "csv", "xls" ];
+	
 	$('#example').dataTable( {
 		"sDom": 'T&lt;"clear"&gt;lfrtip'
 	} );

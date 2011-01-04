@@ -17,7 +17,23 @@
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
 				$('#example').dataTable( {
-					"sDom": 'T<"clear">lfrtip'
+					"sDom": 'T<"clear">lfrtip',
+					"oTableTools": {
+						"aButtons": [
+							{
+								"sExtends": "copy",
+								"sButtonText": "Copy to clipboard"
+							},
+							{
+								"sExtends": "csv",
+								"sButtonText": "Save to CSV"
+							},
+							{
+								"sExtends": "xls",
+								"sButtonText": "Save for Excel"
+							}
+						]
+					}
 				} );
 			} );
 		</script>
@@ -25,12 +41,12 @@
 	<body id="dt_example">
 		<div id="container">
 			<div class="full_width big">
-				TableTools example
+				TableTools example - customised button text
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>This example shows the basic initialisation of TableTools by simply including the 'T' marker in DataTables' sDom parameter. This tell DataTables to insert the TableTools toolbar in that location. Remember to include the Javascript and CSS source files as well!</p>
-			<p>It is worth noting that you might need to <a href="swf_path.html">set the <i>sSwfPath</i> parameter</a> to tell TableTools where to find the SWF file for copy and file save.</p>
+			<p>You may wish to set your own text for the buttons in the TableTools toolbar, rather than relying on the default built-in text. This is done by overriding the <i>sButtonText</i> parameter of whatever button you wish to alter. The way TableTools allows you to alter a predefined button is by 'extending' it (using the <i>sExtends</i> parameter) and then setting the overriding parameter. A full list of the parameters which can be used is <a href="http://datatables.net/extras/tabletools/button_options">available on the DataTables.net web-site</a>. This example shows how to set the button text as required.</p>
+			
 			
 			<h1>Live example</h1>
 			<div id="demo">
@@ -462,7 +478,23 @@
 			<h1>Initialisation code</h1>
 			<pre>$(document).ready( function () {
 	$('#example').dataTable( {
-		"sDom": 'T&lt;"clear"&gt;lfrtip'
+		"sDom": 'T&lt;"clear"&gt;lfrtip',
+		"oTableTools": {
+			"aButtons": [
+				{
+					"sExtends": "copy",
+					"sButtonText": "Copy to clipboard"
+				},
+				{
+					"sExtends": "csv",
+					"sButtonText": "Save to CSV"
+				},
+				{
+					"sExtends": "xls",
+					"sButtonText": "Save for Excel"
+				}
+			]
+		}
 	} );
 } );</pre>
 
