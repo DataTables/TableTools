@@ -157,7 +157,15 @@ TableTools = function( oDT, oOpts )
 			 *  @type     boolean
        *  @default  false
 			 */
-			"all": false
+			"all": false,
+			
+			/**
+			 * Class name to add to selected TR nodes
+       *  @property selectedClass
+			 *  @type     String
+			 *  @default  ""
+			 */
+			"selectedClass": ""
 		},
 		
 		/**
@@ -509,6 +517,7 @@ TableTools.prototype = {
 		this.s.select.preRowSelect = this.s.custom.fnPreRowSelect;
 		this.s.select.postSelected = this.s.custom.fnRowSelected;
 		this.s.select.postDeselected = this.s.custom.fnRowDeselected;
+		this.s.select.selectedClass = this.s.custom.sSelectedClass;
 		
 		/* Button set */
 		this.s.buttonSet = this.s.custom.aButtons;
@@ -860,7 +869,7 @@ TableTools.prototype = {
 				return;
 			}
 			
-			if ( $(nNode).hasClass('DTTT_selected') )
+			if ( $(nNode).hasClass(this.s.select.selectedClass) )
 			{
 				this._fnRowDeselect( nNode );
 			}
@@ -872,7 +881,7 @@ TableTools.prototype = {
 				}
 				
 				this.s.select.selected.push( nNode );
-				$(nNode).addClass( 'DTTT_selected' );
+				$(nNode).addClass( this.s.select.selectedClass );
 				
 				if ( this.s.select.postSelected !== null )
 				{
@@ -903,14 +912,14 @@ TableTools.prototype = {
 				return;
 			}
 			
-			if ( $(nNode).hasClass('DTTT_selected') )
+			if ( $(nNode).hasClass(this.s.select.selectedClass) )
 			{
 				this._fnRowDeselect( nNode );
 			}
 			else
 			{
 				this.s.select.selected.push( nNode );
-				$(nNode).addClass( 'DTTT_selected' );
+				$(nNode).addClass( this.s.select.selectedClass );
 				
 				if ( this.s.select.postSelected !== null )
 				{
@@ -939,10 +948,10 @@ TableTools.prototype = {
 			{
 				n = this.s.dt.aoData[ this.s.dt.aiDisplayMaster[i] ].nTr;
 				
-				if ( !$(n).hasClass('DTTT_selected') )
+				if ( !$(n).hasClass(this.s.select.selectedClass) )
 				{
 					this.s.select.selected.push( n );
-					$(n).addClass( 'DTTT_selected' );
+					$(n).addClass( this.s.select.selectedClass );
 				}
 			}
 			
@@ -990,7 +999,7 @@ TableTools.prototype = {
 		}
 		
 		var nNode = this.s.select.selected[i];
-		$(nNode).removeClass('DTTT_selected');
+		$(nNode).removeClass(this.s.select.selectedClass);
 		this.s.select.selected.splice( i, 1 );
 		
 		if ( this.s.select.postDeselected !== null )
@@ -1288,6 +1297,13 @@ TableTools.prototype = {
 	 * Get data from DataTables' internals and format it for output
 	 *  @method  _fnGetDataTablesData
 	 *  @param   {Object} oConfig Button configuration object
+	 *  @param   {String} oConfig.sFieldBoundary Field boundary for the data cells in the string
+	 *  @param   {String} oConfig.sFieldSeperator Field seperator for the data cells
+	 *  @param   {String} oConfig.sNewline New line options
+	 *  @param   {Mixed} oConfig.mColumns Which columns should be included in the output
+	 *  @param   {Boolean} oConfig.bHeader Include the header
+	 *  @param   {Boolean} oConfig.bFooter Include the footer
+	 *  @param   {Boolean} oConfig.bSelectedOnly Include only the selected rows in the output
 	 *  @returns {String} Concatinated string of data
 	 *  @private 
 	 */
@@ -1325,6 +1341,12 @@ TableTools.prototype = {
 		 */
 		for ( j=0, jLen=dt.aiDisplay.length ; j<jLen ; j++ )
 		{
+			if ( typeof oConfig.bSelectedOnly && oConfig.bSelectedOnly && 
+				   !$(dt.aoData[ dt.aiDisplay[j] ].nTr).hasClass( this.s.select.selectedClass ) )
+			{
+				continue;
+			}
+			
 			/* Columns */
 			for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
 			{
@@ -1966,6 +1988,7 @@ TableTools.BUTTONS = {
 		"mColumns": "all", /* "all", "visible", "hidden" or array of column integers */
 		"bHeader": true,
 		"bFooter": true,
+		"bSelectedOnly": false,
 		"fnMouseover": null,
 		"fnMouseout": null,
 		"fnClick": function( nButton, oConfig, flash ) {
@@ -1991,6 +2014,7 @@ TableTools.BUTTONS = {
 		"mColumns": "all",
 		"bHeader": true,
 		"bFooter": true,
+		"bSelectedOnly": false,
 		"fnMouseover": null,
 		"fnMouseout": null,
 		"fnClick": function( nButton, oConfig, flash ) {
@@ -2012,6 +2036,7 @@ TableTools.BUTTONS = {
 		"mColumns": "all",
 		"bHeader": true,
 		"bFooter": true,
+		"bSelectedOnly": false,
 		"fnMouseover": null,
 		"fnMouseout": null,
 		"fnClick": function( nButton, oConfig, flash ) {
@@ -2020,7 +2045,7 @@ TableTools.BUTTONS = {
 		"fnSelect": null,
 		"fnComplete": function(nButton, oConfig, flash, text) {
 			var
-				len = text.split('\n').length - 1,
+				len = text.split('\n').length - 2,
 				plural = (len==1) ? "" : "s";
 			alert( 'Copied '+len+' row'+plural+' to the clipboard' );
 		},
@@ -2040,6 +2065,7 @@ TableTools.BUTTONS = {
 		"mColumns": "all",
 		"bHeader": true,
 		"bFooter": true,
+		"bSelectedOnly": false,
 		"fnMouseover": null,
 		"fnMouseout": null,
 		"fnClick": function( nButton, oConfig, flash ) {
@@ -2080,6 +2106,7 @@ TableTools.BUTTONS = {
 		"mColumns": "all",
 		"bHeader": true,
 		"bFooter": true,
+		"bSelectedOnly": false,
 		"fnMouseover": null,
 		"fnMouseout": null,
 		"fnClick": null,
@@ -2198,6 +2225,7 @@ TableTools.BUTTONS = {
 		"mColumns": "all",
 		"bHeader": true,
 		"bFooter": true,
+		"bSelectedOnly": false,
 		"fnMouseover": null,
 		"fnMouseout": null,
 		"fnClick": function( nButton, oConfig ) {
@@ -2254,6 +2282,7 @@ TableTools.BUTTONS = {
 TableTools.DEFAULTS = {
 	"sSwfPath":         "media/swf/copy_cvs_xls_pdf.swf",
 	"sRowSelect":       "none",
+	"sSelectedClass":   "DTTT_selected",
 	"fnPreRowSelect":   null,
 	"fnRowSelected":    null,
 	"fnRowDeselected":  null,
