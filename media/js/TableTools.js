@@ -1179,6 +1179,16 @@ TableTools.prototype = {
 		if ( document.getElementById(id) )
 		{
 			flash.glue( node, text );
+			
+			/* Catch those who are using a TableTools 1 version of ZeroClipboard */
+			if ( flash.domElement.parentNode != flash.div.parentNode && 
+				   typeof that.__bZCWarning == 'undefined' )
+			{
+				that.s.dt.oApi._fnLog( this.s.dt, 0, "It looks like you are using the version of "+
+					"ZeroClipboard which came with TableTools 1. Please update to use the version that "+
+					"came with TableTools 2." );
+				that.__bZCWarning = true;
+			}
 		}
 		else
 		{
