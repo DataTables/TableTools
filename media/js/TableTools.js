@@ -2227,6 +2227,7 @@ TableTools.BUTTONS = {
 		"sAction": "text",
 		"sFieldBoundary": "",
 		"sFieldSeperator": "\t",
+		"sNewLine": "\n",
 		"sAjaxUrl": "/xhr.php",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_text",
