@@ -450,6 +450,54 @@ TableTools.prototype = {
 	},
 	
 	
+	/**
+	 * Resize the flash elements of the buttons attached to this TableTools instance - this is
+	 * useful for when initialising TableTools when it is hidden (display:none) since sizes can't
+	 * be calculated at that time.
+	 *  @method  fnResizeButtons
+	 *  @returns void
+	 */
+	"fnResizeButtons": function ()
+	{
+		for ( var cli in ZeroClipboard.clients )
+		{
+			if ( cli )
+			{
+				var client = ZeroClipboard.clients[cli];
+				if ( typeof client.domElement != 'undefined' &&
+				     client.domElement.parentNode == this.dom.container )
+				{
+					client.positionElement();
+				}
+			}
+		}
+	},
+	
+	
+	/**
+	 * Check to see if any of the ZeroClipboard client's attached need to be resized
+	 *  @method  fnResizeRequired
+	 *  @returns void
+	 */
+	"fnResizeRequired": function ()
+	{
+		for ( var cli in ZeroClipboard.clients )
+		{
+			if ( cli )
+			{
+				var client = ZeroClipboard.clients[cli];
+				if ( typeof client.domElement != 'undefined' &&
+				     client.domElement.parentNode == this.dom.container &&
+				     client.sized === false )
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	},
+	
+	
 	
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Private methods (they are of course public in JS, but recommended as private)
@@ -1033,7 +1081,7 @@ TableTools.prototype = {
 			oConfig.fnInit.call( this, nButton, oConfig );
 		}
 		
-		if ( oConfig.sToolTip != "" )
+		if ( oConfig.sToolTip !== "" )
 		{
 			nButton.title = oConfig.sToolTip;
 		}

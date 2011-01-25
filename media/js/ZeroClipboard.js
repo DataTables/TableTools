@@ -96,6 +96,7 @@ ZeroClipboard.Client.prototype = {
 	cssEffects: true, // enable CSS mouse effects on dom container
 	handlers: null, // user event handlers
 	loadingTimer: null,
+	sized: false,
 	
 	glue: function(elem, title) {
 		// glue to DOM element
@@ -125,6 +126,9 @@ ZeroClipboard.Client.prototype = {
 		if ( typeof title != "undefined" && title != "" ) {
 			this.div.title = title;
 		}
+		if ( box.width != 0 && box.height != 0 ) {
+			this.sized = true;
+		}
 		
 		// style.backgroundColor = '#f00'; // debug
 		this.domElement.parentNode.appendChild(this.div);
@@ -132,7 +136,26 @@ ZeroClipboard.Client.prototype = {
 		this.div.innerHTML = this.getHTML( box.width, box.height );
 		this.loadingTimer = setTimeout( function () {
 			throw( 'Unable to load SWF file - please check the SWF path' );
-		}, 10000 )
+		}, 25000 )
+	},
+	
+	positionElement: function() {
+		var box = ZeroClipboard.getDOMObjectPosition(this.domElement);
+		var style = this.div.style;
+		
+		style.position = 'absolute';
+		style.left = (this.domElement.offsetLeft)+'px';
+		style.top = this.domElement.offsetTop+'px';
+		style.width = box.width + 'px';
+		style.height = box.height + 'px';
+		
+		if ( box.width != 0 && box.height != 0 ) {
+			this.sized = true;
+		}
+		
+		var flash = this.div.childNodes[0];
+		flash.width = box.width;
+		flash.height = box.height;
 	},
 	
 	getHTML: function(width, height) {
