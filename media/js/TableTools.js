@@ -41,6 +41,7 @@ var TableToolsInit = {
 	"iButtonHeight": 30,
 	"iButtonWidth": 30,
 	"oSkipColumns": {},
+	"oFilterColumns": {},
 	"sCsvBoundary": "'",
 	"_iNextId": 1 /* Internal useage - but needs to be global */
 };
@@ -673,6 +674,8 @@ function TableTools ( oInit )
 						sLoopData = fnHtmlDecode( sLoopData );
 					}
 					
+					if (_oSettings.oFilterColumns[_DTSettings.aoColumns[i].sClass]) sLoopData = _oSettings.oFilterColumns[_DTSettings.aoColumns[i].sClass](sLoopData, _DTSettings.aoColumns[i].sClass);
+
 					/* Bound it and add it to the total data */
 					sData += fnBoundData( sLoopData, sBoundary, regex ) + sSeperator;
 				}
