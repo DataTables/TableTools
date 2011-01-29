@@ -2103,7 +2103,8 @@ TableTools.BUTTONS = {
 		"fnSelect": null,
 		"fnComplete": function(nButton, oConfig, flash, text) {
 			var
-				len = text.split('\n').length - 2,
+				lines = text.split('\n').length,
+				len = this.s.dt.nTFoot === null ? lines-1 : lines-2,
 				plural = (len==1) ? "" : "s";
 			alert( 'Copied '+len+' row'+plural+' to the clipboard' );
 		},
