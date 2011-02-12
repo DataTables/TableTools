@@ -3,9 +3,9 @@
 
 var ZeroClipboard = {
 	
-	version: "1.0.4-mod",
+	version: "1.0.4-TableTools2",
 	clients: {}, // registered upload clients on page, indexed by id
-	moviePath: 'ZeroClipboard.swf', // URL to movie
+	moviePath: '', // URL to movie
 	nextId: 1, // ID of next movie
 	
 	$: function(thingy) {
