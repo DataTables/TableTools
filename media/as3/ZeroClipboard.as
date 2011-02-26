@@ -57,7 +57,17 @@ package {
 				ExternalInterface.call( 'ZeroClipboard.dispatch', domId, 'mouseUp', null );
 			} );
 			
-			// external functions
+			/* External functions
+			 * See the PDF version for why this is done this way :-(
+			 */
+			addCallbacks();
+			setInterval( addCallbacks, 1000 );
+			
+			// signal to the browser that we are ready
+			ExternalInterface.call( 'ZeroClipboard.dispatch', domId, 'load', null );
+		}
+		
+		public function addCallbacks ():void {
 			ExternalInterface.addCallback("setHandCursor", setHandCursor);
 			ExternalInterface.addCallback("clearText", clearText);
 			ExternalInterface.addCallback("setText", setText);
@@ -66,9 +76,6 @@ package {
 			ExternalInterface.addCallback("setAction", setAction);
 			ExternalInterface.addCallback("setCharSet", setCharSet);
 			ExternalInterface.addCallback("setBomInc", setBomInc);
-			
-			// signal to the browser that we are ready
-			ExternalInterface.call( 'ZeroClipboard.dispatch', domId, 'load', null );
 		}
 		
 		
