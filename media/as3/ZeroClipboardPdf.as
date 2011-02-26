@@ -187,43 +187,60 @@ package {
 			var
 				pdf:PDF,
 				i:int, iLen:int,
-				splitText:Array = clipText.split("--/TableToolsOpts--\n"),
-				opts:Array = splitText[0].split("\n"),
-				dataIn:Array = splitText[1].split("\n"),
-				aColRatio:Array = getProp( 'colWidth', opts ).split('\t'),
-				title:String = getProp( 'title', opts ),
-				message:String = getProp( 'message', opts ),
-				iPageWidth:int = 0,
-				dataOut:Array = [],
-				columns:Array = [],
+				splitText:Array    = clipText.split("--/TableToolsOpts--\n"),
+				opts:Array         = splitText[0].split("\n"),
+				dataIn:Array       = splitText[1].split("\n"),
+				aColRatio:Array    = getProp( 'colWidth', opts ).split('\t'),
+				title:String       = getProp( 'title', opts ),
+				message:String     = getProp( 'message', opts ),
+				orientation:String = getProp( 'orientation', opts ),
+				size:String        = getProp( 'size', opts ),
+				iPageWidth:int     = 0,
+				dataOut:Array      = [],
+				columns:Array      = [],
 				headers:Array,
 				y:int = 0;
 			
 			/* Create the PDF */
-			pdf = new PDF( Orientation.PORTRAIT, Unit.MM, Size.A4 );
+			pdf = new PDF( Orientation[orientation.toUpperCase()], Unit.MM, Size[size.toUpperCase()] );
 			pdf.setDisplayMode( Display.FULL_WIDTH );
 			pdf.addPage();
-			iPageWidth = pdf.getCurrentPage().w-20
+			iPageWidth = pdf.getCurrentPage().w-20;
+			pdf.textStyle( new RGBColor(0), 1 );
+			
+			/* Add the title / message if there is one */
+			pdf.setFont( new CoreFont(FontFamily.HELVETICA), 14 );
+			if ( title != "" )
+			{
+				pdf.writeText(11, title+"\n");
+			}
+			
+			pdf.setFont( new CoreFont(FontFamily.HELVETICA), 11 );
+			if ( message != "" )
+			{
+				pdf.writeText(11, message+"\n");
+			}
 			
 			/* Data setup. Split up the headers, and then construct the columns */
 			for ( i=0, iLen=dataIn.length ; i<iLen ; i++ )
 			{
-				dataOut.push( dataIn[i].split("\t") );
+				if ( dataIn[i] != "" )
+				{
+					dataOut.push( dataIn[i].split("\t") );
+				}
 			}
 			headers = dataOut.shift();
 			
 			for ( i=0, iLen=headers.length ; i<iLen ; i++ )
 			{
-				columns.push( new GridColumn( headers[i], i.toString(), aColRatio[i]*iPageWidth ) );
+				columns.push( new GridColumn( " \n"+headers[i]+"\n ", i.toString(), aColRatio[i]*iPageWidth, 'C' ) );
 			}
 			
-			pdf.textStyle( new RGBColor(0), 1 );
-			pdf.setFont( new CoreFont(FontFamily.HELVETICA), 11 );
 			var grid:Grid = new Grid(
 				dataOut,                  /* 1. data */
 				iPageWidth,               /* 2. width */
 				100,                      /* 3. height */
-				new RGBColor (0x00CCFF),  /* 4. headerColor */
+				new RGBColor (0xE0E0E0),  /* 4. headerColor */
 				new RGBColor (0xFFFFFF),  /* 5. backgroundColor */
 				true,                     /* 6. alternateRowColor */
 				new RGBColor ( 0x0 ),     /* 7. borderColor */

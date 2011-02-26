@@ -2123,14 +2123,20 @@ TableTools.BUTTONS = {
 		"sButtonText": "PDF",
 		"mColumns": "all",
 		"bHeader": true,
-		"bFooter": true,
+		"bFooter": false,
 		"bSelectedOnly": false,
 		"fnMouseover": null,
 		"fnMouseout": null,
+		"sPdfOrientation": "portrait",
+		"sPdfSize": "A4",
+		"sPdfMessage": "",
 		"fnClick": function( nButton, oConfig, flash ) {
 			this.fnSetText( flash, 
 				"title:"+ this.fnGetTitle(oConfig) +"\n"+
+				"message:"+ oConfig.sPdfMessage +"\n"+
 				"colWidth:"+ this.fnCalcColRatios(oConfig) +"\n"+
+				"orientation:"+ oConfig.sPdfOrientation +"\n"+
+				"size:"+ oConfig.sPdfSize +"\n"+
 				"--/TableToolsOpts--\n" +
 				this.fnGetTableData(oConfig)
 			);
