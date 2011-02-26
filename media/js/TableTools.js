@@ -47,17 +47,17 @@ TableTools = function( oDT, oOpts )
 	this.s = {
     /**
      * Store 'this' so the instance can be retreieved from the settings object
-     *  @property that
-     *  @type     object
-     *  @default  this
+		 * @property that
+		 * @type     object
+		 * @default  this
      */
 		"that": this,
 		
 		/** 
 		 * DataTables settings objects
-     *  @property dt
-     *  @type     object
-     *  @default  null
+		 * @property dt
+		 * @type     object
+		 * @default  null
 		 */
 		"dt": null,
 		
@@ -67,42 +67,42 @@ TableTools = function( oDT, oOpts )
 		"print": {
 			/** 
 			 * DataTables draw 'start' point before the printing display was shown
-       *  @property saveStart
+  		 * @property saveStart
 			 *  @type     int
-       *  @default  -1
+  		 * @default  -1
 		 	 */
 		  "saveStart": -1,
 			
 			/** 
 			 * DataTables draw 'length' point before the printing display was shown
-       *  @property saveLength
+  		 * @property saveLength
 			 *  @type     int
-       *  @default  -1
+  		 * @default  -1
 		 	 */
 		  "saveLength": -1,
 		
 			/** 
 			 * Page scrolling point before the printing display was shown so it can be restored
-       *  @property saveScroll
+  		 * @property saveScroll
 			 *  @type     int
-       *  @default  -1
+  		 * @default  -1
 		 	 */
 		  "saveScroll": -1,
 		
 			/** 
 			 * Wrapped function to end the print display (to maintain scope)
-       *  @property funcEnd
+  		 * @property funcEnd
 		 	 *  @type     Function
-       *  @default  function () {}
+  		 * @default  function () {}
 		 	 */
 		  "funcEnd": function () {}
 	  },
 	
 		/**
 		 * A unique ID is assigned to each button in each instance
-     *  @property buttonCounter
+		 * @property buttonCounter
 		 *  @type     int
-     *  @default  0
+		 * @default  0
 		 */
 	  "buttonCounter": 0,
 		
@@ -112,56 +112,56 @@ TableTools = function( oDT, oOpts )
 		"select": {
 			/**
 			 * Select type - can be 'none', 'single' or 'multi'
-       *  @property type
+  		 * @property type
 			 *  @type     string
-       *  @default  ""
+  		 * @default  ""
 			 */
 			"type": "",
 			
 			/**
 			 * Array of nodes which are currently selected
-       *  @property selected
+  		 * @property selected
 			 *  @type     array
-       *  @default  []
+  		 * @default  []
 			 */
 			"selected": [],
 			
 			/**
 			 * Function to run before the selection can take place. Will cancel the select if the
 			 * function returns false
-       *  @property preRowSelect
+  		 * @property preRowSelect
 			 *  @type     Function
-       *  @default  null
+  		 * @default  null
 			 */
 			"preRowSelect": null,
 			
 			/**
 			 * Function to run when a row is selected
-       *  @property postSelected
+  		 * @property postSelected
 			 *  @type     Function
-       *  @default  null
+  		 * @default  null
 			 */
 			"postSelected": null,
 			
 			/**
 			 * Function to run when a row is deselected
-       *  @property postDeselected
+  		 * @property postDeselected
 			 *  @type     Function
-       *  @default  null
+  		 * @default  null
 			 */
 			"postDeselected": null,
 			
 			/**
 			 * Indicate if all rows are selected (needed for server-side processing)
-       *  @property all
+  		 * @property all
 			 *  @type     boolean
-       *  @default  false
+  		 * @default  false
 			 */
 			"all": false,
 			
 			/**
 			 * Class name to add to selected TR nodes
-       *  @property selectedClass
+  		 * @property selectedClass
 			 *  @type     String
 			 *  @default  ""
 			 */
@@ -170,34 +170,34 @@ TableTools = function( oDT, oOpts )
 		
 		/**
 		 * Store of the user input customisation object
-     *  @property custom
+		 * @property custom
 		 *  @type     object
-     *  @default  {}
+		 * @default  {}
 		 */
 		"custom": {},
 		
 		/**
 		 * SWF movie path
-     *  @property swfPath
+		 * @property swfPath
 		 *  @type     string
-     *  @default  ""
+		 * @default  ""
 		 */
 		"swfPath": "",
 		
 		/**
 		 * Default button set
-     *  @property buttonSet
+		 * @property buttonSet
 		 *  @type     array
-     *  @default  []
+		 * @default  []
 		 */
 		"buttonSet": [],
 		
 		/**
 		 * When there is more than one TableTools instance for a DataTable, there must be a 
 		 * master which controls events (row selection etc)
-     *  @property master
+		 * @property master
 		 *  @type     boolean
-     *  @default  false
+		 * @default  false
 		 */
 		"master": false
 	};
