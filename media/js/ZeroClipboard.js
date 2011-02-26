@@ -95,7 +95,6 @@ ZeroClipboard.Client.prototype = {
 	handCursorEnabled: true, // whether to show hand cursor, or default pointer cursor
 	cssEffects: true, // enable CSS mouse effects on dom container
 	handlers: null, // user event handlers
-	loadingTimer: null,
 	sized: false,
 	
 	glue: function(elem, title) {
@@ -134,9 +133,6 @@ ZeroClipboard.Client.prototype = {
 		this.domElement.parentNode.appendChild(this.div);
 		
 		this.div.innerHTML = this.getHTML( box.width, box.height );
-		this.loadingTimer = setTimeout( function () {
-			throw( 'Unable to load SWF file - please check the SWF path' );
-		}, 25000 )
 	},
 	
 	positionElement: function() {
@@ -283,12 +279,6 @@ ZeroClipboard.Client.prototype = {
 	receiveEvent: function(eventName, args) {
 		// receive event from flash
 		eventName = eventName.toString().toLowerCase().replace(/^on/, '');
-		
-		// Cancel loading timer
-		if ( this.loadingTimer !== null ) {
-			clearTimeout( this.loadingTimer );
-			this.loadingTimer = null;
-		}
 		
 		// special behavior for certain events
 		switch (eventName) {
