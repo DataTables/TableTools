@@ -16,10 +16,21 @@
 		<script type="text/javascript" charset="utf-8" src="media/js/TableTools.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
-				TableTools.DEFAULTS.aButtons = [ "copy", "csv", "xls" ];
-				
 				$('#example').dataTable( {
-					"sDom": 'T<"clear">lfrtip'
+					"sDom": 'T<"clear">lfrtip',
+					"oTableTools": {
+						"aButtons": [
+							"copy",
+							"csv",
+							"xls",
+							{
+								"sExtends": "pdf",
+								"sPdfOrientation": "landscape",
+								"sPdfMessage": "Your custom message would go here."
+							},
+							"print"
+						]
+					}
 				} );
 			} );
 		</script>
@@ -27,12 +38,11 @@
 	<body id="dt_example">
 		<div id="container">
 			<div class="full_width big">
-				TableTools example - changing the initialisation defaults
+				TableTools example
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>TableTools provides the ability to override the default initialisation parameters that are used when creating a new instance. This this particularly useful if you have multiple tables which you want to have the same TableTools behaviour - rather than declaring the structure multiple times, you can just set the defaults once. This example shows how to alter the default buttons.</p>
-			
+			<p>This example shows how you can add a message to the saved PDF using the 'sPdfMessage' parameter. It also shows that the orientation of the output PDF can be changed to landscape which is useful if you have a lot of columns.</p>
 			
 			<h1>Live example</h1>
 			<div id="demo">
@@ -463,10 +473,21 @@
 			
 			<h1>Initialisation code</h1>
 			<pre>$(document).ready( function () {
-	TableTools.DEFAULTS.aButtons = [ "copy", "csv", "xls" ];
-	
 	$('#example').dataTable( {
-		"sDom": 'T&lt;"clear"&gt;lfrtip'
+		"sDom": 'T&lt;"clear"&gt;lfrtip',
+		"oTableTools": {
+			"aButtons": [
+				"copy",
+				"csv",
+				"xls",
+				{
+					"sExtends": "pdf",
+					"sPdfOrientation": "landscape",
+					"sPdfMessage": "Your custom message would go here."
+				}
+				"print"
+			]
+		}
 	} );
 } );</pre>
 
