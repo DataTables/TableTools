@@ -4,10 +4,15 @@
  * Description: Tools and buttons for DataTables
  * Author:      Allan Jardine (www.sprymedia.co.uk)
  * Language:    Javascript
- * License:     LGPL / 3 point BSD
+ * License:     GPL v2 or BSD 3 point style
  * Project:     DataTables
  * 
  * Copyright 2009-2011 Allan Jardine, all rights reserved.
+ *
+ * This source file is free software, under either the GPL v2 license or a
+ * BSD style license, available at:
+ *   http://datatables.net/license_gpl2
+ *   http://datatables.net/license_bsd
  */
 
 /* Global scope for TableTools */
