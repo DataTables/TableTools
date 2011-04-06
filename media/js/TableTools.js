@@ -1325,6 +1325,13 @@ TableTools.prototype = {
 				aColumns.push( dt.aoColumns[i].bVisible ? false : true );
 			}
 		}
+		else if ( mColumns == "sortable" )
+		{
+			for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
+			{
+				aColumns.push( dt.aoColumns[i].bSortable ? true : false );
+			}
+		}
 		else /* all */
 		{
 			for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
