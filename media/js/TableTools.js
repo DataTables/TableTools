@@ -1589,10 +1589,15 @@ TableTools.prototype = {
 	"_fnPrintConfig": function ( nButton, oConfig )
 	{
 	  var that = this;
-		
+
 		if ( oConfig.fnInit !== null )
 		{
 			oConfig.fnInit.call( this, nButton, oConfig );
+		}
+		
+		if ( oConfig.sToolTip !== "" )
+		{
+			nButton.title = oConfig.sToolTip;
 		}
 
 	  $(nButton).hover( function () {
