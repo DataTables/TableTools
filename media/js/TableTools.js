@@ -1689,20 +1689,7 @@ TableTools.prototype = {
 		/* Print class can be used for styling */
 		$(document.body).addClass( 'DTTT_Print' );
     
-    /* Add a node telling the user what is going on */
-    if ( oConfig.sInfo !== "" )
-    {
-      var nInfo = document.createElement( "div" );
-      nInfo.className = "DTTT_print_info";
-      nInfo.innerHTML = oConfig.sInfo;
-      document.body.appendChild( nInfo );
-      
-      setTimeout( function() {
-      	$(nInfo).fadeOut( "normal", function() {
-      		document.body.removeChild( nInfo );
-      	} );
-      }, 2000 );
-    }
+		this._showFlashMessage( oConfig.sInfo );
     
     /* Add a message at the top of the page */
     if ( oConfig.sMessage !== "" )
@@ -1913,7 +1900,27 @@ TableTools.prototype = {
 		{
 			this._fnPrintHideNodes( nParent );
 		}
+	},
+	
+	"_showFlashMessage": function ( sInfo )
+	{
+		if ( sInfo === "" )
+		{
+			return;
+		}
+
+		var nInfo = document.createElement( "div" );
+		nInfo.className = "DTTT_print_info";
+		nInfo.innerHTML = sInfo;
+		document.body.appendChild( nInfo );
+
+		setTimeout( function() {
+			$(nInfo).fadeOut( "normal", function() {
+				document.body.removeChild( nInfo );
+			} );
+		}, 2000 );
 	}
+
 };
 
 
@@ -2123,7 +2130,7 @@ TableTools.BUTTONS = {
 				lines = text.split('\n').length,
 				len = this.s.dt.nTFoot === null ? lines-1 : lines-2,
 				plural = (len==1) ? "" : "s";
-			alert( 'Copied '+len+' row'+plural+' to the clipboard' );
+			this._showFlashMessage("<h6>Table copied</h6><p>Copied " + len + " row" + plural + " to the clipboard.</p>");
 		},
 		"fnInit": null
 	},
@@ -2165,7 +2172,7 @@ TableTools.BUTTONS = {
 	"print": {
 		"sAction": "print",
 		"sInfo": "<h6>Print view</h6><p>Please use your browser's print function to "+
-		  "print this table. Press escape when finished.",
+		  "print this table. Press escape when finished.</p>",
 		"sMessage": "",
 		"bShowAll": true,
 		"sToolTip": "View print view",
