@@ -2360,6 +2360,7 @@ TableTools.BUTTONS = {
 		"sAction": "div",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_nonbutton",
+		"sButtonClassHover": "",
 		"sButtonText": "Text button",
 		"fnMouseover": null,
 		"fnMouseout": null,
