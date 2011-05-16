@@ -615,7 +615,7 @@ TableTools.prototype = {
 			if ( this.s.dt.bJUI )
 			{
 				buttonDef.sButtonClass += " ui-button ui-state-default";
-				buttonDef.sButtonClassHover += " ui-button ui-state-default ui-state-hover";
+				buttonDef.sButtonClassHover += " ui-state-hover";
 			}
 			
 			wrapper.appendChild( this._fnCreateButton( buttonDef ) );
@@ -1120,15 +1120,13 @@ TableTools.prototype = {
 		}
 		
 	  $(nButton).hover( function () {
-			$(nButton).removeClass( oConfig.sButtonClass ).
-				addClass(oConfig.sButtonClassHover );
+			$(nButton).addClass(oConfig.sButtonClassHover );
 			if ( oConfig.fnMouseover !== null )
 			{
 				oConfig.fnMouseover.call( this, nButton, oConfig, null );
 			}
 		}, function () {
-			$(nButton).removeClass( oConfig.sButtonClassHover ).
-				addClass( oConfig.sButtonClass );
+			$(nButton).removeClass( oConfig.sButtonClassHover );
 			if ( oConfig.fnMouseout !== null )
 			{
 				oConfig.fnMouseout.call( this, nButton, oConfig, null );
@@ -1204,8 +1202,7 @@ TableTools.prototype = {
 		}
 		
 		flash.addEventListener('mouseOver', function(client) {
-			$(nButton).removeClass( oConfig.sButtonClass ).
-				addClass(oConfig.sButtonClassHover );
+			$(nButton).addClass(oConfig.sButtonClassHover );
 			
 			if ( oConfig.fnMouseover !== null )
 			{
@@ -1214,8 +1211,7 @@ TableTools.prototype = {
 		} );
 		
 		flash.addEventListener('mouseOut', function(client) {
-			$(nButton).removeClass( oConfig.sButtonClassHover ).
-				addClass(oConfig.sButtonClass );
+			$(nButton).removeClass( oConfig.sButtonClassHover );
 			
 			if ( oConfig.fnMouseout !== null )
 			{
@@ -1629,11 +1625,9 @@ TableTools.prototype = {
 		}
 
 	  $(nButton).hover( function () {
-			$(nButton).removeClass( oConfig.sButtonClass ).
-				addClass(oConfig.sButtonClassHover );
+			$(nButton).addClass(oConfig.sButtonClassHover );
 		}, function () {
-			$(nButton).removeClass( oConfig.sButtonClassHover ).
-				addClass(oConfig.sButtonClass );
+			$(nButton).removeClass( oConfig.sButtonClassHover );
 		} );
 		
 		if ( oConfig.fnSelect !== null )
