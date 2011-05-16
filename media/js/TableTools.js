@@ -635,27 +635,27 @@ TableTools.prototype = {
 	  var nButton = (oConfig.sAction == 'div') ?
 	  	this._fnDivBase( oConfig ) : this._fnButtonBase( oConfig );
 		
-	if ( oConfig.sAction == "print" )
-	{
-	  this._fnPrintConfig( nButton, oConfig );
-	}
-	else if ( oConfig.sAction.match(/flash/) )
-	{
-	  this._fnFlashConfig( nButton, oConfig );
-	}
-	else if ( oConfig.sAction == "text" )
-	{
-	  this._fnTextConfig( nButton, oConfig );
-	}
-	else if ( oConfig.sAction == "div" )
-	{
-	  this._fnTextConfig( nButton, oConfig );
-	}
-	else if ( oConfig.sAction == "collection" )
-	{
-	  this._fnTextConfig( nButton, oConfig );
-			this._fnCollectionConfig( nButton, oConfig );
-	}
+		if ( oConfig.sAction == "print" )
+		{
+			this._fnPrintConfig( nButton, oConfig );
+		}
+		else if ( oConfig.sAction.match(/flash/) )
+		{
+			this._fnFlashConfig( nButton, oConfig );
+		}
+		else if ( oConfig.sAction == "text" )
+		{
+			this._fnTextConfig( nButton, oConfig );
+		}
+		else if ( oConfig.sAction == "div" )
+		{
+			this._fnTextConfig( nButton, oConfig );
+		}
+		else if ( oConfig.sAction == "collection" )
+		{
+			this._fnTextConfig( nButton, oConfig );
+				this._fnCollectionConfig( nButton, oConfig );
+		}
 		
 	  return nButton;
 	},
@@ -702,6 +702,11 @@ TableTools.prototype = {
 		nDiv.className = o.sButtonClass;
 		nDiv.setAttribute('id', "ToolTables_"+this.s.dt.sInstance+"_"+masterS.buttonCounter );
 		nDiv.innerHTML = o.sButtonText;
+
+		if ( o.nContent !== null )
+		{
+			nDiv.appendChild( o.nContent );
+		}
 		
 		masterS.buttonCounter++;
 		
@@ -2367,7 +2372,8 @@ TableTools.BUTTONS = {
 		"fnClick": null,
 		"fnSelect": null,
 		"fnComplete": null,
-		"fnInit": null
+		"fnInit": null,
+		"nContent": null
 	},
 	"collection": {
 		"sAction": "collection",
