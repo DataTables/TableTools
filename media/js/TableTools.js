@@ -632,7 +632,8 @@ TableTools.prototype = {
 	 */
 	"_fnCreateButton": function ( oConfig )
 	{
-	  var nButton = this._fnButtonBase( oConfig );
+	  var nButton = (oConfig.sAction == 'div') ?
+	  	this._fnDivBase( oConfig ) : this._fnButtonBase( oConfig );
 		
     if ( oConfig.sAction == "print" )
     {
@@ -643,6 +644,10 @@ TableTools.prototype = {
       this._fnFlashConfig( nButton, oConfig );
     }
     else if ( oConfig.sAction == "text" )
+    {
+      this._fnTextConfig( nButton, oConfig );
+    }
+    else if ( oConfig.sAction == "div" )
     {
       this._fnTextConfig( nButton, oConfig );
     }
@@ -678,6 +683,29 @@ TableTools.prototype = {
 		masterS.buttonCounter++;
 		
 		return nButton;
+	},
+	
+	
+	/**
+	 * Create a DIV element to use for a non-button
+	 *  @method  _fnDivBase
+	 *  @param   {o} oConfig Button configuration object
+	 *  @returns {Node} DIV element for the button
+	 *  @private 
+	 */
+	"_fnDivBase": function ( o )
+	{
+		var
+		  nDiv = document.createElement('div'),
+			masterS = this._fnGetMasterSettings();
+		
+		nDiv.className = o.sButtonClass;
+		nDiv.setAttribute('id', "ToolTables_"+this.s.dt.sInstance+"_"+masterS.buttonCounter );
+		nDiv.innerHTML = o.sButtonText;
+		
+		masterS.buttonCounter++;
+		
+		return nDiv;
 	},
 	
 	
@@ -2333,6 +2361,18 @@ TableTools.BUTTONS = {
 		"fnAjaxComplete": function( json ) {
 			alert( 'Ajax complete' );
 		}
+	},
+	"div": {
+		"sAction": "div",
+		"sToolTip": "",
+		"sButtonClass": "DTTT_nonbutton",
+		"sButtonText": "Text button",
+		"fnMouseover": null,
+		"fnMouseout": null,
+		"fnClick": null,
+		"fnSelect": null,
+		"fnComplete": null,
+		"fnInit": null
 	},
 	"collection": {
 		"sAction": "collection",
