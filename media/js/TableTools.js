@@ -521,7 +521,6 @@ TableTools.prototype = {
 		
 		/* Container element */
 		this.dom.container = document.createElement('div');
-		this.dom.container.style.position = "relative";
 		this.dom.container.className = !this.s.dt.bJUI ? "DTTT_container" :
 			"DTTT_container ui-buttonset ui-buttonset-multi";
 		

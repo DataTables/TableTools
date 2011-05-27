@@ -37,6 +37,7 @@
  * TableTools container element and styles applying to all components
  */
 div.DTTT_container {
+	position: relative;
 	float: left;
 }
 
