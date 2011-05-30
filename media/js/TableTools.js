@@ -317,6 +317,7 @@ TableTools.prototype = {
 		return masterS.select.selected;
 	},
 	
+	
 	/**
 	 * Check to see if a current row is selected or not
 	 *  @method fnGetSelected
@@ -335,6 +336,7 @@ TableTools.prototype = {
 		}
 		return false;
 	},
+
 	
 	/**
 	 * Select all rows in the table
@@ -346,7 +348,7 @@ TableTools.prototype = {
 		var masterS = this._fnGetMasterSettings();
 		masterS.that._fnRowSelectAll();
 	},
-	
+
 	
 	/**
 	 * Deselect all rows in the table
@@ -357,6 +359,50 @@ TableTools.prototype = {
 	{
 		var masterS = this._fnGetMasterSettings();
 		masterS.that._fnRowDeselectAll();
+	},
+
+	
+	/**
+	 * Select an individual row
+	 *  @method  fnSelect
+	 *  @returns void
+	 */
+	"fnSelect": function ( n )
+	{
+		/* Check if the row is already selected */
+		if ( !this.fnIsSelected( n ) )
+		{
+			if ( that.s.select.type == "single" )
+			{
+				this._fnRowSelectSingle( n );
+			}
+			else if ( that.s.select.type == "single" )
+			{
+				this._fnRowSelectMulti( n );
+			}
+		}
+	},
+
+	
+	/**
+	 * Deselect an individual row
+	 *  @method  fnDeselect
+	 *  @returns void
+	 */
+	"fnDeselect": function ( n )
+	{
+		/* Check if the row is already deselected */
+		if ( this.fnIsSelected( n ) )
+		{
+			if ( that.s.select.type == "single" )
+			{
+				this._fnRowSelectSingle( n );
+			}
+			else if ( that.s.select.type == "single" )
+			{
+				this._fnRowSelectMulti( n );
+			}
+		}
 	},
 	
 	
