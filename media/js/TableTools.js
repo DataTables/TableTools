@@ -372,11 +372,11 @@ TableTools.prototype = {
 		/* Check if the row is already selected */
 		if ( !this.fnIsSelected( n ) )
 		{
-			if ( that.s.select.type == "single" )
+			if ( this.s.select.type == "single" )
 			{
 				this._fnRowSelectSingle( n );
 			}
-			else if ( that.s.select.type == "single" )
+			else if ( this.s.select.type == "multi" )
 			{
 				this._fnRowSelectMulti( n );
 			}
@@ -394,11 +394,11 @@ TableTools.prototype = {
 		/* Check if the row is already deselected */
 		if ( this.fnIsSelected( n ) )
 		{
-			if ( that.s.select.type == "single" )
+			if ( this.s.select.type == "single" )
 			{
 				this._fnRowSelectSingle( n );
 			}
-			else if ( that.s.select.type == "single" )
+			else if ( this.s.select.type == "multi" )
 			{
 				this._fnRowSelectMulti( n );
 			}
