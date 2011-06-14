@@ -1085,6 +1085,11 @@ TableTools.prototype = {
 					$(n).addClass( this.s.select.selectedClass );
 				}
 			}
+
+			if ( this.s.select.postSelected !== null )
+			{
+				this.s.select.postSelected.call( this, null );
+			}
 			
 			this.s.select.all = true;
 			TableTools._fnEventDispatch( this, 'select', null );
@@ -1106,6 +1111,11 @@ TableTools.prototype = {
 			for ( var i=this.s.select.selected.length-1 ; i>=0 ; i-- )
 			{
 				this._fnRowDeselect( i );
+			}
+
+			if ( this.s.select.postDeselected !== null )
+			{
+				this.s.select.postDeselected.call( this, null );
 			}
 			
 			this.s.select.all = false;
