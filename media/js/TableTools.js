@@ -1110,7 +1110,7 @@ TableTools.prototype = {
 		{
 			for ( var i=this.s.select.selected.length-1 ; i>=0 ; i-- )
 			{
-				this._fnRowDeselect( i );
+				this._fnRowDeselect( i, false );
 			}
 
 			if ( this.s.select.postDeselected !== null )
@@ -1129,10 +1129,11 @@ TableTools.prototype = {
 	 * index is then computed)
 	 *  @method  _fnRowDeselect
 	 *  @param   {int|Node} i Node or index of node in selected array, which is to be deselected
+	 *  @param   {bool} [action=true] Run the post deselected method or not
 	 *  @returns void
 	 *  @private 
 	 */
-	"_fnRowDeselect": function ( i )
+	"_fnRowDeselect": function ( i, action )
 	{
 		if ( typeof i.nodeName != 'undefined' )
 		{
@@ -1143,7 +1144,7 @@ TableTools.prototype = {
 		$(nNode).removeClass(this.s.select.selectedClass);
 		this.s.select.selected.splice( i, 1 );
 		
-		if ( this.s.select.postDeselected !== null )
+		if ( (typeof action == 'undefined' || action) && this.s.select.postDeselected !== null )
 		{
 			this.s.select.postDeselected.call( this, nNode );
 		}
