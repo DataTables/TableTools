@@ -1497,7 +1497,7 @@ TableTools.prototype = {
 				if ( aColumnsInc[i] )
 				{
 					/* Convert to strings (with small optimisation) */
-					var mTypeData = dt.aoData[ dt.aiDisplay[j] ]._aData[ i ];
+					var mTypeData = dt.oApi._fnGetCellData( dt, dt.aiDisplay[j], i, 'display' );
 					if ( typeof mTypeData == "string" )
 					{
 						/* Strip newlines, replace img tags with alt attr. and finally strip html... */
