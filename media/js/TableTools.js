@@ -2135,7 +2135,7 @@ TableTools.BUTTONS = {
 		"sCharSet": "utf8",
 		"bBomInc": false,
 		"sFileName": "*.csv",
-		"sFieldBoundary": "'",
+		"sFieldBoundary": '"',
 		"sFieldSeperator": ",",
 		"sNewLine": "auto",
 		"sTitle": "",
