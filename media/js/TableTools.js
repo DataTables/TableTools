@@ -316,6 +316,27 @@ TableTools.prototype = {
 		var masterS = this._fnGetMasterSettings();
 		return masterS.select.selected;
 	},
+
+
+	/**
+	 * Get the data source objects/arrays from DataTables for the selected rows (same as
+	 * fnGetSelected followed by fnGetData on each row from the table)
+	 *  @method fnGetSelectedData
+	 *  @returns {array} Data from the TR nodes which are currently selected
+	 */
+	"fnGetSelectedData": function ()
+	{
+		var masterS = this._fnGetMasterSettings();
+		var selected = masterS.select.selected;
+		var out = [];
+
+		for ( var i=0, iLen=selected.length ; i<iLen ; i++ )
+		{
+			out.push( this.s.dt.oInstance.fnGetData( selected[i] ) );
+		}
+
+		return out;
+	},
 	
 	
 	/**
