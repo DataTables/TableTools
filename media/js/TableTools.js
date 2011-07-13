@@ -584,6 +584,8 @@ TableTools.prototype = {
 	 */
 	"_fnConstruct": function ( oOpts )
 	{
+		var that = this;
+		
 		this._fnCustomiseSettings( oOpts );
 		
 		/* Container element */
@@ -599,6 +601,14 @@ TableTools.prototype = {
 		
 		/* Buttons */
 		this._fnButtonDefinations( this.s.buttonSet, this.dom.container );
+		
+		/* Destructor - need to wipe the DOM for IE's garbage collector */
+		this.s.dt.aoDestroyCallback.push( {
+			"sName": "TableTools",
+			"fn": function () {
+				that.dom.container.innerHTML = "";
+			}
+		} );
 	},
 	
 	
@@ -2521,7 +2531,7 @@ TableTools.prototype.VERSION = TableTools.VERSION;
  */
 if ( typeof $.fn.dataTable == "function" &&
 	 typeof $.fn.dataTableExt.fnVersionCheck == "function" &&
-	 $.fn.dataTableExt.fnVersionCheck('1.7.0') )
+	 $.fn.dataTableExt.fnVersionCheck('1.8.2') )
 {
 	$.fn.dataTableExt.aoFeatures.push( {
 		"fnInit": function( oDTSettings ) {
@@ -2539,7 +2549,7 @@ if ( typeof $.fn.dataTable == "function" &&
 }
 else
 {
-	alert( "Warning: TableTools 2 requires DataTables 1.7 or greater - www.datatables.net/download");
+	alert( "Warning: TableTools 2 requires DataTables 1.8.2 or newer - www.datatables.net/download");
 }
 
 })(jQuery, window, document);
