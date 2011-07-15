@@ -1501,6 +1501,7 @@ TableTools.prototype = {
 		var regex = new RegExp(oConfig.sFieldBoundary, "g"); /* Do it here for speed */
 		var aColumnsInc = this._fnColumnTargets( oConfig.mColumns );
 		var sNewline = this._fnNewline( oConfig );
+		var bSelectedOnly = (typeof oConfig.bSelectedOnly != 'undefined') ? oConfig.bSelectedOnly : false;
 		
 		/*
 		 * Header
@@ -1527,44 +1528,43 @@ TableTools.prototype = {
 		 */
 		for ( j=0, jLen=dt.aiDisplay.length ; j<jLen ; j++ )
 		{
-			if ( typeof oConfig.bSelectedOnly && oConfig.bSelectedOnly && 
-				   !$(dt.aoData[ dt.aiDisplay[j] ].nTr).hasClass( this.s.select.selectedClass ) )
+			if ( (bSelectedOnly && $(dt.aoData[ dt.aiDisplay[j] ].nTr).hasClass( this.s.select.selectedClass )) ||
+			     (bSelectedOnly && this.s.select.selected.length == 0) )
 			{
-				continue;
-			}
 			
 			/* Columns */
-			for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
-			{
-				if ( aColumnsInc[i] )
+				for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
 				{
-					/* Convert to strings (with small optimisation) */
-					var mTypeData = dt.oApi._fnGetCellData( dt, dt.aiDisplay[j], i, 'display' );
-					if ( typeof mTypeData == "string" )
+					if ( aColumnsInc[i] )
 					{
-						/* Strip newlines, replace img tags with alt attr. and finally strip html... */
-						sLoopData = mTypeData.replace(/\n/g," ");
-						sLoopData =
-						 	sLoopData.replace(/<img.*?\s+alt\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s>]+)).*?>/gi,
-						 		'$1$2$3');
-						sLoopData = sLoopData.replace( /<.*?>/g, "" );
+						/* Convert to strings (with small optimisation) */
+						var mTypeData = dt.oApi._fnGetCellData( dt, dt.aiDisplay[j], i, 'display' );
+						if ( typeof mTypeData == "string" )
+						{
+							/* Strip newlines, replace img tags with alt attr. and finally strip html... */
+							sLoopData = mTypeData.replace(/\n/g," ");
+							sLoopData =
+							 	sLoopData.replace(/<img.*?\s+alt\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s>]+)).*?>/gi,
+							 		'$1$2$3');
+							sLoopData = sLoopData.replace( /<.*?>/g, "" );
+						}
+						else
+						{
+							sLoopData = mTypeData+"";
+						}
+						
+						/* Trim and clean the data */
+						sLoopData = sLoopData.replace(/^\s+/, '').replace(/\s+$/, '');
+						sLoopData = this._fnHtmlDecode( sLoopData );
+						
+						/* Bound it and add it to the total data */
+						sData += this._fnBoundData( sLoopData, oConfig.sFieldBoundary, regex ) +
+						 	oConfig.sFieldSeperator;
 					}
-					else
-					{
-						sLoopData = mTypeData+"";
-					}
-					
-					/* Trim and clean the data */
-					sLoopData = sLoopData.replace(/^\s+/, '').replace(/\s+$/, '');
-					sLoopData = this._fnHtmlDecode( sLoopData );
-					
-					/* Bound it and add it to the total data */
-					sData += this._fnBoundData( sLoopData, oConfig.sFieldBoundary, regex ) +
-					 	oConfig.sFieldSeperator;
 				}
+				sData = sData.slice( 0, oConfig.sFieldSeperator.length*-1 );
+				sData += sNewline;
 			}
-			sData = sData.slice( 0, oConfig.sFieldSeperator.length*-1 );
-			sData += sNewline;
 		}
 		
 		/* Remove the last new line */
