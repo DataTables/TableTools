@@ -1528,11 +1528,11 @@ TableTools.prototype = {
 		 */
 		for ( j=0, jLen=dt.aiDisplay.length ; j<jLen ; j++ )
 		{
-			if ( (bSelectedOnly && $(dt.aoData[ dt.aiDisplay[j] ].nTr).hasClass( this.s.select.selectedClass )) ||
+			if ( this.s.select.type == "none" ||
+				   (bSelectedOnly && $(dt.aoData[ dt.aiDisplay[j] ].nTr).hasClass( this.s.select.selectedClass )) ||
 			     (bSelectedOnly && this.s.select.selected.length == 0) )
 			{
-			
-			/* Columns */
+				/* Columns */
 				for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
 				{
 					if ( aColumnsInc[i] )
