@@ -1512,7 +1512,7 @@ TableTools.prototype = {
 			{
 				if ( aColumnsInc[i] )
 				{
-					sLoopData = dt.aoColumns[i].sTitle.replace(/\n/g," ").replace( /<.*?>/g, "" );
+					sLoopData = dt.aoColumns[i].sTitle.replace(/\n/g," ").replace( /<.*?>/g, "" ).replace(/^\s+|\s+$/g,"");
 					sLoopData = this._fnHtmlDecode( sLoopData );
 					
 					sData += this._fnBoundData( sLoopData, oConfig.sFieldBoundary, regex ) +
