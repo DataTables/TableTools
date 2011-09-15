@@ -960,13 +960,10 @@ TableTools.prototype = {
 					return;
 				}
 				
-				/* Not interested in selecting 'opened' rows */
-				for ( i=0, iLen=aoOpenRows.length ; i<iLen ; i++ )
-				{
-					if ( this == aoOpenRows[i].nTr )
-					{
-						return;
-					}
+				/* Check that we are actually working with a DataTables controlled row */
+				var anTableRows = that.s.dt.oInstance.fnGetNodes();
+				if ( $.inArray( this, anTableRows ) === -1 ) {
+				    return;
 				}
 				
 				/* User defined selection function */
