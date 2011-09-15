@@ -584,6 +584,8 @@ TableTools.prototype = {
 	 */
 	"_fnConstruct": function ( oOpts )
 	{
+		var that = this;
+		
 		this._fnCustomiseSettings( oOpts );
 		
 		/* Container element */
@@ -599,6 +601,14 @@ TableTools.prototype = {
 		
 		/* Buttons */
 		this._fnButtonDefinations( this.s.buttonSet, this.dom.container );
+		
+		/* Destructor - need to wipe the DOM for IE's garbage collector */
+		this.s.dt.aoDestroyCallback.push( {
+			"sName": "TableTools",
+			"fn": function () {
+				that.dom.container.innerHTML = "";
+			}
+		} );
 	},
 	
 	
@@ -1488,6 +1498,7 @@ TableTools.prototype = {
 		var regex = new RegExp(oConfig.sFieldBoundary, "g"); /* Do it here for speed */
 		var aColumnsInc = this._fnColumnTargets( oConfig.mColumns );
 		var sNewline = this._fnNewline( oConfig );
+		var bSelectedOnly = (typeof oConfig.bSelectedOnly != 'undefined') ? oConfig.bSelectedOnly : false;
 		
 		/*
 		 * Header
@@ -1498,7 +1509,7 @@ TableTools.prototype = {
 			{
 				if ( aColumnsInc[i] )
 				{
-					sLoopData = dt.aoColumns[i].sTitle.replace(/\n/g," ").replace( /<.*?>/g, "" );
+					sLoopData = dt.aoColumns[i].sTitle.replace(/\n/g," ").replace( /<.*?>/g, "" ).replace(/^\s+|\s+$/g,"");
 					sLoopData = this._fnHtmlDecode( sLoopData );
 					
 					sData += this._fnBoundData( sLoopData, oConfig.sFieldBoundary, regex ) +
@@ -1514,44 +1525,43 @@ TableTools.prototype = {
 		 */
 		for ( j=0, jLen=dt.aiDisplay.length ; j<jLen ; j++ )
 		{
-			if ( typeof oConfig.bSelectedOnly && oConfig.bSelectedOnly && 
-				   !$(dt.aoData[ dt.aiDisplay[j] ].nTr).hasClass( this.s.select.selectedClass ) )
+			if ( this.s.select.type == "none" ||
+				   (bSelectedOnly && $(dt.aoData[ dt.aiDisplay[j] ].nTr).hasClass( this.s.select.selectedClass )) ||
+			     (bSelectedOnly && this.s.select.selected.length == 0) )
 			{
-				continue;
-			}
-			
-			/* Columns */
-			for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
-			{
-				if ( aColumnsInc[i] )
+				/* Columns */
+				for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
 				{
-					/* Convert to strings (with small optimisation) */
-					var mTypeData = dt.oApi._fnGetCellData( dt, dt.aiDisplay[j], i, 'display' );
-					if ( typeof mTypeData == "string" )
+					if ( aColumnsInc[i] )
 					{
-						/* Strip newlines, replace img tags with alt attr. and finally strip html... */
-						sLoopData = mTypeData.replace(/\n/g," ");
-						sLoopData =
-						 	sLoopData.replace(/<img.*?\s+alt\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s>]+)).*?>/gi,
-						 		'$1$2$3');
-						sLoopData = sLoopData.replace( /<.*?>/g, "" );
+						/* Convert to strings (with small optimisation) */
+						var mTypeData = dt.oApi._fnGetCellData( dt, dt.aiDisplay[j], i, 'display' );
+						if ( typeof mTypeData == "string" )
+						{
+							/* Strip newlines, replace img tags with alt attr. and finally strip html... */
+							sLoopData = mTypeData.replace(/\n/g," ");
+							sLoopData =
+							 	sLoopData.replace(/<img.*?\s+alt\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s>]+)).*?>/gi,
+							 		'$1$2$3');
+							sLoopData = sLoopData.replace( /<.*?>/g, "" );
+						}
+						else
+						{
+							sLoopData = mTypeData+"";
+						}
+						
+						/* Trim and clean the data */
+						sLoopData = sLoopData.replace(/^\s+/, '').replace(/\s+$/, '');
+						sLoopData = this._fnHtmlDecode( sLoopData );
+						
+						/* Bound it and add it to the total data */
+						sData += this._fnBoundData( sLoopData, oConfig.sFieldBoundary, regex ) +
+						 	oConfig.sFieldSeperator;
 					}
-					else
-					{
-						sLoopData = mTypeData+"";
-					}
-					
-					/* Trim and clean the data */
-					sLoopData = sLoopData.replace(/^\s+/, '').replace(/\s+$/, '');
-					sLoopData = this._fnHtmlDecode( sLoopData );
-					
-					/* Bound it and add it to the total data */
-					sData += this._fnBoundData( sLoopData, oConfig.sFieldBoundary, regex ) +
-					 	oConfig.sFieldSeperator;
 				}
+				sData = sData.slice( 0, oConfig.sFieldSeperator.length*-1 );
+				sData += sNewline;
 			}
-			sData = sData.slice( 0, oConfig.sFieldSeperator.length*-1 );
-			sData += sNewline;
 		}
 		
 		/* Remove the last new line */
@@ -2153,7 +2163,7 @@ TableTools.BUTTONS = {
 		"sCharSet": "utf8",
 		"bBomInc": false,
 		"sFileName": "*.csv",
-		"sFieldBoundary": "'",
+		"sFieldBoundary": '"',
 		"sFieldSeperator": ",",
 		"sNewLine": "auto",
 		"sTitle": "",
@@ -2518,7 +2528,7 @@ TableTools.prototype.VERSION = TableTools.VERSION;
  */
 if ( typeof $.fn.dataTable == "function" &&
 	 typeof $.fn.dataTableExt.fnVersionCheck == "function" &&
-	 $.fn.dataTableExt.fnVersionCheck('1.7.0') )
+	 $.fn.dataTableExt.fnVersionCheck('1.8.2') )
 {
 	$.fn.dataTableExt.aoFeatures.push( {
 		"fnInit": function( oDTSettings ) {
@@ -2536,7 +2546,7 @@ if ( typeof $.fn.dataTable == "function" &&
 }
 else
 {
-	alert( "Warning: TableTools 2 requires DataTables 1.7 or greater - www.datatables.net/download");
+	alert( "Warning: TableTools 2 requires DataTables 1.8.2 or newer - www.datatables.net/download");
 }
 
 })(jQuery, window, document);
