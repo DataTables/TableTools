@@ -147,6 +147,8 @@ ZeroClipboard.Client.prototype = {
 		
 		if ( box.width != 0 && box.height != 0 ) {
 			this.sized = true;
+		} else {
+			return;
 		}
 		
 		var flash = this.div.childNodes[0];
