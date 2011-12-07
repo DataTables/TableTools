@@ -1536,7 +1536,11 @@ TableTools.prototype = {
 					{
 						/* Convert to strings (with small optimisation) */
 						var mTypeData = dt.oApi._fnGetCellData( dt, dt.aiDisplay[j], i, 'display' );
-						if ( typeof mTypeData == "string" )
+						if ( oConfig.fnCellRender )
+						{
+							sLoopData = oConfig.fnCellRender( mTypeData, i )+"";
+						}
+						else if ( typeof mTypeData == "string" )
 						{
 							/* Strip newlines, replace img tags with alt attr. and finally strip html... */
 							sLoopData = mTypeData.replace(/\n/g," ");
@@ -2182,7 +2186,8 @@ TableTools.BUTTONS = {
 		},
 		"fnSelect": null,
 		"fnComplete": null,
-		"fnInit": null
+		"fnInit": null,
+		"fnCellRender": null
 	},
 	"xls": {
 		"sAction": "flash_save",
@@ -2208,7 +2213,8 @@ TableTools.BUTTONS = {
 		},
 		"fnSelect": null,
 		"fnComplete": null,
-		"fnInit": null
+		"fnInit": null,
+		"fnCellRender": null
 	},
 	"copy": {
 		"sAction": "flash_copy",
@@ -2236,7 +2242,8 @@ TableTools.BUTTONS = {
 				plural = (len==1) ? "" : "s";
 			alert( 'Copied '+len+' row'+plural+' to the clipboard' );
 		},
-		"fnInit": null
+		"fnInit": null,
+		"fnCellRender": null
 	},
 	"pdf": {
 		"sAction": "flash_pdf",
@@ -2271,7 +2278,8 @@ TableTools.BUTTONS = {
 		},
 		"fnSelect": null,
 		"fnComplete": null,
-		"fnInit": null
+		"fnInit": null,
+		"fnCellRender": null
 	},
 	"print": {
 		"sAction": "print",
@@ -2288,7 +2296,8 @@ TableTools.BUTTONS = {
 		"fnClick": null,
 		"fnSelect": null,
 		"fnComplete": null,
-		"fnInit": null
+		"fnInit": null,
+		"fnCellRender": null
 	},
 	"text": {
 		"sAction": "text",
@@ -2305,7 +2314,8 @@ TableTools.BUTTONS = {
 		"fnClick": null,
 		"fnSelect": null,
 		"fnComplete": null,
-		"fnInit": null
+		"fnInit": null,
+		"fnCellRender": null
 	},
 	"select": {
 		"sAction": "text",
@@ -2329,7 +2339,8 @@ TableTools.BUTTONS = {
 		"fnComplete": null,
 		"fnInit": function( nButton, oConfig ) {
 			$(nButton).addClass('DTTT_disabled');
-		}
+		},
+		"fnCellRender": null
 	},
 	"select_single": {
 		"sAction": "text",
@@ -2354,7 +2365,8 @@ TableTools.BUTTONS = {
 		"fnComplete": null,
 		"fnInit": function( nButton, oConfig ) {
 			$(nButton).addClass('DTTT_disabled');
-		}
+		},
+		"fnCellRender": null
 	},
 	"select_all": {
 		"sAction": "text",
@@ -2378,7 +2390,8 @@ TableTools.BUTTONS = {
 			}
 		},
 		"fnComplete": null,
-		"fnInit": null
+		"fnInit": null,
+		"fnCellRender": null
 	},
 	"select_none": {
 		"sAction": "text",
@@ -2404,7 +2417,8 @@ TableTools.BUTTONS = {
 		"fnComplete": null,
 		"fnInit": function( nButton, oConfig ) {
 			$(nButton).addClass('DTTT_disabled');
-		}
+		},
+		"fnCellRender": null
 	},
 	"ajax": {
 		"sAction": "text",
@@ -2443,7 +2457,8 @@ TableTools.BUTTONS = {
 		"fnInit": null,
 		"fnAjaxComplete": function( json ) {
 			alert( 'Ajax complete' );
-		}
+		},
+		"fnCellRender": null
 	},
 	"div": {
 		"sAction": "div",
@@ -2457,7 +2472,8 @@ TableTools.BUTTONS = {
 		"fnSelect": null,
 		"fnComplete": null,
 		"fnInit": null,
-		"nContent": null
+		"nContent": null,
+		"fnCellRender": null
 	},
 	"collection": {
 		"sAction": "collection",
@@ -2472,7 +2488,8 @@ TableTools.BUTTONS = {
 		},
 		"fnSelect": null,
 		"fnComplete": null,
-		"fnInit": null
+		"fnInit": null,
+		"fnCellRender": null
 	}
 };
 /*
