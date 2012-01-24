@@ -1614,7 +1614,7 @@ TableTools.prototype = {
 		}
 		else
 		{
-			return sBoundary + sData.replace(regex, "\\"+sBoundary) + sBoundary;
+			return sBoundary + sData.replace(regex, sBoundary+sBoundary) + sBoundary;
 		}
 	},
 	
