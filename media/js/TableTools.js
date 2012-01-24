@@ -1,6 +1,6 @@
 /*
  * File:        TableTools.js
- * Version:     2.0.2.dev
+ * Version:     2.0.2
  * Description: Tools and buttons for DataTables
  * Author:      Allan Jardine (www.sprymedia.co.uk)
  * Language:    Javascript
@@ -2528,9 +2528,9 @@ TableTools.prototype.CLASS = "TableTools";
  * TableTools version
  *  @constant  VERSION
  *  @type	  String
- *  @default   2.0.1
+ *  @default   2.0.2
  */
-TableTools.VERSION = "2.0.2.dev";
+TableTools.VERSION = "2.0.2";
 TableTools.prototype.VERSION = TableTools.VERSION;
 
 
