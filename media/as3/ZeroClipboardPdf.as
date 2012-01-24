@@ -73,18 +73,10 @@ package {
 				ExternalInterface.call( 'ZeroClipboard.dispatch', domId, 'mouseUp', null );
 			} );
 			
-			/* External functions
-			 * This is extremely nasty, and I'm far from proud of this, however, when a Flash
-			 * movie is hidden in IE (i.e. display:none) then all callbacks are removed, and there
-			 * is no way to tell that this has happened! Javascript can't tell us since there are
-			 * no callbacks - so we need to add them again and again... Fortunatly Flash doesn't
-			 * allow multiple callback functions to be used with each callback name, it just uses
-			 * the provided function, so the only thing we use for this workaround is a couple of
-			 * clock cycles.
-			 */
+			// External functions - readd whenever the stage is made active for IE
 			addCallbacks();
-			setInterval( addCallbacks, 1000 );
-			
+			stage.addEventListener(Event.ACTIVATE, addCallbacks);
+
 			// signal to the browser that we are ready
 			ExternalInterface.call( 'ZeroClipboard.dispatch', domId, 'load', null );
 		}

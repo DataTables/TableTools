@@ -57,11 +57,9 @@ package {
 				ExternalInterface.call( 'ZeroClipboard.dispatch', domId, 'mouseUp', null );
 			} );
 			
-			/* External functions
-			 * See the PDF version for why this is done this way :-(
-			 */
+			// External functions - readd whenever the stage is made active for IE
 			addCallbacks();
-			setInterval( addCallbacks, 1000 );
+			stage.addEventListener(Event.ACTIVATE, addCallbacks);
 			
 			// signal to the browser that we are ready
 			ExternalInterface.call( 'ZeroClipboard.dispatch', domId, 'load', null );
