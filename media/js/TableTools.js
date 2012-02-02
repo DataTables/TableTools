@@ -1,6 +1,6 @@
 /*
  * File:        TableTools.js
- * Version:     2.0.2
+ * Version:     2.0.3.dev
  * Description: Tools and buttons for DataTables
  * Author:      Allan Jardine (www.sprymedia.co.uk)
  * Language:    Javascript
@@ -1525,7 +1525,7 @@ TableTools.prototype = {
 		 */
 		for ( j=0, jLen=dt.aiDisplay.length ; j<jLen ; j++ )
 		{
-			if ( this.s.select.type == "none" ||
+			if ( this.s.select.type == "none" || !bSelectedOnly ||
 				   (bSelectedOnly && $(dt.aoData[ dt.aiDisplay[j] ].nTr).hasClass( this.s.select.selectedClass )) ||
 			     (bSelectedOnly && this.s.select.selected.length == 0) )
 			{
@@ -2528,9 +2528,9 @@ TableTools.prototype.CLASS = "TableTools";
  * TableTools version
  *  @constant  VERSION
  *  @type	  String
- *  @default   2.0.2
+ *  @default   2.0.3.dev
  */
-TableTools.VERSION = "2.0.2";
+TableTools.VERSION = "2.0.3.dev";
 TableTools.prototype.VERSION = TableTools.VERSION;
 
 
