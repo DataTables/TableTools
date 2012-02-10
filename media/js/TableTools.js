@@ -1493,11 +1493,10 @@ TableTools.prototype = {
 	"_fnGetDataTablesData": function ( oConfig )
 	{
 		var i, iLen, j, jLen;
-		var sData = '', sLoopData = '';
+		var aRow, aData=[], sLoopData='';
 		var dt = this.s.dt;
 		var regex = new RegExp(oConfig.sFieldBoundary, "g"); /* Do it here for speed */
 		var aColumnsInc = this._fnColumnTargets( oConfig.mColumns );
-		var sNewline = this._fnNewline( oConfig );
 		var bSelectedOnly = (typeof oConfig.bSelectedOnly != 'undefined') ? oConfig.bSelectedOnly : false;
 		
 		/*
@@ -1505,6 +1504,8 @@ TableTools.prototype = {
 		 */
 		if ( oConfig.bHeader )
 		{
+			aRow = [];
+			
 			for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
 			{
 				if ( aColumnsInc[i] )
@@ -1512,12 +1513,11 @@ TableTools.prototype = {
 					sLoopData = dt.aoColumns[i].sTitle.replace(/\n/g," ").replace( /<.*?>/g, "" ).replace(/^\s+|\s+$/g,"");
 					sLoopData = this._fnHtmlDecode( sLoopData );
 					
-					sData += this._fnBoundData( sLoopData, oConfig.sFieldBoundary, regex ) +
-					 	oConfig.sFieldSeperator;
+					aRow.push( this._fnBoundData( sLoopData, oConfig.sFieldBoundary, regex ) );
 				}
 			}
-			sData = sData.slice( 0, oConfig.sFieldSeperator.length*-1 );
-			sData += sNewline;
+
+			aData.push( aRow.join(oConfig.sFieldSeperator) );
 		}
 		
 		/*
@@ -1529,6 +1529,8 @@ TableTools.prototype = {
 				   (bSelectedOnly && $(dt.aoData[ dt.aiDisplay[j] ].nTr).hasClass( this.s.select.selectedClass )) ||
 			     (bSelectedOnly && this.s.select.selected.length == 0) )
 			{
+				aRow = [];
+				
 				/* Columns */
 				for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
 				{
@@ -1559,23 +1561,21 @@ TableTools.prototype = {
 						sLoopData = this._fnHtmlDecode( sLoopData );
 						
 						/* Bound it and add it to the total data */
-						sData += this._fnBoundData( sLoopData, oConfig.sFieldBoundary, regex ) +
-						 	oConfig.sFieldSeperator;
+						aRow.push( this._fnBoundData( sLoopData, oConfig.sFieldBoundary, regex ) );
 					}
 				}
-				sData = sData.slice( 0, oConfig.sFieldSeperator.length*-1 );
-				sData += sNewline;
+
+				aData.push( aRow.join(oConfig.sFieldSeperator) );
 			}
 		}
-		
-		/* Remove the last new line */
-		sData.slice( 0, -1 );
 		
 		/*
 		 * Footer
 		 */
-		if ( oConfig.bFooter )
+		if ( oConfig.bFooter && dt.nTFoot !== null )
 		{
+			aRow = [];
+			
 			for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
 			{
 				if ( aColumnsInc[i] && dt.aoColumns[i].nTf !== null )
@@ -1583,16 +1583,15 @@ TableTools.prototype = {
 					sLoopData = dt.aoColumns[i].nTf.innerHTML.replace(/\n/g," ").replace( /<.*?>/g, "" );
 					sLoopData = this._fnHtmlDecode( sLoopData );
 					
-					sData += this._fnBoundData( sLoopData, oConfig.sFieldBoundary, regex ) +
-					 	oConfig.sFieldSeperator;
+					aRow.push( this._fnBoundData( sLoopData, oConfig.sFieldBoundary, regex ) );
 				}
 			}
-			sData = sData.slice( 0, oConfig.sFieldSeperator.length*-1 );
+			
+			aData.push( aRow.join(oConfig.sFieldSeperator) );
 		}
 		
-		/* No pointers here - this is a string copy :-) */
-		_sLastData = sData;
-		return sData;
+		_sLastData = aData.join( this._fnNewline(oConfig) );
+		return _sLastData;
 	},
 	
 	
