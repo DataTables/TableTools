@@ -730,10 +730,10 @@ TableTools.prototype = {
 		else if ( oConfig.sAction == "collection" )
 		{
 			this._fnTextConfig( nButton, oConfig );
-				this._fnCollectionConfig( nButton, oConfig );
+			this._fnCollectionConfig( nButton, oConfig );
 		}
 		
-	  return nButton;
+		return nButton;
 	},
 	
 	
@@ -838,6 +838,7 @@ TableTools.prototype = {
 		nHidden.className = !this.s.dt.bJUI ? "DTTT_collection" :
 			"DTTT_collection ui-buttonset ui-buttonset-multi";
 		oConfig._collection = nHidden;
+		document.body.appendChild( nHidden );
 		
 		this._fnButtonDefinations( oConfig.aButtons, nHidden );
 	},
