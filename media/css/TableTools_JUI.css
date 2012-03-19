@@ -179,5 +179,5 @@ div.DTTT_collection button.DTTT_button {
  */
 
 .DTTT_disabled {
-	color: #999;
+	color: #999 !important;
 }
