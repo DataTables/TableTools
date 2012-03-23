@@ -2505,13 +2505,13 @@ TableTools.BUTTONS = {
  * @namespace TableTools default settings for initialisation
  */
 TableTools.DEFAULTS = {
-	"sSwfPath":		 "media/swf/copy_cvs_xls_pdf.swf",
-	"sRowSelect":	   "none",
-	"sSelectedClass":   "DTTT_selected",
-	"fnPreRowSelect":   null,
-	"fnRowSelected":	null,
-	"fnRowDeselected":  null,
-	"aButtons":		 [ "copy", "csv", "xls", "pdf", "print" ]
+	"sSwfPath":        "media/swf/copy_csv_xls_pdf.swf",
+	"sRowSelect":      "none",
+	"sSelectedClass":  "DTTT_selected",
+	"fnPreRowSelect":  null,
+	"fnRowSelected":   null,
+	"fnRowDeselected": null,
+	"aButtons":        [ "copy", "csv", "xls", "pdf", "print" ]
 };
 
 
