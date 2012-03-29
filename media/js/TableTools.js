@@ -531,11 +531,11 @@ TableTools.prototype = {
 	 */
 	"fnResizeButtons": function ()
 	{
-		for ( var cli in ZeroClipboard.clients )
+		for ( var cli in ZeroClipboard_TableTools.clients )
 		{
 			if ( cli )
 			{
-				var client = ZeroClipboard.clients[cli];
+				var client = ZeroClipboard_TableTools.clients[cli];
 				if ( typeof client.domElement != 'undefined' &&
 					 client.domElement.parentNode == this.dom.container )
 				{
@@ -553,11 +553,11 @@ TableTools.prototype = {
 	 */
 	"fnResizeRequired": function ()
 	{
-		for ( var cli in ZeroClipboard.clients )
+		for ( var cli in ZeroClipboard_TableTools.clients )
 		{
 			if ( cli )
 			{
-				var client = ZeroClipboard.clients[cli];
+				var client = ZeroClipboard_TableTools.clients[cli];
 				if ( typeof client.domElement != 'undefined' &&
 					 client.domElement.parentNode == this.dom.container &&
 					 client.sized === false )
@@ -636,9 +636,9 @@ TableTools.prototype = {
 		
 		/* Flash file location */
 		this.s.swfPath = this.s.custom.sSwfPath;
-		if ( typeof ZeroClipboard != 'undefined' )
+		if ( typeof ZeroClipboard_TableTools != 'undefined' )
 		{
-			ZeroClipboard.moviePath = this.s.swfPath;
+			ZeroClipboard_TableTools.moviePath = this.s.swfPath;
 		}
 		
 		/* Table row selecting */
@@ -1265,7 +1265,7 @@ TableTools.prototype = {
 	"_fnFlashConfig": function ( nButton, oConfig )
 	{
 		var that = this;
-		var flash = new ZeroClipboard.Client();
+		var flash = new ZeroClipboard_TableTools.Client();
 		
 		if ( oConfig.fnInit !== null )
 		{
