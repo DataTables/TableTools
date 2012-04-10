@@ -125,11 +125,7 @@ ZeroClipboard_TableTools.Client.prototype = {
 			appendElem = this.domElement.parentNode;
 		}
 		// find X/Y position of domElement
-<<<<<<< HEAD
-		var box = ZeroClipboard.getDOMObjectPosition(this.domElement, appendElem);
-=======
-		var box = ZeroClipboard_TableTools.getDOMObjectPosition(this.domElement);
->>>>>>> 09019bde0a0d07ac20cb8df24c8ba5610b096307
+		var box = ZeroClipboard_TableTools.getDOMObjectPosition(this.domElement, appendElem);
 		
 		// create floating DIV above element
 		this.div = document.createElement('div');
