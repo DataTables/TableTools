@@ -3,9 +3,9 @@
 
 var ZeroClipboard_TableTools = {
 	
-	version: "1.0.4-TableTools2",
+	version: "1.0.7-TableTools2",
 	clients: {}, // registered upload clients on page, indexed by id
-	moviePath: '', // URL to movie
+	moviePath: 'ZeroClipboard.swf', // URL to movie
 	nextId: 1, // ID of next movie
 	
 	$: function(thingy) {
@@ -17,11 +17,20 @@ var ZeroClipboard_TableTools = {
 			thingy.show = function() { this.style.display = ''; };
 			thingy.addClass = function(name) { this.removeClass(name); this.className += ' ' + name; };
 			thingy.removeClass = function(name) {
-				this.className = this.className.replace( new RegExp("\\s*" + name + "\\s*"), " ").replace(/^\s+/, '').replace(/\s+$/, '');
+				var classes = this.className.split(/\s+/);
+				var idx = -1;
+				for (var k = 0; k < classes.length; k++) {
+					if (classes[k] == name) { idx = k; k = classes.length; }
+				}
+				if (idx > -1) {
+					classes.splice( idx, 1 );
+					this.className = classes.join(' ');
+				}
+				return this;
 			};
 			thingy.hasClass = function(name) {
 				return !!this.className.match( new RegExp("\\s*" + name + "\\s*") );
-			}
+			};
 		}
 		return thingy;
 	},
@@ -44,7 +53,7 @@ var ZeroClipboard_TableTools = {
 		this.clients[id] = client;
 	},
 	
-	getDOMObjectPosition: function(obj) {
+	getDOMObjectPosition: function(obj, stopObj) {
 		// get absolute coordinates for dom element
 		var info = {
 			left: 0, 
@@ -52,14 +61,15 @@ var ZeroClipboard_TableTools = {
 			width: obj.width ? obj.width : obj.offsetWidth, 
 			height: obj.height ? obj.height : obj.offsetHeight
 		};
-		
+/* table tools change begin  */
+		/*
 		if ( obj.style.width != "" )
 			info.width = obj.style.width.replace("px","");
 		
 		if ( obj.style.height != "" )
 			info.height = obj.style.height.replace("px","");
-
-		while (obj) {
+		*//* table tools change end  */
+		while (obj && (obj != stopObj)) {
 			info.left += obj.offsetLeft;
 			info.top += obj.offsetTop;
 			obj = obj.offsetParent;
@@ -97,7 +107,7 @@ ZeroClipboard_TableTools.Client.prototype = {
 	handlers: null, // user event handlers
 	sized: false,
 	
-	glue: function(elem, title) {
+	glue: function(elem, title, appendElem, stylesToAdd) {
 		// glue to DOM element
 		// elem can be ID or actual DOM element object
 		this.domElement = ZeroClipboard_TableTools.$(elem);
@@ -105,32 +115,45 @@ ZeroClipboard_TableTools.Client.prototype = {
 		// float just above object, or zIndex 99 if dom element isn't set
 		var zIndex = 99;
 		if (this.domElement.style.zIndex) {
-			zIndex = parseInt(this.domElement.style.zIndex) + 1;
+			zIndex = parseInt(this.domElement.style.zIndex, 10) + 1;
 		}
 		
+		if (typeof(appendElem) == 'string') {
+			appendElem = ZeroClipboard.$(appendElem);
+		}
+		else if (typeof(appendElem) == 'undefined') {
+			appendElem = this.domElement.parentNode;
+		}
 		// find X/Y position of domElement
-		var box = ZeroClipboard_TableTools.getDOMObjectPosition(this.domElement);
+		var box = ZeroClipboard_TableTools.getDOMObjectPosition(this.domElement, appendElem);
 		
 		// create floating DIV above element
 		this.div = document.createElement('div');
 		var style = this.div.style;
 		style.position = 'absolute';
+		style.left = '' + box.left + 'px';
+		style.top = '' + box.top + 'px';
 		style.left = (this.domElement.offsetLeft)+'px';
 		//style.left = (this.domElement.offsetLeft+2)+'px';
 		style.top = this.domElement.offsetTop+'px';
-		style.width = (box.width) + 'px';
-		//style.width = (box.width-4) + 'px';
+		style.width = '' + box.width + 'px';
 		style.height = box.height + 'px';
 		style.zIndex = zIndex;
 		if ( typeof title != "undefined" && title != "" ) {
 			this.div.title = title;
 		}
+		if (typeof(stylesToAdd) == 'object') {
+			for (addedStyle in stylesToAdd) {
+				style[addedStyle] = stylesToAdd[addedStyle];
+			}
+		}
 		if ( box.width != 0 && box.height != 0 ) {
 			this.sized = true;
 		}
 		
-		// style.backgroundColor = '#f00'; // debug
-		this.domElement.parentNode.appendChild(this.div);
+		//style.backgroundColor = '#f00'; // debug
+		appendElem.appendChild(this.div);
+		//this.domElement.parentNode.appendChild(this.div);
 		
 		this.div.innerHTML = this.getHTML( box.width, box.height );
 	},

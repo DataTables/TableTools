@@ -1342,10 +1342,10 @@ TableTools.prototype = {
 	{
 		var that = this;
 		var id = node.getAttribute('id');
-		
-		if ( document.getElementById(id) )
+		var obj = document.getElementById(id);
+		if ( obj && (obj.width || obj.offsetWidth) )
 		{
-			flash.glue( node, text );
+			flash.glue( node, text);
 			
 			/* Catch those who are using a TableTools 1 version of ZeroClipboard */
 			if ( flash.domElement.parentNode != flash.div.parentNode && 
