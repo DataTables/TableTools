@@ -693,6 +693,10 @@ TableTools.prototype = {
 				buttonDef.sButtonClass += " ui-button ui-state-default";
 				buttonDef.sButtonClassHover += " ui-state-hover";
 			}
+			else
+			{
+				buttonDef.sButtonClassHover += " DTTT_button_hover";
+			}
 			
 			wrapper.appendChild( this._fnCreateButton( buttonDef ) );
 		}
