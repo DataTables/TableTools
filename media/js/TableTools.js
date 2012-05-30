@@ -537,7 +537,7 @@ TableTools.prototype = {
 			{
 				var client = ZeroClipboard_TableTools.clients[cli];
 				if ( typeof client.domElement != 'undefined' &&
-					 client.domElement.parentNode == this.dom.container )
+					 client.domElement.parentNode )
 				{
 					client.positionElement();
 				}
@@ -908,6 +908,9 @@ TableTools.prototype = {
 			$(nHidden).animate({"opacity": 1}, 500);
 			$(nBackground).animate({"opacity": 0.25}, 500);
 		}, 10 );
+
+		/* Resize the buttons to the Flash contents fit */
+		this.fnResizeButtons();
 		
 		/* Event handler to remove the collection display */
 		$(nBackground).click( function () {
