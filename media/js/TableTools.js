@@ -36,7 +36,7 @@ var TableTools;
 TableTools = function( oDT, oOpts )
 {
 	/* Santiy check that we are a new instance */
-	if ( !this.CLASS || this.CLASS != "TableTools" )
+	if ( ! this instanceof TableTools )
 	{
 		alert( "Warning: TableTools must be initialised with the keyword 'new'" );
 	}
