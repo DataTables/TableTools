@@ -155,7 +155,6 @@ button.DTTT_button_collection span {
 
 button.DTTT_button_collection_hover span {
 	padding-right: 17px;
-	border: 1px solid #999;
 	background: #f0f0f0 url(../images/collection_hover.png) no-repeat center right;
 }
 
