@@ -62,9 +62,9 @@ TableTools = function( oDT, oOpts )
 		 * DataTables settings objects
 		 * @property dt
 		 * @type	 object
-		 * @default  null
+		 * @default  <i>From the oDT init option</i>
 		 */
-		"dt": null,
+		"dt": oDT.fnSettings(),
 		
 		/**
 		 * @namespace Print specific information
@@ -270,7 +270,17 @@ TableTools = function( oDT, oOpts )
 			"background": null
 		}
 	};
-	
+
+	/**
+	 * @namespace Name space for the classes that this TableTools instance will use
+	 * @extends TableTools.classes
+	 */
+	this.classes = $.extend( true, {}, TableTools.classes );
+	if ( this.s.dt.bJUI )
+	{
+		$.extend( true, this.classes, TableTools.classes_themeroller );
+	}
+	console.log( this.classes );
 	
 	
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -293,7 +303,6 @@ TableTools = function( oDT, oOpts )
 		oOpts = {};
 	}
 	
-	this.s.dt = oDT.fnSettings();
 	this._fnConstruct( oOpts );
 	
 	return this;
@@ -590,8 +599,7 @@ TableTools.prototype = {
 		
 		/* Container element */
 		this.dom.container = document.createElement('div');
-		this.dom.container.className = !this.s.dt.bJUI ? "DTTT_container" :
-			"DTTT_container ui-buttonset ui-buttonset-multi";
+		this.dom.container.className = this.classes.container;
 		
 		/* Row selection config */
 		if ( this.s.select.type != 'none' )
@@ -646,8 +654,13 @@ TableTools.prototype = {
 		this.s.select.preRowSelect = this.s.custom.fnPreRowSelect;
 		this.s.select.postSelected = this.s.custom.fnRowSelected;
 		this.s.select.postDeselected = this.s.custom.fnRowDeselected;
-		this.s.select.selectedClass = this.s.custom.sSelectedClass;
-		
+
+		// Backwards compatibility - allow the user to specify a custom class in the initialiser
+		if ( this.s.custom.sSelectedClass )
+		{
+			this.classes.select.row = this.s.custom.sSelectedClass;
+		}
+
 		/* Button set */
 		this.s.buttonSet = this.s.custom.aButtons;
 	},
@@ -688,15 +701,8 @@ TableTools.prototype = {
 				buttonDef = $.extend( o, buttonSet[i], true );
 			}
 			
-			if ( this.s.dt.bJUI )
-			{
-				buttonDef.sButtonClass += " ui-button ui-state-default";
-				buttonDef.sButtonClassHover += " ui-state-hover";
-			}
-			else
-			{
-				buttonDef.sButtonClassHover += " DTTT_button_hover";
-			}
+			buttonDef.sButtonClass += " "+this.classes.buttons.normal;
+			buttonDef.sButtonClassHover += " "+this.classes.buttons.hover;
 			
 			wrapper.appendChild( this._fnCreateButton( buttonDef ) );
 		}
@@ -755,7 +761,7 @@ TableTools.prototype = {
 		  nSpan = document.createElement('span'),
 			masterS = this._fnGetMasterSettings();
 		
-		nButton.className = "DTTT_button "+o.sButtonClass;
+		nButton.className = this.classes.buttons.normal+" "+o.sButtonClass;
 		nButton.setAttribute('id', "ToolTables_"+this.s.dt.sInstance+"_"+masterS.buttonCounter );
 		nButton.appendChild( nSpan );
 		nSpan.innerHTML = o.sButtonText;
@@ -839,8 +845,7 @@ TableTools.prototype = {
 	{
 		var nHidden = document.createElement('div');
 		nHidden.style.display = "none";
-		nHidden.className = !this.s.dt.bJUI ? "DTTT_collection" :
-			"DTTT_collection ui-buttonset ui-buttonset-multi";
+		nHidden.className = this.classes.collection.container;
 		oConfig._collection = nHidden;
 		document.body.appendChild( nHidden );
 		
@@ -878,7 +883,7 @@ TableTools.prototype = {
 		nBackground.style.top = "0px";
 		nBackground.style.height = ((iWinHeight>iDocHeight)? iWinHeight : iDocHeight) +"px";
 		nBackground.style.width = ((iWinWidth>iDocWidth)? iWinWidth : iDocWidth) +"px";
-		nBackground.className = "DTTT_collection_background";
+		nBackground.className = this.classes.collection.background;
 		$(nBackground).css('opacity',0);
 		
 		document.body.appendChild( nBackground );
@@ -969,7 +974,7 @@ TableTools.prototype = {
 				i, iLen, 
 				aoOpenRows = this.s.dt.aoOpenRows;
 			
-			$(that.s.dt.nTable).addClass( 'DTTT_selectable' );
+			$(that.s.dt.nTable).addClass( this.classes.select.table );
 			
 			$('tr', that.s.dt.nTBody).live( 'click', function(e) {
 				/* Sub-table must be ignored (odd that the selector won't do this with >) */
@@ -1036,7 +1041,7 @@ TableTools.prototype = {
 				return;
 			}
 			
-			if ( $(nNode).hasClass(this.s.select.selectedClass) )
+			if ( $(nNode).hasClass( this.classes.select.row ) )
 			{
 				this._fnRowDeselect( nNode );
 			}
@@ -1048,7 +1053,7 @@ TableTools.prototype = {
 				}
 				
 				this.s.select.selected.push( nNode );
-				$(nNode).addClass( this.s.select.selectedClass );
+				$(nNode).addClass( this.classes.select.row  );
 				
 				if ( this.s.select.postSelected !== null )
 				{
@@ -1079,14 +1084,14 @@ TableTools.prototype = {
 				return;
 			}
 			
-			if ( $(nNode).hasClass(this.s.select.selectedClass) )
+			if ( $(nNode).hasClass( this.classes.select.row ) )
 			{
 				this._fnRowDeselect( nNode );
 			}
 			else
 			{
 				this.s.select.selected.push( nNode );
-				$(nNode).addClass( this.s.select.selectedClass );
+				$(nNode).addClass( this.classes.select.row );
 				
 				if ( this.s.select.postSelected !== null )
 				{
@@ -1115,10 +1120,10 @@ TableTools.prototype = {
 			{
 				n = this.s.dt.aoData[ this.s.dt.aiDisplayMaster[i] ].nTr;
 				
-				if ( !$(n).hasClass(this.s.select.selectedClass) )
+				if ( !$(n).hasClass( this.classes.select.row ) )
 				{
 					this.s.select.selected.push( n );
-					$(n).addClass( this.s.select.selectedClass );
+					$(n).addClass( this.classes.select.row );
 				}
 			}
 
@@ -1177,7 +1182,7 @@ TableTools.prototype = {
 		}
 		
 		var nNode = this.s.select.selected[i];
-		$(nNode).removeClass(this.s.select.selectedClass);
+		$(nNode).removeClass( this.classes.select.row );
 		this.s.select.selected.splice( i, 1 );
 		
 		if ( (typeof action == 'undefined' || action) && this.s.select.postDeselected !== null )
@@ -1534,7 +1539,7 @@ TableTools.prototype = {
 		for ( j=0, jLen=dt.aiDisplay.length ; j<jLen ; j++ )
 		{
 			if ( this.s.select.type == "none" || !bSelectedOnly ||
-				   (bSelectedOnly && $(dt.aoData[ dt.aiDisplay[j] ].nTr).hasClass( this.s.select.selectedClass )) ||
+				   (bSelectedOnly && $(dt.aoData[ dt.aiDisplay[j] ].nTr).hasClass( this.classes.select.row )) ||
 			     (bSelectedOnly && this.s.select.selected.length == 0) )
 			{
 				aRow = [];
@@ -1809,13 +1814,13 @@ TableTools.prototype = {
 		}
 		
 		/* Print class can be used for styling */
-		$(document.body).addClass( 'DTTT_Print' );
+		$(document.body).addClass( this.classes.print.body );
 	
 		/* Add a node telling the user what is going on */
 		if ( oConfig.sInfo !== "" )
 		{
 		  var nInfo = document.createElement( "div" );
-		  nInfo.className = "DTTT_print_info";
+		  nInfo.className = this.classes.print.info;
 		  nInfo.innerHTML = oConfig.sInfo;
 		  document.body.appendChild( nInfo );
 		  
@@ -1830,7 +1835,7 @@ TableTools.prototype = {
 		if ( oConfig.sMessage !== "" )
 		{
 			this.dom.print.message = document.createElement( "div" );
-			this.dom.print.message.className = "DTTT_PrintMessage";
+			this.dom.print.message.className = this.classes.print.message;
 			this.dom.print.message.innerHTML = oConfig.sMessage;
 			document.body.insertBefore( this.dom.print.message, document.body.childNodes[0] );
 		}
@@ -1885,7 +1890,7 @@ TableTools.prototype = {
 			}
 			
 			/* Styling class */
-			$(document.body).removeClass( 'DTTT_Print' );
+			$(document.body).removeClass( this.classes.print.body );
 			
 			/* Restore the table length */
 			oSetDT._iDisplayStart = oSetPrint.saveStart;
@@ -2338,14 +2343,14 @@ TableTools.BUTTONS = {
 		"fnClick": null,
 		"fnSelect": function( nButton, oConfig ) {
 			if ( this.fnGetSelected().length !== 0 ) {
-				$(nButton).removeClass('DTTT_disabled');
+				$(nButton).removeClass( this.classes.button.disabled );
 			} else {
-				$(nButton).addClass('DTTT_disabled');
+				$(nButton).addClass( this.classes.button.disabled );
 			}
 		},
 		"fnComplete": null,
 		"fnInit": function( nButton, oConfig ) {
-			$(nButton).addClass('DTTT_disabled');
+			$(nButton).addClass( this.classes.button.disabled );
 		},
 		"fnCellRender": null
 	},
@@ -2364,14 +2369,14 @@ TableTools.BUTTONS = {
 		"fnSelect": function( nButton, oConfig ) {
 			var iSelected = this.fnGetSelected().length;
 			if ( iSelected == 1 ) {
-				$(nButton).removeClass('DTTT_disabled');
+				$(nButton).removeClass( this.classes.button.disabled );
 			} else {
-				$(nButton).addClass('DTTT_disabled');
+				$(nButton).addClass( this.classes.button.disabled );
 			}
 		},
 		"fnComplete": null,
 		"fnInit": function( nButton, oConfig ) {
-			$(nButton).addClass('DTTT_disabled');
+			$(nButton).addClass( this.classes.button.disabled );
 		},
 		"fnCellRender": null
 	},
@@ -2391,9 +2396,9 @@ TableTools.BUTTONS = {
 		},
 		"fnSelect": function( nButton, oConfig ) {
 			if ( this.fnGetSelected().length == this.s.dt.fnRecordsDisplay() ) {
-				$(nButton).addClass('DTTT_disabled');
+				$(nButton).addClass( this.classes.button.disabled );
 			} else {
-				$(nButton).removeClass('DTTT_disabled');
+				$(nButton).removeClass( this.classes.button.disabled );
 			}
 		},
 		"fnComplete": null,
@@ -2416,14 +2421,14 @@ TableTools.BUTTONS = {
 		},
 		"fnSelect": function( nButton, oConfig ) {
 			if ( this.fnGetSelected().length !== 0 ) {
-				$(nButton).removeClass('DTTT_disabled');
+				$(nButton).removeClass( this.classes.button.disabled );
 			} else {
-				$(nButton).addClass('DTTT_disabled');
+				$(nButton).addClass( this.classes.button.disabled );
 			}
 		},
 		"fnComplete": null,
 		"fnInit": function( nButton, oConfig ) {
-			$(nButton).addClass('DTTT_disabled');
+			$(nButton).addClass( this.classes.button.disabled );
 		},
 		"fnCellRender": null
 	},
@@ -2508,13 +2513,58 @@ TableTools.BUTTONS = {
  */
 
 
+
+/**
+ * @namespace Classes used by TableTools - allows the styles to be overriden easily.
+ *   Note that when TableTools initialises it will take a copy of the classes object
+ *   and will use its internal copy for the remainder of its run time.
+ */
+TableTools.classes = {
+	"container": "DTTT_container",
+	"buttons": {
+		"normal": "DTTT_button",
+		"hover": "DTTT_button_hover",
+		"disabled": "DTTT_disabled"
+	},
+	"collection": {
+		"container": "DTTT_collection",
+		"background": "DTTT_collection_background"
+	},
+	"select": {
+		"table": "DTTT_selectable",
+		"row": "DTTT_selected"
+	},
+	"print": {
+		"body": "DTTT_Print",
+		"info": "DTTT_print_info",
+		"message": "DTTT_PrintMessage"
+	}
+};
+
+
+/**
+ * @namespace ThemeRoller classes - built in for compability with DataTables' 
+ *   bJQueryUI option.
+ */
+TableTools.classes_themeroller = {
+	"container": "DTTT_container ui-buttonset ui-buttonset-multi",
+	"buttons": {
+		"normal": "DTTT_button ui-button ui-state-default",
+		"hover": "DTTT_button_hover ui-state-hover"
+	},
+	"collection": {
+		"container": "DTTT_collection ui-buttonset ui-buttonset-multi"
+	}
+};
+
+
 /**
  * @namespace TableTools default settings for initialisation
  */
 TableTools.DEFAULTS = {
 	"sSwfPath":        "media/swf/copy_csv_xls_pdf.swf",
 	"sRowSelect":      "none",
-	"sSelectedClass":  "DTTT_selected",
+	"sSelectedClass":  null,
 	"fnPreRowSelect":  null,
 	"fnRowSelected":   null,
 	"fnRowDeselected": null,
