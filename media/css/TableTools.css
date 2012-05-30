@@ -209,11 +209,25 @@ table.dataTable tr.DTTT_selected.even td.sorting_3 {
 
 div.DTTT_collection {
 	width: 150px;
-	padding: 3px;
+	padding: 8px 8px 4px 8px;
 	border: 1px solid #ccc;
+	border: 1px solid rgba( 0, 0, 0, 0.4 );
 	background-color: #f3f3f3;
+	background-color: rgba( 255, 255, 255, 0.3 );
 	overflow: hidden;
 	z-index: 2002;
+
+	-webkit-border-radius: 5px;
+	   -moz-border-radius: 5px;
+	    -ms-border-radius: 5px;
+	     -o-border-radius: 5px;
+	        border-radius: 5px;
+	
+	-webkit-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+	   -moz-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+	    -ms-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+	     -o-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+	        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 }
 
 div.DTTT_collection_background {
@@ -224,8 +238,13 @@ div.DTTT_collection_background {
 div.DTTT_collection button.DTTT_button {
 	float: none;
 	width: 100%;
-	margin-bottom: 2px;
-	background-color: white;
+	margin-bottom: 4px;
+
+	-webkit-box-shadow: 1px 1px 3px #999;
+	   -moz-box-shadow: 1px 1px 3px #999;
+	    -ms-box-shadow: 1px 1px 3px #999;
+	     -o-box-shadow: 1px 1px 3px #999;
+	        box-shadow: 1px 1px 3px #999;
 }
 
 
