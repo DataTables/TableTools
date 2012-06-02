@@ -1,6 +1,6 @@
 /*
  * File:        TableTools.js
- * Version:     2.0.3
+ * Version:     2.1.0.dev
  * Description: Tools and buttons for DataTables
  * Author:      Allan Jardine (www.sprymedia.co.uk)
  * Language:    Javascript
@@ -570,6 +570,36 @@ TableTools.prototype = {
 	},
 	
 	
+	/**
+	 * Programmatically enable or disable the print view
+	 *  @param {boolean} [bView=true] Show the print view if true or not given. If false, then
+	 *    terminate the print view and return to normal.
+	 *  @param {object} [oConfig={}] Configuration for the print view
+	 *  @param {boolean} [oConfig.bShowAll=false] Show all rows in the table if true
+	 *  @param {string} [oConfig.sInfo] Information message, displayed as an overlay to the
+	 *    user to let them know what the print view is.
+	 *  @param {string} [oConfig.sMessage] HTML string to show at the top of the document - will
+	 *    be included in the printed document.
+	 *  @returns void
+	 */
+	"fnPrint": function ( bView, oConfig )
+	{
+		if ( oConfig === undefined )
+		{
+			oConfig = {};
+		}
+
+		if ( bView === undefined || bView )
+		{
+			this._fnPrintStart( oConfig );
+		}
+		else
+		{
+			this._fnPrintEnd();
+		}
+	},
+	
+	
 	
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Private methods (they are of course public in JS, but recommended as private)
@@ -715,11 +745,7 @@ TableTools.prototype = {
 	  var nButton = (oConfig.sAction == 'div') ?
 	  	this._fnDivBase( oConfig ) : this._fnButtonBase( oConfig );
 		
-		if ( oConfig.sAction == "print" )
-		{
-			this._fnPrintConfig( nButton, oConfig );
-		}
-		else if ( oConfig.sAction.match(/flash/) )
+		if ( oConfig.sAction.match(/flash/) )
 		{
 			this._fnFlashConfig( nButton, oConfig );
 		}
@@ -1700,61 +1726,6 @@ TableTools.prototype = {
 	 */
 	
 	/**
-	 * Configure a button for printing
-	 *  @method  _fnPrintConfig
-	 *  @param   {Node} nButton Button element which is being considered
-	 *  @param   {Object} oConfig Button configuration object
-	 *  @returns void
-	 *  @private 
-	 */
-	"_fnPrintConfig": function ( nButton, oConfig )
-	{
-	  var that = this;
-
-		if ( oConfig.fnInit !== null )
-		{
-			oConfig.fnInit.call( this, nButton, oConfig );
-		}
-		
-		if ( oConfig.sToolTip !== "" )
-		{
-			nButton.title = oConfig.sToolTip;
-		}
-
-	  $(nButton).hover( function () {
-			$(nButton).addClass(oConfig.sButtonClassHover );
-		}, function () {
-			$(nButton).removeClass( oConfig.sButtonClassHover );
-		} );
-		
-		if ( oConfig.fnSelect !== null )
-		{
-			TableTools._fnEventListen( this, 'select', function (n) {
-				oConfig.fnSelect.call( that, nButton, oConfig, n );
-			} );
-		}
-		
-		$(nButton).click( function (e) {
-			e.preventDefault();
-			
-			that._fnPrintStart.call( that, e, oConfig);
-			
-			if ( oConfig.fnClick !== null )
-			{
-				oConfig.fnClick.call( that, nButton, oConfig, null );
-			}
-			
-			/* Provide a complete function to match the behaviour of the flash elements */
-			if ( oConfig.fnComplete !== null )
-			{
-				oConfig.fnComplete.call( that, nButton, oConfig, null, null );
-			}
-			
-			that._fnCollectionHide( nButton, oConfig );
-		} );
-	},
-	
-	/**
 	 * Show print display
 	 *  @method  _fnPrintStart
 	 *  @param   {Event} e Event object
@@ -1762,7 +1733,7 @@ TableTools.prototype = {
 	 *  @returns void
 	 *  @private 
 	 */
-	"_fnPrintStart": function ( e, oConfig )
+	"_fnPrintStart": function ( oConfig )
 	{
 	  var that = this;
 	  var oSetDT = this.s.dt;
@@ -1809,7 +1780,7 @@ TableTools.prototype = {
 		$(document.body).addClass( 'DTTT_Print' );
 	
 		/* Add a node telling the user what is going on */
-		if ( oConfig.sInfo !== "" )
+		if ( oConfig.sInfo )
 		{
 		  var nInfo = document.createElement( "div" );
 		  nInfo.className = "DTTT_print_info";
@@ -1824,7 +1795,7 @@ TableTools.prototype = {
 		}
 		
 		/* Add a message at the top of the page */
-		if ( oConfig.sMessage !== "" )
+		if ( oConfig.sMessage )
 		{
 			this.dom.print.message = document.createElement( "div" );
 			this.dom.print.message.className = "DTTT_PrintMessage";
@@ -1835,11 +1806,18 @@ TableTools.prototype = {
 		/* Cache the scrolling and the jump to the top of the t=page */
 		this.s.print.saveScroll = $(window).scrollTop();
 		window.scrollTo( 0, 0 );
-		
-		this.s.print.funcEnd = function(e) {
-			that._fnPrintEnd.call( that, e ); 
-		};
-		$(document).bind( "keydown", null, this.s.print.funcEnd );
+
+		/* Bind a key event listener to the document for the escape key -
+		 * it is removed in the callback
+		 */
+		$(document).bind( "keydown.DTTT", function(e) {
+			/* Only interested in the escape key */
+			if ( e.keyCode == 27 )
+			{
+				e.preventDefault();
+				that._fnPrintEnd.call( that, e );
+			}
+		} );
 	},
 	
 	
@@ -1852,47 +1830,40 @@ TableTools.prototype = {
 	 */
 	"_fnPrintEnd": function ( e )
 	{
-		/* Only interested in the escape key */
-		if ( e.keyCode == 27 )
+		var that = this;
+		var oSetDT = this.s.dt;
+		var oSetPrint = this.s.print;
+		var oDomPrint = this.dom.print;
+		
+		/* Show all hidden nodes */
+		this._fnPrintShowNodes();
+		
+		/* Restore DataTables' scrolling */
+		if ( oSetDT.oScroll.sX !== "" || oSetDT.oScroll.sY !== "" )
 		{
-			e.preventDefault();
-			
-			var that = this;
-			var oSetDT = this.s.dt;
-			var oSetPrint = this.s.print;
-			var oDomPrint = this.dom.print;
-			
-			/* Show all hidden nodes */
-			this._fnPrintShowNodes();
-			
-			/* Restore DataTables' scrolling */
-			if ( oSetDT.oScroll.sX !== "" || oSetDT.oScroll.sY !== "" )
-			{
-				this._fnPrintScrollEnd();
-			}
-			
-			/* Restore the scroll */
-			window.scrollTo( 0, oSetPrint.saveScroll );
-			
-			/* Drop the print message */
-			if ( oDomPrint.message !== null )
-			{
-				document.body.removeChild( oDomPrint.message );
-				oDomPrint.message = null;
-			}
-			
-			/* Styling class */
-			$(document.body).removeClass( 'DTTT_Print' );
-			
-			/* Restore the table length */
-			oSetDT._iDisplayStart = oSetPrint.saveStart;
-			oSetDT._iDisplayLength = oSetPrint.saveLength;
-			oSetDT.oApi._fnCalculateEnd( oSetDT );
-			oSetDT.oApi._fnDraw( oSetDT );
-			
-			$(document).unbind( "keydown", this.s.print.funcEnd );
-			this.s.print.funcEnd = null;
+			this._fnPrintScrollEnd();
 		}
+		
+		/* Restore the scroll */
+		window.scrollTo( 0, oSetPrint.saveScroll );
+		
+		/* Drop the print message */
+		if ( oDomPrint.message !== null )
+		{
+			document.body.removeChild( oDomPrint.message );
+			oDomPrint.message = null;
+		}
+		
+		/* Styling class */
+		$(document.body).removeClass( 'DTTT_Print' );
+		
+		/* Restore the table length */
+		oSetDT._iDisplayStart = oSetPrint.saveStart;
+		oSetDT._iDisplayLength = oSetPrint.saveLength;
+		oSetDT.oApi._fnCalculateEnd( oSetDT );
+		oSetDT.oApi._fnDraw( oSetDT );
+		
+		$(document).unbind( "keydown.DTTT" );
 	},
 	
 	
@@ -2286,10 +2257,10 @@ TableTools.BUTTONS = {
 		"fnCellRender": null
 	},
 	"print": {
-		"sAction": "print",
+		"sAction": "text",
 		"sInfo": "<h6>Print view</h6><p>Please use your browser's print function to "+
 		  "print this table. Press escape when finished.",
-		"sMessage": "",
+		"sMessage": null,
 		"bShowAll": true,
 		"sToolTip": "View print view",
 		"sButtonClass": "DTTT_button_print",
@@ -2297,7 +2268,9 @@ TableTools.BUTTONS = {
 		"sButtonText": "Print",
 		"fnMouseover": null,
 		"fnMouseout": null,
-		"fnClick": null,
+		"fnClick": function ( nButton, oConfig ) {
+			this.fnPrint( true, oConfig );
+		},
 		"fnSelect": null,
 		"fnComplete": null,
 		"fnInit": null,
@@ -2532,9 +2505,9 @@ TableTools.prototype.CLASS = "TableTools";
  * TableTools version
  *  @constant  VERSION
  *  @type	  String
- *  @default   2.0.3.dev
+ *  @default   See code
  */
-TableTools.VERSION = "2.0.3";
+TableTools.VERSION = "2.1.0.dev";
 TableTools.prototype.VERSION = TableTools.VERSION;
 
 
