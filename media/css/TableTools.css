@@ -70,9 +70,8 @@ button.DTTT_button::-moz-focus-inner {
 	padding: 0;
 }
 
-/* This would of course be better with :hover, but for Flash interaction... */
-button.DTTT_button_hover,
-div.DTTT_button_hover {
+button.DTTT_button:hover,
+div.DTTT_button:hover {
 	border: 1px solid #666;
 
 	-webkit-box-shadow: 1px 1px 3px #999;
@@ -132,19 +131,19 @@ button.DTTT_button_print span {
 
 
 button.DTTT_button_csv span { background: url(../images/csv.png) no-repeat bottom right; }
-button.DTTT_button_csv_hover span { background: url(../images/csv_hover.png) no-repeat center right; }
+button.DTTT_button_csv:hover span { background: url(../images/csv_hover.png) no-repeat center right; }
 
 button.DTTT_button_xls span { background: url(../images/xls.png) no-repeat center right; }
-button.DTTT_button_xls_hover span { background: #f0f0f0 url(../images/xls_hover.png) no-repeat center right; }
+button.DTTT_button_xls:hover span { background: #f0f0f0 url(../images/xls_hover.png) no-repeat center right; }
 
 button.DTTT_button_copy span { background: url(../images/copy.png) no-repeat center right; }
-button.DTTT_button_copy_hover span { background: #f0f0f0 url(../images/copy_hover.png) no-repeat center right; }
+button.DTTT_button_copy:hover span { background: #f0f0f0 url(../images/copy_hover.png) no-repeat center right; }
 
 button.DTTT_button_pdf span { background: url(../images/pdf.png) no-repeat center right; }
-button.DTTT_button_pdf_hover span { background: #f0f0f0 url(../images/pdf_hover.png) no-repeat center right; }
+button.DTTT_button_pdf:hover span { background: #f0f0f0 url(../images/pdf_hover.png) no-repeat center right; }
 
 button.DTTT_button_print span { background: url(../images/print.png) no-repeat center right; }
-button.DTTT_button_print_hover span { background: #f0f0f0 url(../images/print_hover.png) no-repeat center right; }
+button.DTTT_button_print:hover span { background: #f0f0f0 url(../images/print_hover.png) no-repeat center right; }
 
  */
 
@@ -153,7 +152,7 @@ button.DTTT_button_collection span {
 	background: url(../images/collection.png) no-repeat center right;
 }
 
-button.DTTT_button_collection_hover span {
+button.DTTT_button_collection:hover span {
 	padding-right: 17px;
 	background: #f0f0f0 url(../images/collection_hover.png) no-repeat center right;
 }

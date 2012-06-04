@@ -731,7 +731,6 @@ TableTools.prototype = {
 			}
 			
 			buttonDef.sButtonClass += " "+this.classes.buttons.normal;
-			buttonDef.sButtonClassHover += " "+this.classes.buttons.hover;
 			
 			wrapper.appendChild( this._fnCreateButton( buttonDef ) );
 		}
@@ -1247,13 +1246,11 @@ TableTools.prototype = {
 		}
 		
 		$(nButton).hover( function () {
-			$(nButton).addClass(oConfig.sButtonClassHover );
 			if ( oConfig.fnMouseover !== null )
 			{
 				oConfig.fnMouseover.call( this, nButton, oConfig, null );
 			}
 		}, function () {
-			$(nButton).removeClass( oConfig.sButtonClassHover );
 			if ( oConfig.fnMouseout !== null )
 			{
 				oConfig.fnMouseout.call( this, nButton, oConfig, null );
@@ -1329,8 +1326,6 @@ TableTools.prototype = {
 		}
 		
 		flash.addEventListener('mouseOver', function(client) {
-			$(nButton).addClass(oConfig.sButtonClassHover );
-			
 			if ( oConfig.fnMouseover !== null )
 			{
 				oConfig.fnMouseover.call( that, nButton, oConfig, flash );
@@ -1338,8 +1333,6 @@ TableTools.prototype = {
 		} );
 		
 		flash.addEventListener('mouseOut', function(client) {
-			$(nButton).removeClass( oConfig.sButtonClassHover );
-			
 			if ( oConfig.fnMouseout !== null )
 			{
 				oConfig.fnMouseout.call( that, nButton, oConfig, flash );
@@ -1383,16 +1376,6 @@ TableTools.prototype = {
 		if ( document.getElementById(id) )
 		{
 			flash.glue( node, text );
-			
-			/* Catch those who are using a TableTools 1 version of ZeroClipboard */
-			if ( flash.domElement.parentNode != flash.div.parentNode && 
-				   typeof that.__bZCWarning == 'undefined' )
-			{
-				that.s.dt.oApi._fnLog( this.s.dt, 0, "It looks like you are using the version of "+
-					"ZeroClipboard which came with TableTools 1. Please update to use the version that "+
-					"came with TableTools 2." );
-				that.__bZCWarning = true;
-			}
 		}
 		else
 		{
@@ -2155,7 +2138,6 @@ TableTools.BUTTONS = {
 		"sTitle": "",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_csv",
-		"sButtonClassHover": "DTTT_button_csv_hover",
 		"sButtonText": "CSV",
 		"mColumns": "all", /* "all", "visible", "hidden" or array of column integers */
 		"bHeader": true,
@@ -2182,7 +2164,6 @@ TableTools.BUTTONS = {
 		"sTitle": "",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_xls",
-		"sButtonClassHover": "DTTT_button_xls_hover",
 		"sButtonText": "Excel",
 		"mColumns": "all",
 		"bHeader": true,
@@ -2205,7 +2186,6 @@ TableTools.BUTTONS = {
 		"sNewLine": "auto",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_copy",
-		"sButtonClassHover": "DTTT_button_copy_hover",
 		"sButtonText": "Copy",
 		"mColumns": "all",
 		"bHeader": true,
@@ -2236,7 +2216,6 @@ TableTools.BUTTONS = {
 		"sToolTip": "",
 		"sTitle": "",
 		"sButtonClass": "DTTT_button_pdf",
-		"sButtonClassHover": "DTTT_button_pdf_hover",
 		"sButtonText": "PDF",
 		"mColumns": "all",
 		"bHeader": true,
@@ -2271,7 +2250,6 @@ TableTools.BUTTONS = {
 		"bShowAll": true,
 		"sToolTip": "View print view",
 		"sButtonClass": "DTTT_button_print",
-		"sButtonClassHover": "DTTT_button_print_hover",
 		"sButtonText": "Print",
 		"fnMouseover": null,
 		"fnMouseout": null,
@@ -2287,7 +2265,6 @@ TableTools.BUTTONS = {
 		"sAction": "text",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_text",
-		"sButtonClassHover": "DTTT_button_text_hover",
 		"sButtonText": "Text button",
 		"mColumns": "all",
 		"bHeader": true,
@@ -2305,7 +2282,6 @@ TableTools.BUTTONS = {
 		"sAction": "text",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_text",
-		"sButtonClassHover": "DTTT_button_text_hover",
 		"sButtonText": "Select button",
 		"mColumns": "all",
 		"bHeader": true,
@@ -2330,7 +2306,6 @@ TableTools.BUTTONS = {
 		"sAction": "text",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_text",
-		"sButtonClassHover": "DTTT_button_text_hover",
 		"sButtonText": "Select button",
 		"mColumns": "all",
 		"bHeader": true,
@@ -2356,7 +2331,6 @@ TableTools.BUTTONS = {
 		"sAction": "text",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_text",
-		"sButtonClassHover": "DTTT_button_text_hover",
 		"sButtonText": "Select all",
 		"mColumns": "all",
 		"bHeader": true,
@@ -2381,7 +2355,6 @@ TableTools.BUTTONS = {
 		"sAction": "text",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_text",
-		"sButtonClassHover": "DTTT_button_text_hover",
 		"sButtonText": "Deselect all",
 		"mColumns": "all",
 		"bHeader": true,
@@ -2412,7 +2385,6 @@ TableTools.BUTTONS = {
 		"sAjaxUrl": "/xhr.php",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_text",
-		"sButtonClassHover": "DTTT_button_text_hover",
 		"sButtonText": "Ajax button",
 		"mColumns": "all",
 		"bHeader": true,
@@ -2448,7 +2420,6 @@ TableTools.BUTTONS = {
 		"sAction": "div",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_nonbutton",
-		"sButtonClassHover": "",
 		"sButtonText": "Text button",
 		"fnMouseover": null,
 		"fnMouseout": null,
@@ -2463,7 +2434,6 @@ TableTools.BUTTONS = {
 		"sAction": "collection",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_collection",
-		"sButtonClassHover": "DTTT_button_collection_hover",
 		"sButtonText": "Collection",
 		"fnMouseover": null,
 		"fnMouseout": null,
@@ -2495,7 +2465,6 @@ TableTools.classes = {
 	"container": "DTTT_container",
 	"buttons": {
 		"normal": "DTTT_button",
-		"hover": "DTTT_button_hover",
 		"disabled": "DTTT_disabled"
 	},
 	"collection": {
@@ -2521,8 +2490,7 @@ TableTools.classes = {
 TableTools.classes_themeroller = {
 	"container": "DTTT_container ui-buttonset ui-buttonset-multi",
 	"buttons": {
-		"normal": "DTTT_button ui-button ui-state-default",
-		"hover": "DTTT_button_hover ui-state-hover"
+		"normal": "DTTT_button ui-button ui-state-default"
 	},
 	"collection": {
 		"container": "DTTT_collection ui-buttonset ui-buttonset-multi"
