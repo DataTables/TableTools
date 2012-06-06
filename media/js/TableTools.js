@@ -2118,114 +2118,85 @@ TableTools._fnEventDispatch = function ( that, type, node )
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
+
+TableTools.buttonBase = {
+	// Button base
+	"sAction": "text",
+	"sTag": "default",
+	"sLinerTag": "default",
+	"sButtonClass": "DTTT_button_text",
+	"sButtonText": "Button text",
+	"sTitle": "",
+	"sToolTip": "",
+
+	// Common button specific options
+	"sCharSet": "utf8",
+	"bBomInc": false,
+	"sFileName": "*.csv",
+	"sFieldBoundary": "",
+	"sFieldSeperator": "\t",
+	"sNewLine": "auto",
+	"mColumns": "all", /* "all", "visible", "hidden" or array of column integers */
+	"bHeader": true,
+	"bFooter": true,
+	"bSelectedOnly": false,
+
+	// Callbacks
+	"fnMouseover": null,
+	"fnMouseout": null,
+	"fnClick": null,
+	"fnSelect": null,
+	"fnComplete": null,
+	"fnInit": null,
+	"fnCellRender": null
+};
+
+
 /**
  * @namespace Default button configurations
  */
 TableTools.BUTTONS = {
-	"csv": {
+	"csv": $.extend( {}, TableTools.buttonBase, {
 		"sAction": "flash_save",
-		"sTag": "default",
-		"sLinerTag": "default",
-		"sCharSet": "utf8",
-		"bBomInc": false,
-		"sFileName": "*.csv",
-		"sFieldBoundary": '"',
-		"sFieldSeperator": ",",
-		"sNewLine": "auto",
-		"sTitle": "",
-		"sToolTip": "",
 		"sButtonClass": "DTTT_button_csv",
 		"sButtonText": "CSV",
-		"mColumns": "all", /* "all", "visible", "hidden" or array of column integers */
-		"bHeader": true,
-		"bFooter": true,
-		"bSelectedOnly": false,
-		"fnMouseover": null,
-		"fnMouseout": null,
+		"sFieldBoundary": '"',
+		"sFieldSeperator": ",",
 		"fnClick": function( nButton, oConfig, flash ) {
 			this.fnSetText( flash, this.fnGetTableData(oConfig) );
-		},
-		"fnSelect": null,
-		"fnComplete": null,
-		"fnInit": null,
-		"fnCellRender": null
-	},
-	"xls": {
+		}
+	} ),
+	"xls": $.extend( {}, TableTools.buttonBase, {
 		"sAction": "flash_save",
-		"sTag": "default",
-		"sLinerTag": "default",
 		"sCharSet": "utf16le",
 		"bBomInc": true,
-		"sFileName": "*.csv",
-		"sFieldBoundary": "",
-		"sFieldSeperator": "\t",
-		"sNewLine": "auto",
-		"sTitle": "",
-		"sToolTip": "",
 		"sButtonClass": "DTTT_button_xls",
 		"sButtonText": "Excel",
-		"mColumns": "all",
-		"bHeader": true,
-		"bFooter": true,
-		"bSelectedOnly": false,
-		"fnMouseover": null,
-		"fnMouseout": null,
 		"fnClick": function( nButton, oConfig, flash ) {
 			this.fnSetText( flash, this.fnGetTableData(oConfig) );
-		},
-		"fnSelect": null,
-		"fnComplete": null,
-		"fnInit": null,
-		"fnCellRender": null
-	},
-	"copy": {
+		}
+	} ),
+	"copy": $.extend( {}, TableTools.buttonBase, {
 		"sAction": "flash_copy",
-		"sTag": "default",
-		"sLinerTag": "default",
-		"sFieldBoundary": "",
-		"sFieldSeperator": "\t",
-		"sNewLine": "auto",
-		"sToolTip": "",
 		"sButtonClass": "DTTT_button_copy",
 		"sButtonText": "Copy",
-		"mColumns": "all",
-		"bHeader": true,
-		"bFooter": true,
-		"bSelectedOnly": false,
-		"fnMouseover": null,
-		"fnMouseout": null,
 		"fnClick": function( nButton, oConfig, flash ) {
 			this.fnSetText( flash, this.fnGetTableData(oConfig) );
 		},
-		"fnSelect": null,
 		"fnComplete": function(nButton, oConfig, flash, text) {
 			var
 				lines = text.split('\n').length,
 				len = this.s.dt.nTFoot === null ? lines-1 : lines-2,
 				plural = (len==1) ? "" : "s";
 			alert( 'Copied '+len+' row'+plural+' to the clipboard' );
-		},
-		"fnInit": null,
-		"fnCellRender": null
-	},
-	"pdf": {
+		}
+	} ),
+	"pdf": $.extend( {}, TableTools.buttonBase, {
 		"sAction": "flash_pdf",
-		"sTag": "default",
-		"sLinerTag": "default",
-		"sFieldBoundary": "",
-		"sFieldSeperator": "\t",
 		"sNewLine": "\n",
 		"sFileName": "*.pdf",
-		"sToolTip": "",
-		"sTitle": "",
 		"sButtonClass": "DTTT_button_pdf",
 		"sButtonText": "PDF",
-		"mColumns": "all",
-		"bHeader": true,
-		"bFooter": false,
-		"bSelectedOnly": false,
-		"fnMouseover": null,
-		"fnMouseout": null,
 		"sPdfOrientation": "portrait",
 		"sPdfSize": "A4",
 		"sPdfMessage": "",
@@ -2239,16 +2210,9 @@ TableTools.BUTTONS = {
 				"--/TableToolsOpts--\n" +
 				this.fnGetTableData(oConfig)
 			);
-		},
-		"fnSelect": null,
-		"fnComplete": null,
-		"fnInit": null,
-		"fnCellRender": null
-	},
-	"print": {
-		"sAction": "text",
-		"sTag": "default",
-		"sLinerTag": "default",
+		}
+	} ),
+	"print": $.extend( {}, TableTools.buttonBase, {
 		"sInfo": "<h6>Print view</h6><p>Please use your browser's print function to "+
 		  "print this table. Press escape when finished.",
 		"sMessage": null,
@@ -2256,48 +2220,13 @@ TableTools.BUTTONS = {
 		"sToolTip": "View print view",
 		"sButtonClass": "DTTT_button_print",
 		"sButtonText": "Print",
-		"fnMouseover": null,
-		"fnMouseout": null,
 		"fnClick": function ( nButton, oConfig ) {
 			this.fnPrint( true, oConfig );
-		},
-		"fnSelect": null,
-		"fnComplete": null,
-		"fnInit": null,
-		"fnCellRender": null
-	},
-	"text": {
-		"sAction": "text",
-		"sTag": "default",
-		"sLinerTag": "default",
-		"sToolTip": "",
-		"sButtonClass": "DTTT_button_text",
-		"sButtonText": "Text button",
-		"mColumns": "all",
-		"bHeader": true,
-		"bFooter": true,
-		"bSelectedOnly": false,
-		"fnMouseover": null,
-		"fnMouseout": null,
-		"fnClick": null,
-		"fnSelect": null,
-		"fnComplete": null,
-		"fnInit": null,
-		"fnCellRender": null
-	},
-	"select": {
-		"sAction": "text",
-		"sTag": "default",
-		"sLinerTag": "default",
-		"sToolTip": "",
-		"sButtonClass": "DTTT_button_text",
+		}
+	} ),
+	"text": $.extend( {}, TableTools.buttonBase ),
+	"select": $.extend( {}, TableTools.buttonBase, {
 		"sButtonText": "Select button",
-		"mColumns": "all",
-		"bHeader": true,
-		"bFooter": true,
-		"fnMouseover": null,
-		"fnMouseout": null,
-		"fnClick": null,
 		"fnSelect": function( nButton, oConfig ) {
 			if ( this.fnGetSelected().length !== 0 ) {
 				$(nButton).removeClass( this.classes.button.disabled );
@@ -2305,25 +2234,12 @@ TableTools.BUTTONS = {
 				$(nButton).addClass( this.classes.button.disabled );
 			}
 		},
-		"fnComplete": null,
 		"fnInit": function( nButton, oConfig ) {
 			$(nButton).addClass( this.classes.button.disabled );
-		},
-		"fnCellRender": null
-	},
-	"select_single": {
-		"sAction": "text",
-		"sTag": "default",
-		"sLinerTag": "default",
-		"sToolTip": "",
-		"sButtonClass": "DTTT_button_text",
+		}
+	} ),
+	"select_single": $.extend( {}, TableTools.buttonBase, {
 		"sButtonText": "Select button",
-		"mColumns": "all",
-		"bHeader": true,
-		"bFooter": true,
-		"fnMouseover": null,
-		"fnMouseout": null,
-		"fnClick": null,
 		"fnSelect": function( nButton, oConfig ) {
 			var iSelected = this.fnGetSelected().length;
 			if ( iSelected == 1 ) {
@@ -2332,24 +2248,12 @@ TableTools.BUTTONS = {
 				$(nButton).addClass( this.classes.button.disabled );
 			}
 		},
-		"fnComplete": null,
 		"fnInit": function( nButton, oConfig ) {
 			$(nButton).addClass( this.classes.button.disabled );
-		},
-		"fnCellRender": null
-	},
-	"select_all": {
-		"sAction": "text",
-		"sTag": "default",
-		"sLinerTag": "default",
-		"sToolTip": "",
-		"sButtonClass": "DTTT_button_text",
+		}
+	} ),
+	"select_all": $.extend( {}, TableTools.buttonBase, {
 		"sButtonText": "Select all",
-		"mColumns": "all",
-		"bHeader": true,
-		"bFooter": true,
-		"fnMouseover": null,
-		"fnMouseout": null,
 		"fnClick": function( nButton, oConfig ) {
 			this.fnSelectAll();
 		},
@@ -2359,23 +2263,10 @@ TableTools.BUTTONS = {
 			} else {
 				$(nButton).removeClass( this.classes.button.disabled );
 			}
-		},
-		"fnComplete": null,
-		"fnInit": null,
-		"fnCellRender": null
-	},
-	"select_none": {
-		"sAction": "text",
-		"sTag": "default",
-		"sLinerTag": "default",
-		"sToolTip": "",
-		"sButtonClass": "DTTT_button_text",
+		}
+	} ),
+	"select_none": $.extend( {}, TableTools.buttonBase, {
 		"sButtonText": "Deselect all",
-		"mColumns": "all",
-		"bHeader": true,
-		"bFooter": true,
-		"fnMouseover": null,
-		"fnMouseout": null,
 		"fnClick": function( nButton, oConfig ) {
 			this.fnSelectNone();
 		},
@@ -2386,29 +2277,13 @@ TableTools.BUTTONS = {
 				$(nButton).addClass( this.classes.button.disabled );
 			}
 		},
-		"fnComplete": null,
 		"fnInit": function( nButton, oConfig ) {
 			$(nButton).addClass( this.classes.button.disabled );
 		},
-		"fnCellRender": null
-	},
-	"ajax": {
-		"sAction": "text",
-		"sTag": "default",
-		"sLinerTag": "default",
-		"sFieldBoundary": "",
-		"sFieldSeperator": "\t",
-		"sNewLine": "\n",
+	} ),
+	"ajax": $.extend( {}, TableTools.buttonBase, {
 		"sAjaxUrl": "/xhr.php",
-		"sToolTip": "",
-		"sButtonClass": "DTTT_button_text",
 		"sButtonText": "Ajax button",
-		"mColumns": "all",
-		"bHeader": true,
-		"bFooter": true,
-		"bSelectedOnly": false,
-		"fnMouseover": null,
-		"fnMouseout": null,
 		"fnClick": function( nButton, oConfig ) {
 			var sData = this.fnGetTableData(oConfig);
 			$.ajax( {
@@ -2425,47 +2300,24 @@ TableTools.BUTTONS = {
 				}
 			} );
 		},
-		"fnSelect": null,
-		"fnComplete": null,
-		"fnInit": null,
 		"fnAjaxComplete": function( json ) {
 			alert( 'Ajax complete' );
-		},
-		"fnCellRender": null
-	},
-	"div": {
+		}
+	} ),
+	"div": $.extend( {}, TableTools.buttonBase, {
 		"sAction": "div",
 		"sTag": "div",
-		"sLinerTag": "default",
-		"sToolTip": "",
 		"sButtonClass": "DTTT_nonbutton",
-		"sButtonText": "Text button",
-		"fnMouseover": null,
-		"fnMouseout": null,
-		"fnClick": null,
-		"fnSelect": null,
-		"fnComplete": null,
-		"fnInit": null,
-		"nContent": null,
-		"fnCellRender": null
-	},
-	"collection": {
+		"sButtonText": "Text button"
+	} ),
+	"collection": $.extend( {}, TableTools.buttonBase, {
 		"sAction": "collection",
-		"sTag": "default",
-		"sLinerTag": "default",
-		"sToolTip": "",
 		"sButtonClass": "DTTT_button_collection",
 		"sButtonText": "Collection",
-		"fnMouseover": null,
-		"fnMouseout": null,
 		"fnClick": function( nButton, oConfig ) {
 			this._fnCollectionShow(nButton, oConfig);
-		},
-		"fnSelect": null,
-		"fnComplete": null,
-		"fnInit": null,
-		"fnCellRender": null
-	}
+		}
+	} )
 };
 /*
  *  on* callback parameters:
@@ -2544,10 +2396,6 @@ TableTools.DEFAULTS = {
 			"liner": "span"
 		}
 	}
-	// xxx add sTag option to buttons so each button can override - the default
-	// would be "default" - meaning that the above would be used
-
-	// xxx make buttons a global default object and extend to give the predefined ones
 };
 
 
