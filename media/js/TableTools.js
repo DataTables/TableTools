@@ -2166,6 +2166,7 @@ TableTools.BUTTONS = {
 			this.fnSetText( flash, this.fnGetTableData(oConfig) );
 		}
 	} ),
+
 	"xls": $.extend( {}, TableTools.buttonBase, {
 		"sAction": "flash_save",
 		"sCharSet": "utf16le",
@@ -2176,6 +2177,7 @@ TableTools.BUTTONS = {
 			this.fnSetText( flash, this.fnGetTableData(oConfig) );
 		}
 	} ),
+
 	"copy": $.extend( {}, TableTools.buttonBase, {
 		"sAction": "flash_copy",
 		"sButtonClass": "DTTT_button_copy",
@@ -2191,6 +2193,7 @@ TableTools.BUTTONS = {
 			alert( 'Copied '+len+' row'+plural+' to the clipboard' );
 		}
 	} ),
+
 	"pdf": $.extend( {}, TableTools.buttonBase, {
 		"sAction": "flash_pdf",
 		"sNewLine": "\n",
@@ -2212,6 +2215,7 @@ TableTools.BUTTONS = {
 			);
 		}
 	} ),
+
 	"print": $.extend( {}, TableTools.buttonBase, {
 		"sInfo": "<h6>Print view</h6><p>Please use your browser's print function to "+
 		  "print this table. Press escape when finished.",
@@ -2224,7 +2228,9 @@ TableTools.BUTTONS = {
 			this.fnPrint( true, oConfig );
 		}
 	} ),
+
 	"text": $.extend( {}, TableTools.buttonBase ),
+
 	"select": $.extend( {}, TableTools.buttonBase, {
 		"sButtonText": "Select button",
 		"fnSelect": function( nButton, oConfig ) {
@@ -2238,6 +2244,7 @@ TableTools.BUTTONS = {
 			$(nButton).addClass( this.classes.button.disabled );
 		}
 	} ),
+
 	"select_single": $.extend( {}, TableTools.buttonBase, {
 		"sButtonText": "Select button",
 		"fnSelect": function( nButton, oConfig ) {
@@ -2252,6 +2259,7 @@ TableTools.BUTTONS = {
 			$(nButton).addClass( this.classes.button.disabled );
 		}
 	} ),
+
 	"select_all": $.extend( {}, TableTools.buttonBase, {
 		"sButtonText": "Select all",
 		"fnClick": function( nButton, oConfig ) {
@@ -2265,6 +2273,7 @@ TableTools.BUTTONS = {
 			}
 		}
 	} ),
+
 	"select_none": $.extend( {}, TableTools.buttonBase, {
 		"sButtonText": "Deselect all",
 		"fnClick": function( nButton, oConfig ) {
@@ -2279,8 +2288,9 @@ TableTools.BUTTONS = {
 		},
 		"fnInit": function( nButton, oConfig ) {
 			$(nButton).addClass( this.classes.button.disabled );
-		},
+		}
 	} ),
+
 	"ajax": $.extend( {}, TableTools.buttonBase, {
 		"sAjaxUrl": "/xhr.php",
 		"sButtonText": "Ajax button",
@@ -2304,12 +2314,14 @@ TableTools.BUTTONS = {
 			alert( 'Ajax complete' );
 		}
 	} ),
+
 	"div": $.extend( {}, TableTools.buttonBase, {
 		"sAction": "div",
 		"sTag": "div",
 		"sButtonClass": "DTTT_nonbutton",
 		"sButtonText": "Text button"
 	} ),
+
 	"collection": $.extend( {}, TableTools.buttonBase, {
 		"sAction": "collection",
 		"sButtonClass": "DTTT_button_collection",
