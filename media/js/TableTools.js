@@ -204,7 +204,13 @@ TableTools = function( oDT, oOpts )
 		 *  @type	 boolean
 		 *  @default  false
 		 */
-		"master": false
+		"master": false,
+		
+		/**
+		 * Tag names that are used for creating collections and buttons
+		 *  @namesapce
+		 */
+		"tags": {}
 	};
 	
 	
@@ -627,7 +633,7 @@ TableTools.prototype = {
 		this._fnCustomiseSettings( oOpts );
 		
 		/* Container element */
-		this.dom.container = document.createElement('div');
+		this.dom.container = document.createElement( this.s.tags.container );
 		this.dom.container.className = this.classes.container;
 		
 		/* Row selection config */
@@ -690,6 +696,8 @@ TableTools.prototype = {
 			this.classes.select.row = this.s.custom.sSelectedClass;
 		}
 
+		this.s.tags = this.s.custom.oTags;
+
 		/* Button set */
 		this.s.buttonSet = this.s.custom.aButtons;
 	},
@@ -730,9 +738,10 @@ TableTools.prototype = {
 				buttonDef = $.extend( o, buttonSet[i], true );
 			}
 			
-			buttonDef.sButtonClass += " "+this.classes.buttons.normal;
-			
-			wrapper.appendChild( this._fnCreateButton( buttonDef ) );
+			wrapper.appendChild( this._fnCreateButton( 
+				buttonDef, 
+				$(wrapper).hasClass(this.classes.collection.container)
+			) );
 		}
 	},
 	
@@ -744,10 +753,9 @@ TableTools.prototype = {
 	 *  @returns {Node} Button element
 	 *  @private 
 	 */
-	"_fnCreateButton": function ( oConfig )
+	"_fnCreateButton": function ( oConfig, bCollectionButton )
 	{
-	  var nButton = (oConfig.sAction == 'div') ?
-	  	this._fnDivBase( oConfig ) : this._fnButtonBase( oConfig );
+	  var nButton = this._fnButtonBase( oConfig, bCollectionButton );
 		
 		if ( oConfig.sAction.match(/flash/) )
 		{
@@ -778,14 +786,29 @@ TableTools.prototype = {
 	 *  @returns {Node} DIV element for the button
 	 *  @private 
 	 */
-	"_fnButtonBase": function ( o )
+	"_fnButtonBase": function ( o, bCollectionButton )
 	{
+		var sTag, sLiner, sClass;
+
+		if ( bCollectionButton )
+		{
+			sTag = o.sTag !== "default" ? o.sTag : this.s.tags.collection.button;
+			sLiner = o.sLinerTag !== "default" ? o.sLiner : this.s.tags.collection.liner;
+			sClass = this.classes.collection.buttons.normal;
+		}
+		else
+		{
+			sTag = o.sTag !== "default" ? o.sTag : this.s.tags.button;
+			sLiner = o.sLinerTag !== "default" ? o.sLiner : this.s.tags.liner;
+			sClass = this.classes.buttons.normal;
+		}
+
 		var
-		  nButton = document.createElement('button'),
-		  nSpan = document.createElement('span'),
-			masterS = this._fnGetMasterSettings();
+		  nButton = document.createElement( sTag ),
+		  nSpan = document.createElement( sLiner ),
+		  masterS = this._fnGetMasterSettings();
 		
-		nButton.className = this.classes.buttons.normal+" "+o.sButtonClass;
+		nButton.className = sClass+" "+o.sButtonClass;
 		nButton.setAttribute('id', "ToolTables_"+this.s.dt.sInstance+"_"+masterS.buttonCounter );
 		nButton.appendChild( nSpan );
 		nSpan.innerHTML = o.sButtonText;
@@ -793,34 +816,6 @@ TableTools.prototype = {
 		masterS.buttonCounter++;
 		
 		return nButton;
-	},
-	
-	
-	/**
-	 * Create a DIV element to use for a non-button
-	 *  @method  _fnDivBase
-	 *  @param   {o} oConfig Button configuration object
-	 *  @returns {Node} DIV element for the button
-	 *  @private 
-	 */
-	"_fnDivBase": function ( o )
-	{
-		var
-		  nDiv = document.createElement('div'),
-			masterS = this._fnGetMasterSettings();
-		
-		nDiv.className = o.sButtonClass;
-		nDiv.setAttribute('id', "ToolTables_"+this.s.dt.sInstance+"_"+masterS.buttonCounter );
-		nDiv.innerHTML = o.sButtonText;
-
-		if ( o.nContent !== null )
-		{
-			nDiv.appendChild( o.nContent );
-		}
-		
-		masterS.buttonCounter++;
-		
-		return nDiv;
 	},
 	
 	
@@ -867,7 +862,7 @@ TableTools.prototype = {
 	 */
 	"_fnCollectionConfig": function ( nButton, oConfig )
 	{
-		var nHidden = document.createElement('div');
+		var nHidden = document.createElement( this.s.tags.collection.container );
 		nHidden.style.display = "none";
 		nHidden.className = this.classes.collection.container;
 		oConfig._collection = nHidden;
@@ -2129,6 +2124,8 @@ TableTools._fnEventDispatch = function ( that, type, node )
 TableTools.BUTTONS = {
 	"csv": {
 		"sAction": "flash_save",
+		"sTag": "default",
+		"sLinerTag": "default",
 		"sCharSet": "utf8",
 		"bBomInc": false,
 		"sFileName": "*.csv",
@@ -2155,6 +2152,8 @@ TableTools.BUTTONS = {
 	},
 	"xls": {
 		"sAction": "flash_save",
+		"sTag": "default",
+		"sLinerTag": "default",
 		"sCharSet": "utf16le",
 		"bBomInc": true,
 		"sFileName": "*.csv",
@@ -2181,6 +2180,8 @@ TableTools.BUTTONS = {
 	},
 	"copy": {
 		"sAction": "flash_copy",
+		"sTag": "default",
+		"sLinerTag": "default",
 		"sFieldBoundary": "",
 		"sFieldSeperator": "\t",
 		"sNewLine": "auto",
@@ -2209,6 +2210,8 @@ TableTools.BUTTONS = {
 	},
 	"pdf": {
 		"sAction": "flash_pdf",
+		"sTag": "default",
+		"sLinerTag": "default",
 		"sFieldBoundary": "",
 		"sFieldSeperator": "\t",
 		"sNewLine": "\n",
@@ -2244,6 +2247,8 @@ TableTools.BUTTONS = {
 	},
 	"print": {
 		"sAction": "text",
+		"sTag": "default",
+		"sLinerTag": "default",
 		"sInfo": "<h6>Print view</h6><p>Please use your browser's print function to "+
 		  "print this table. Press escape when finished.",
 		"sMessage": null,
@@ -2263,6 +2268,8 @@ TableTools.BUTTONS = {
 	},
 	"text": {
 		"sAction": "text",
+		"sTag": "default",
+		"sLinerTag": "default",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_text",
 		"sButtonText": "Text button",
@@ -2280,6 +2287,8 @@ TableTools.BUTTONS = {
 	},
 	"select": {
 		"sAction": "text",
+		"sTag": "default",
+		"sLinerTag": "default",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_text",
 		"sButtonText": "Select button",
@@ -2304,6 +2313,8 @@ TableTools.BUTTONS = {
 	},
 	"select_single": {
 		"sAction": "text",
+		"sTag": "default",
+		"sLinerTag": "default",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_text",
 		"sButtonText": "Select button",
@@ -2329,6 +2340,8 @@ TableTools.BUTTONS = {
 	},
 	"select_all": {
 		"sAction": "text",
+		"sTag": "default",
+		"sLinerTag": "default",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_text",
 		"sButtonText": "Select all",
@@ -2353,6 +2366,8 @@ TableTools.BUTTONS = {
 	},
 	"select_none": {
 		"sAction": "text",
+		"sTag": "default",
+		"sLinerTag": "default",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_text",
 		"sButtonText": "Deselect all",
@@ -2379,6 +2394,8 @@ TableTools.BUTTONS = {
 	},
 	"ajax": {
 		"sAction": "text",
+		"sTag": "default",
+		"sLinerTag": "default",
 		"sFieldBoundary": "",
 		"sFieldSeperator": "\t",
 		"sNewLine": "\n",
@@ -2418,6 +2435,8 @@ TableTools.BUTTONS = {
 	},
 	"div": {
 		"sAction": "div",
+		"sTag": "div",
+		"sLinerTag": "default",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_nonbutton",
 		"sButtonText": "Text button",
@@ -2432,6 +2451,8 @@ TableTools.BUTTONS = {
 	},
 	"collection": {
 		"sAction": "collection",
+		"sTag": "default",
+		"sLinerTag": "default",
 		"sToolTip": "",
 		"sButtonClass": "DTTT_button_collection",
 		"sButtonText": "Collection",
@@ -2469,7 +2490,11 @@ TableTools.classes = {
 	},
 	"collection": {
 		"container": "DTTT_collection",
-		"background": "DTTT_collection_background"
+		"background": "DTTT_collection_background",
+		"buttons": {
+			"normal": "DTTT_button",
+			"disabled": "DTTT_disabled"
+		}
 	},
 	"select": {
 		"table": "DTTT_selectable",
@@ -2508,7 +2533,21 @@ TableTools.DEFAULTS = {
 	"fnPreRowSelect":  null,
 	"fnRowSelected":   null,
 	"fnRowDeselected": null,
-	"aButtons":        [ "copy", "csv", "xls", "pdf", "print" ]
+	"aButtons":        [ "copy", "csv", "xls", "pdf", "print" ],
+	"oTags": {
+		"container": "div",
+		"button": "button",
+		"liner": "span",
+		"collection": {
+			"container": "div",
+			"button": "button",
+			"liner": "span"
+		}
+	}
+	// xxx add sTag option to buttons so each button can override - the default
+	// would be "default" - meaning that the above would be used
+
+	// xxx make buttons a global default object and extend to give the predefined ones
 };
 
 
@@ -2562,5 +2601,7 @@ else
 {
 	alert( "Warning: TableTools 2 requires DataTables 1.8.2 or newer - www.datatables.net/download");
 }
+
+$.fn.DataTable.TableTools = TableTools;
 
 })(jQuery, window, document);
