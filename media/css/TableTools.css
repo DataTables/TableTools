@@ -253,7 +253,7 @@ div.DTTT_collection button.DTTT_button {
  */
 
 .DTTT_print_info {
-	position: absolute;
+	position: fixed;
 	top: 50%;
 	left: 50%;
 	width: 400px;
@@ -261,23 +261,33 @@ div.DTTT_collection button.DTTT_button {
 	margin-left: -200px;
 	margin-top: -75px;
 	text-align: center;
-	background-color: #3f3f3f;
-	color: white;
+	color: #333;
 	padding: 10px 30px;
+
+	background: #ffffff; /* Old browsers */
+	background: -webkit-linear-gradient(top, #ffffff 0%,#f3f3f3 89%,#f9f9f9 100%); /* Chrome10+,Safari5.1+ */
+	background:    -moz-linear-gradient(top, #ffffff 0%,#f3f3f3 89%,#f9f9f9 100%); /* FF3.6+ */
+	background:     -ms-linear-gradient(top, #ffffff 0%,#f3f3f3 89%,#f9f9f9 100%); /* IE10+ */
+	background:      -o-linear-gradient(top, #ffffff 0%,#f3f3f3 89%,#f9f9f9 100%); /* Opera 11.10+ */
+	background:         linear-gradient(top, #ffffff 0%,#f3f3f3 89%,#f9f9f9 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f9f9f9',GradientType=0 ); /* IE6-9 */
 	
-	opacity: 0.9;
+	opacity: 0.95;
+
+	border: 1px solid black;
+	border: 1px solid rgba(0, 0, 0, 0.5);
 	
-	-webkit-border-radius: 5px;
-	   -moz-border-radius: 5px;
-	    -ms-border-radius: 5px;
-	     -o-border-radius: 5px;
-	        border-radius: 5px;
+	-webkit-border-radius: 6px;
+	   -moz-border-radius: 6px;
+	    -ms-border-radius: 6px;
+	     -o-border-radius: 6px;
+	        border-radius: 6px;
 	
-	-webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-	   -moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-	    -ms-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-	     -o-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-	        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.5);
+	   -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.5);
+	    -ms-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.5);
+	     -o-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.5);
+	        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.5);
 }
 
 .DTTT_print_info h6 {

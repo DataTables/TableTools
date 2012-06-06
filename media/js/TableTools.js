@@ -614,6 +614,27 @@ TableTools.prototype = {
 	},
 	
 	
+	/**
+	 * Show a message to the end user which is nicely styled
+	 *  @param {string} message The HTML string to show to the user
+	 *  @param {int} time The duration the message is to be shown on screen for (mS)
+	 *  @returns void
+	 */
+	"fnInfo": function ( message, time ) {
+		var nInfo = document.createElement( "div" );
+		nInfo.className = this.classes.print.info;
+		nInfo.innerHTML = message;
+
+		document.body.appendChild( nInfo );
+		
+		setTimeout( function() {
+			$(nInfo).fadeOut( "normal", function() {
+				document.body.removeChild( nInfo );
+			} );
+		}, time );
+	},
+	
+	
 	
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Private methods (they are of course public in JS, but recommended as private)
@@ -1763,22 +1784,13 @@ TableTools.prototype = {
 		
 		/* Print class can be used for styling */
 		$(document.body).addClass( this.classes.print.body );
-	
-		/* Add a node telling the user what is going on */
-		if ( oConfig.sInfo )
+
+		/* Show information message to let the user know what is happening */
+		if ( oConfig.sInfo !== "" )
 		{
-		  var nInfo = document.createElement( "div" );
-		  nInfo.className = this.classes.print.info;
-		  nInfo.innerHTML = oConfig.sInfo;
-		  document.body.appendChild( nInfo );
-		  
-		  setTimeout( function() {
-		  	$(nInfo).fadeOut( "normal", function() {
-		  		document.body.removeChild( nInfo );
-		  	} );
-		  }, 2000 );
+			this.fnInfo( oConfig.sInfo, 3000 );
 		}
-		
+
 		/* Add a message at the top of the page */
 		if ( oConfig.sMessage )
 		{
@@ -2190,7 +2202,10 @@ TableTools.BUTTONS = {
 				lines = text.split('\n').length,
 				len = this.s.dt.nTFoot === null ? lines-1 : lines-2,
 				plural = (len==1) ? "" : "s";
-			alert( 'Copied '+len+' row'+plural+' to the clipboard' );
+			this.fnInfo( '<h6>Table copied</h6>'+
+				'<p>Copied '+len+' row'+plural+' to the clipboard.</p>',
+				1500
+			);
 		}
 	} ),
 
