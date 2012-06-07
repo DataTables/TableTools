@@ -1,6 +1,6 @@
 /*
  * File:        TableTools.js
- * Version:     2.1.0
+ * Version:     2.1.1.dev
  * Description: Tools and buttons for DataTables
  * Author:      Allan Jardine (www.sprymedia.co.uk)
  * Language:    Javascript
@@ -2250,13 +2250,13 @@ TableTools.BUTTONS = {
 		"sButtonText": "Select button",
 		"fnSelect": function( nButton, oConfig ) {
 			if ( this.fnGetSelected().length !== 0 ) {
-				$(nButton).removeClass( this.classes.button.disabled );
+				$(nButton).removeClass( this.classes.buttons.disabled );
 			} else {
-				$(nButton).addClass( this.classes.button.disabled );
+				$(nButton).addClass( this.classes.buttons.disabled );
 			}
 		},
 		"fnInit": function( nButton, oConfig ) {
-			$(nButton).addClass( this.classes.button.disabled );
+			$(nButton).addClass( this.classes.buttons.disabled );
 		}
 	} ),
 
@@ -2265,13 +2265,13 @@ TableTools.BUTTONS = {
 		"fnSelect": function( nButton, oConfig ) {
 			var iSelected = this.fnGetSelected().length;
 			if ( iSelected == 1 ) {
-				$(nButton).removeClass( this.classes.button.disabled );
+				$(nButton).removeClass( this.classes.buttons.disabled );
 			} else {
-				$(nButton).addClass( this.classes.button.disabled );
+				$(nButton).addClass( this.classes.buttons.disabled );
 			}
 		},
 		"fnInit": function( nButton, oConfig ) {
-			$(nButton).addClass( this.classes.button.disabled );
+			$(nButton).addClass( this.classes.buttons.disabled );
 		}
 	} ),
 
@@ -2282,9 +2282,9 @@ TableTools.BUTTONS = {
 		},
 		"fnSelect": function( nButton, oConfig ) {
 			if ( this.fnGetSelected().length == this.s.dt.fnRecordsDisplay() ) {
-				$(nButton).addClass( this.classes.button.disabled );
+				$(nButton).addClass( this.classes.buttons.disabled );
 			} else {
-				$(nButton).removeClass( this.classes.button.disabled );
+				$(nButton).removeClass( this.classes.buttons.disabled );
 			}
 		}
 	} ),
@@ -2296,13 +2296,13 @@ TableTools.BUTTONS = {
 		},
 		"fnSelect": function( nButton, oConfig ) {
 			if ( this.fnGetSelected().length !== 0 ) {
-				$(nButton).removeClass( this.classes.button.disabled );
+				$(nButton).removeClass( this.classes.buttons.disabled );
 			} else {
-				$(nButton).addClass( this.classes.button.disabled );
+				$(nButton).addClass( this.classes.buttons.disabled );
 			}
 		},
 		"fnInit": function( nButton, oConfig ) {
-			$(nButton).addClass( this.classes.button.disabled );
+			$(nButton).addClass( this.classes.buttons.disabled );
 		}
 	} ),
 
@@ -2441,7 +2441,7 @@ TableTools.prototype.CLASS = "TableTools";
  *  @type	  String
  *  @default   See code
  */
-TableTools.VERSION = "2.1.0";
+TableTools.VERSION = "2.1.1.dev";
 TableTools.prototype.VERSION = TableTools.VERSION;
 
 
