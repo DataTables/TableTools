@@ -1530,8 +1530,8 @@ TableTools.prototype = {
 	"_fnGetDataTablesData": function ( oConfig )
 	{
 		var i, iLen, j, jLen;
-		var aRow, aData=[], sLoopData='';
-		var dt = this.s.dt;
+		var aRow, aData=[], sLoopData='', arr;
+		var dt = this.s.dt, tr, child;
 		var regex = new RegExp(oConfig.sFieldBoundary, "g"); /* Do it here for speed */
 		var aColumnsInc = this._fnColumnTargets( oConfig.mColumns );
 		var bSelectedOnly = (typeof oConfig.bSelectedOnly != 'undefined') ? oConfig.bSelectedOnly : false;
@@ -1562,8 +1562,10 @@ TableTools.prototype = {
 		 */
 		for ( j=0, jLen=dt.aiDisplay.length ; j<jLen ; j++ )
 		{
+			tr = dt.aoData[ dt.aiDisplay[j] ].nTr;
+
 			if ( this.s.select.type == "none" || !bSelectedOnly ||
-				   (bSelectedOnly && $(dt.aoData[ dt.aiDisplay[j] ].nTr).hasClass( this.classes.select.row )) ||
+				   (bSelectedOnly && $(tr).hasClass( this.classes.select.row )) ||
 			     (bSelectedOnly && this.s.select.selected.length == 0) )
 			{
 				aRow = [];
@@ -1603,6 +1605,18 @@ TableTools.prototype = {
 				}
 
 				aData.push( aRow.join(oConfig.sFieldSeperator) );
+
+				/* Details rows from fnOpen */
+				if ( oConfig.bOpenRows )
+				{
+					arr = $.grep(dt.aoOpenRows, function(o) { return o.nParent === tr; });
+					
+					if ( arr.length === 1 )
+					{
+						sLoopData = this._fnBoundData( $('td', arr[0].nTr).html(), oConfig.sFieldBoundary, regex );
+						aData.push( sLoopData );
+					}
+				}
 			}
 		}
 		
@@ -2151,6 +2165,7 @@ TableTools.buttonBase = {
 	"mColumns": "all", /* "all", "visible", "hidden" or array of column integers */
 	"bHeader": true,
 	"bFooter": true,
+	"bOpenRows": false,
 	"bSelectedOnly": false,
 
 	// Callbacks
