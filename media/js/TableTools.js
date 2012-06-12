@@ -322,31 +322,43 @@ TableTools.prototype = {
 	
 	/**
 	 * Retreieve the settings object from an instance
-	 *  @method fnGetSelected
 	 *  @returns {array} List of TR nodes which are currently selected
 	 */
 	"fnGetSelected": function ()
 	{
-		var masterS = this._fnGetMasterSettings();
-		return masterS.select.selected;
+		var out=[];
+		var data=this.s.dt.aoData;
+		var i, iLen;
+
+		for ( i=0, iLen=data.length ; i<iLen ; i++ )
+		{
+			if ( data[i]._DTTT_selected )
+			{
+				out.push( data[i].nTr );
+			}
+		}
+
+		return out;
 	},
 
 
 	/**
 	 * Get the data source objects/arrays from DataTables for the selected rows (same as
 	 * fnGetSelected followed by fnGetData on each row from the table)
-	 *  @method fnGetSelectedData
 	 *  @returns {array} Data from the TR nodes which are currently selected
 	 */
 	"fnGetSelectedData": function ()
 	{
-		var masterS = this._fnGetMasterSettings();
-		var selected = masterS.select.selected;
 		var out = [];
+		var data=this.s.dt.aoData;
+		var i, iLen;
 
-		for ( var i=0, iLen=selected.length ; i<iLen ; i++ )
+		for ( i=0, iLen=data.length ; i<iLen ; i++ )
 		{
-			out.push( this.s.dt.oInstance.fnGetData( selected[i] ) );
+			if ( data[i]._DTTT_selected )
+			{
+				out.push( this.s.dt.oInstance.fnGetData(i) );
+			}
 		}
 
 		return out;
@@ -355,96 +367,69 @@ TableTools.prototype = {
 	
 	/**
 	 * Check to see if a current row is selected or not
-	 *  @method fnGetSelected
 	 *  @param {Node} n TR node to check if it is currently selected or not
 	 *  @returns {Boolean} true if select, false otherwise
 	 */
 	"fnIsSelected": function ( n )
 	{
-		var selected = this.fnGetSelected();
-		for ( var i=0, iLen=selected.length ; i<iLen ; i++ )
-		{
-			if ( n == selected[i] )
-			{
-				return true;
-			}
-		}
-		return false;
+		var pos = this.s.dt.oInstance.fnGetPosition( n );
+		return (this.s.dt.aoData[pos]._DTTT_selected===true) ? true : false;
 	},
 
 	
 	/**
 	 * Select all rows in the table
-	 *  @method  fnSelectAll
-	 *  @returns void
 	 */
 	"fnSelectAll": function ()
 	{
-		var masterS = this._fnGetMasterSettings();
-		masterS.that._fnRowSelectAll();
+		var s = this._fnGetMasterSettings();
+		this._fnRowSelect( s.dt.aoData );
 	},
 
 	
 	/**
 	 * Deselect all rows in the table
-	 *  @method  fnSelectNone
-	 *  @returns void
 	 */
 	"fnSelectNone": function ()
 	{
-		var masterS = this._fnGetMasterSettings();
-		masterS.that._fnRowDeselectAll();
+		var s = this._fnGetMasterSettings();
+		this._fnRowDeselect( s.dt.aoData );
 	},
 
 	
 	/**
-	 * Select an individual row
-	 *  @method  fnSelect
-	 *  @returns void
+	 * Select row(s)
+	 *  @param {node|object|array} n The row(s) to select. Can be a single DOM
+	 *    TR node, an array of TR nodes or a jQuery object.
 	 */
 	"fnSelect": function ( n )
 	{
-		/* Check if the row is already selected */
-		if ( !this.fnIsSelected( n ) )
+		if ( this.s.select.type == "single" )
 		{
-			if ( this.s.select.type == "single" )
-			{
-				this._fnRowSelectSingle( n );
-			}
-			else if ( this.s.select.type == "multi" )
-			{
-				this._fnRowSelectMulti( n );
-			}
+			this.fnSelectNone();
+			this._fnRowSelect( n );
+		}
+		else if ( this.s.select.type == "multi" )
+		{
+			this._fnRowSelect( n );
 		}
 	},
 
 	
 	/**
-	 * Deselect an individual row
-	 *  @method  fnDeselect
-	 *  @returns void
+	 * Deselect row(s)
+	 *  @param {node|object|array} n The row(s) to deselect. Can be a single DOM
+	 *    TR node, an array of TR nodes or a jQuery object.
 	 */
 	"fnDeselect": function ( n )
 	{
-		/* Check if the row is already deselected */
-		if ( this.fnIsSelected( n ) )
-		{
-			if ( this.s.select.type == "single" )
-			{
-				this._fnRowSelectSingle( n );
-			}
-			else if ( this.s.select.type == "multi" )
-			{
-				this._fnRowSelectMulti( n );
-			}
-		}
+		this._fnRowDeselect( n );
 	},
 	
 	
 	/**
 	 * Get the title of the document - useful for file names. The title is retrieved from either
 	 * the configuration object's 'title' parameter, or the HTML document title
-	 *  @method  fnGetTitle
 	 *  @param   {Object} oConfig Button configuration object
 	 *  @returns {String} Button title
 	 */
@@ -476,7 +461,6 @@ TableTools.prototype = {
 	 * Calculate a unity array with the column width by proportion for a set of columns to be
 	 * included for a button. This is particularly useful for PDF creation, where we can use the
 	 * column widths calculated by the browser to size the columns in the PDF.
-	 *  @method  fnCalcColRations
 	 *  @param   {Object} oConfig Button configuration object
 	 *  @returns {Array} Unity array of column ratios
 	 */
@@ -509,7 +493,6 @@ TableTools.prototype = {
 	
 	/**
 	 * Get the information contained in a table as a string
-	 *  @method  fnGetTableData
 	 *  @param   {Object} oConfig Button configuration object
 	 *  @returns {String} Table data as a string
 	 */
@@ -525,10 +508,8 @@ TableTools.prototype = {
 	
 	/**
 	 * Pass text to a flash button instance, which will be used on the button's click handler
-	 *  @method  fnSetText
 	 *  @param   {Object} clip Flash button object
 	 *  @param   {String} text Text to set
-	 *  @returns void
 	 */
 	"fnSetText": function ( clip, text )
 	{
@@ -540,8 +521,6 @@ TableTools.prototype = {
 	 * Resize the flash elements of the buttons attached to this TableTools instance - this is
 	 * useful for when initialising TableTools when it is hidden (display:none) since sizes can't
 	 * be calculated at that time.
-	 *  @method  fnResizeButtons
-	 *  @returns void
 	 */
 	"fnResizeButtons": function ()
 	{
@@ -562,8 +541,6 @@ TableTools.prototype = {
 	
 	/**
 	 * Check to see if any of the ZeroClipboard client's attached need to be resized
-	 *  @method  fnResizeRequired
-	 *  @returns void
 	 */
 	"fnResizeRequired": function ()
 	{
@@ -594,7 +571,6 @@ TableTools.prototype = {
 	 *    user to let them know what the print view is.
 	 *  @param {string} [oConfig.sMessage] HTML string to show at the top of the document - will
 	 *    be included in the printed document.
-	 *  @returns void
 	 */
 	"fnPrint": function ( bView, oConfig )
 	{
@@ -618,7 +594,6 @@ TableTools.prototype = {
 	 * Show a message to the end user which is nicely styled
 	 *  @param {string} message The HTML string to show to the user
 	 *  @param {int} time The duration the message is to be shown on screen for (mS)
-	 *  @returns void
 	 */
 	"fnInfo": function ( message, time ) {
 		var nInfo = document.createElement( "div" );
@@ -1012,20 +987,21 @@ TableTools.prototype = {
 			var
 				that = this, 
 				i, iLen, 
+				dt = this.s.dt,
 				aoOpenRows = this.s.dt.aoOpenRows;
 			
-			$(that.s.dt.nTable).addClass( this.classes.select.table );
+			$(dt.nTable).addClass( this.classes.select.table );
 			
-			$('tr', that.s.dt.nTBody).live( 'click', function(e) {
+			$('tr', dt.nTBody).live( 'click', function(e) {
 				/* Sub-table must be ignored (odd that the selector won't do this with >) */
-				if ( this.parentNode != that.s.dt.nTBody )
+				if ( this.parentNode != dt.nTBody )
 				{
 					return;
 				}
 				
 				/* Check that we are actually working with a DataTables controlled row */
-				var anTableRows = that.s.dt.oInstance.fnGetNodes();
-				if ( $.inArray( this, anTableRows ) === -1 ) {
+				if ( dt.oInstance.fnGetData(this) === null )
+				{
 				    return;
 				}
 				
@@ -1034,205 +1010,130 @@ TableTools.prototype = {
 				{
 					return;
 				}
-				
-				/* And go */
-				if ( that.s.select.type == "single" )
+
+				if ( that.fnIsSelected( this ) )
 				{
-					that._fnRowSelectSingle.call( that, this );
+					that._fnRowDeselect( this );
+				}
+				else if ( that.s.select.type == "single" )
+				{
+					that.fnSelectNone();
+					that._fnRowSelect( this );
+				}
+				else if ( that.s.select.type == "multi" )
+				{
+					that._fnRowSelect( this );
+				}
+			} );
+
+			// Bind a listener to the DataTable for when new rows are created.
+			// This allows rows to be visually selected when they should be and
+			// deferred rendering is used.
+			dt.oApi._fnCallbackReg( dt, 'aoRowCreatedCallback', function (tr, data, index) {
+				if ( dt.aoData[index]._DTTT_selected ) {
+					$(tr).addClass( that.classes.select.row );
+				}
+			}, 'TableTools-SelectAll' );
+		}
+	},
+
+	/**
+	 * Select rows
+	 *  @param   {*} src Rows to select - see _fnSelectData for a description of valid inputs
+	 *  @private 
+	 */
+	"_fnRowSelect": function ( src )
+	{
+		var data = this._fnSelectData( src );
+
+		for ( var i=0, iLen=data.length ; i<iLen ; i++ )
+		{
+			data[i]._DTTT_selected = true;
+
+			if ( data[i].nTr )
+			{
+				$(data[i].nTr).addClass( this.classes.select.row );
+			}
+		}
+
+		if ( this.s.select.postSelected !== null )
+		{
+			this.s.select.postSelected.call( this, data[0].nTr );
+		}
+
+		TableTools._fnEventDispatch( this, 'select', data[0].nTr );
+	},
+
+	/**
+	 * Deselect rows
+	 *  @param   {*} src Rows to deselect - see _fnSelectData for a description of valid inputs
+	 *  @private 
+	 */
+	"_fnRowDeselect": function ( src )
+	{
+		var data = this._fnSelectData( src );
+
+		for ( var i=0, iLen=data.length ; i<iLen ; i++ )
+		{
+			if ( data[i].nTr && data[i]._DTTT_selected )
+			{
+				$(data[i].nTr).removeClass( this.classes.select.row );
+			}
+
+			data[i]._DTTT_selected = false;
+		}
+
+		if ( this.s.select.postDeselected !== null )
+		{
+			this.s.select.postDeselected.call( this, data[0].nTr );
+		}
+
+		TableTools._fnEventDispatch( this, 'select', data[0].nTr );
+	},
+	
+	/**
+	 * Take a data source for row selection and convert it into aoData points for the DT
+	 *   @param {*} src Can be a single DOM TR node, an array of TR nodes (including a
+	 *     a jQuery object), a single aoData point from DataTables or an array of aoData
+	 *     points.
+	 *   @returns {array} An array of aoData points
+	 */
+	"_fnSelectData": function ( src )
+	{
+		var out = [], pos, i, iLen;
+
+		if ( src.nodeName )
+		{
+			// Single node
+			pos = this.s.dt.oInstance.fnGetPosition( src );
+			out.push( this.s.dt.aoData[pos] );
+		}
+		else if ( typeof src.length !== 'undefined' )
+		{
+			// jQuery oject or an array of nodes, or aoData points
+			for ( i=0, iLen=src.length ; i<iLen ; i++ )
+			{
+				if ( src[i].nodeName )
+				{
+					pos = this.s.dt.oInstance.fnGetPosition( src[i] );
+					out.push( this.s.dt.aoData[pos] );
 				}
 				else
 				{
-					that._fnRowSelectMulti.call( that, this );
-				}
-			} );
-			
-			/* Add a draw callback handler for when 'select' all is active and we are using server-side
-			 * processing, so TableTools will automatically select the new rows for us
-			 */
-			that.s.dt.aoDrawCallback.push( {
-				"fn": function () {
-					if ( that.s.select.all && that.s.dt.oFeatures.bServerSide )
-					{
-						that.fnSelectAll();
-					}
-				},
-				"sName": "TableTools_select"
-			} );
-		}
-	},
-	
-	
-	/**
-	 * Select or deselect a row based on its current state when only one row is allowed to be
-	 * selected at a time (i.e. if there is a row already selected, deselect it). If the selected
-	 * row is the one being passed in, just deselect and take no further action.
-	 *  @method  _fnRowSelectSingle
-	 *  @param   {Node} nNode TR element which is being 'activated' in some way
-	 *  @returns void
-	 *  @private 
-	 */
-	"_fnRowSelectSingle": function ( nNode )
-	{
-		if ( this.s.master )
-		{
-			/* Do nothing on the DataTables 'empty' result set row */
-			if ( $('td', nNode).hasClass(this.s.dt.oClasses.sRowEmpty) )
-			{
-				return;
-			}
-			
-			if ( $(nNode).hasClass( this.classes.select.row ) )
-			{
-				this._fnRowDeselect( nNode );
-			}
-			else
-			{
-				if ( this.s.select.selected.length !== 0 )
-				{
-					this._fnRowDeselectAll();
-				}
-				
-				this.s.select.selected.push( nNode );
-				$(nNode).addClass( this.classes.select.row  );
-				
-				if ( this.s.select.postSelected !== null )
-				{
-					this.s.select.postSelected.call( this, nNode );
-				}
-			}
-			
-			TableTools._fnEventDispatch( this, 'select', nNode );
-		}
-	},
-	
-	
-	/**
-	 * Select or deselect a row based on its current state when multiple rows are allowed to be
-	 * selected.
-	 *  @method  _fnRowSelectMulti
-	 *  @param   {Node} nNode TR element which is being 'activated' in some way
-	 *  @returns void
-	 *  @private 
-	 */
-	"_fnRowSelectMulti": function ( nNode )
-	{
-		if ( this.s.master )
-		{
-			/* Do nothing on the DataTables 'empty' result set row */
-			if ( $('td', nNode).hasClass(this.s.dt.oClasses.sRowEmpty) )
-			{
-				return;
-			}
-			
-			if ( $(nNode).hasClass( this.classes.select.row ) )
-			{
-				this._fnRowDeselect( nNode );
-			}
-			else
-			{
-				this.s.select.selected.push( nNode );
-				$(nNode).addClass( this.classes.select.row );
-				
-				if ( this.s.select.postSelected !== null )
-				{
-					this.s.select.postSelected.call( this, nNode );
-				}
-			}
-			
-			TableTools._fnEventDispatch( this, 'select', nNode );
-		}
-	},
-	
-	
-	/**
-	 * Select all TR elements in the table. Note that this function will still operate in 'single'
-	 * select mode, which might not be what you desire (in which case, don't call this function!)
-	 *  @method  _fnRowSelectAll
-	 *  @returns void
-	 *  @private 
-	 */
-	"_fnRowSelectAll": function ( )
-	{
-		if ( this.s.master )
-		{
-			var n;
-			for ( var i=0, iLen=this.s.dt.aiDisplayMaster.length ; i<iLen ; i++ )
-			{
-				n = this.s.dt.aoData[ this.s.dt.aiDisplayMaster[i] ].nTr;
-				
-				if ( !$(n).hasClass( this.classes.select.row ) )
-				{
-					this.s.select.selected.push( n );
-					$(n).addClass( this.classes.select.row );
+					out.push( src[i] );
 				}
 			}
 
-			if ( this.s.select.postSelected !== null )
-			{
-				this.s.select.postSelected.call( this, null );
-			}
-			
-			this.s.select.all = true;
-			TableTools._fnEventDispatch( this, 'select', null );
+			return out;
 		}
-	},
-	
-	
-	/**
-	 * Deselect all TR elements in the table. If nothing is currently selected, then no action is
-	 * taken.
-	 *  @method  _fnRowDeselectAll
-	 *  @returns void
-	 *  @private 
-	 */
-	"_fnRowDeselectAll": function ( )
-	{
-		if ( this.s.master )
+		else
 		{
-			for ( var i=this.s.select.selected.length-1 ; i>=0 ; i-- )
-			{
-				this._fnRowDeselect( i, false );
-			}
+			// A single aoData point
+			out.push( src );
+		}
 
-			if ( this.s.select.postDeselected !== null )
-			{
-				this.s.select.postDeselected.call( this, null );
-			}
-			
-			this.s.select.all = false;
-			TableTools._fnEventDispatch( this, 'select', null );
-		}
+		return out;
 	},
-	
-	
-	/**
-	 * Deselect a single row, based on its index in the selected array, or a TR node (when the
-	 * index is then computed)
-	 *  @method  _fnRowDeselect
-	 *  @param   {int|Node} i Node or index of node in selected array, which is to be deselected
-	 *  @param   {bool} [action=true] Run the post deselected method or not
-	 *  @returns void
-	 *  @private 
-	 */
-	"_fnRowDeselect": function ( i, action )
-	{
-		if ( typeof i.nodeName != 'undefined' )
-		{
-			i = $.inArray( i, this.s.select.selected );
-		}
-		
-		var nNode = this.s.select.selected[i];
-		$(nNode).removeClass( this.classes.select.row );
-		this.s.select.selected.splice( i, 1 );
-		
-		if ( (typeof action == 'undefined' || action) && this.s.select.postDeselected !== null )
-		{
-			this.s.select.postDeselected.call( this, nNode );
-		}
-		
-		this.s.select.all = false;
-	},
-	
 	
 	
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -2471,7 +2372,7 @@ TableTools.prototype.VERSION = TableTools.VERSION;
  */
 if ( typeof $.fn.dataTable == "function" &&
 	 typeof $.fn.dataTableExt.fnVersionCheck == "function" &&
-	 $.fn.dataTableExt.fnVersionCheck('1.8.2') )
+	 $.fn.dataTableExt.fnVersionCheck('1.9.0') )
 {
 	$.fn.dataTableExt.aoFeatures.push( {
 		"fnInit": function( oDTSettings ) {
@@ -2489,7 +2390,7 @@ if ( typeof $.fn.dataTable == "function" &&
 }
 else
 {
-	alert( "Warning: TableTools 2 requires DataTables 1.8.2 or newer - www.datatables.net/download");
+	alert( "Warning: TableTools 2 requires DataTables 1.9.0 or newer - www.datatables.net/download");
 }
 
 $.fn.DataTable.TableTools = TableTools;
