@@ -1,6 +1,6 @@
 /*
  * File:        TableTools.js
- * Version:     2.1.1
+ * Version:     2.1.2.dev
  * Description: Tools and buttons for DataTables
  * Author:      Allan Jardine (www.sprymedia.co.uk)
  * Language:    Javascript
@@ -1182,7 +1182,7 @@ TableTools.prototype = {
 		}
 		
 		$(nButton).click( function (e) {
-			e.preventDefault();
+			//e.preventDefault();
 			
 			if ( oConfig.fnClick !== null )
 			{
@@ -2318,6 +2318,12 @@ TableTools.classes_themeroller = {
 };
 
 
+// This is fairly horrible, but it is a work around for what appears to be an IE issue.
+// Basically when the Flash <embed> is inside a <button> in IE9- (10+ not tested) then
+// the Flash element doesn't see the mouse[down|up] or click events (although it does get
+// the mouse[over|out] events). So as a work around, DIV elements are used for IE.
+var ie = navigator.userAgent.match(/(msie) ([\w.]+)/i);
+
 /**
  * @namespace TableTools default settings for initialisation
  */
@@ -2331,11 +2337,11 @@ TableTools.DEFAULTS = {
 	"aButtons":        [ "copy", "csv", "xls", "pdf", "print" ],
 	"oTags": {
 		"container": "div",
-		"button": "button",
+		"button": ie ? "div" : "button",
 		"liner": "span",
 		"collection": {
 			"container": "div",
-			"button": "button",
+			"button": ie ? "div" : "button",
 			"liner": "span"
 		}
 	}
@@ -2357,7 +2363,7 @@ TableTools.prototype.CLASS = "TableTools";
  *  @type	  String
  *  @default   See code
  */
-TableTools.VERSION = "2.1.1";
+TableTools.VERSION = "2.1.2.dev";
 TableTools.prototype.VERSION = TableTools.VERSION;
 
 

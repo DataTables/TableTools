@@ -33,15 +33,16 @@ div.DTTT_container {
 }
 
 button.DTTT_button,
-div.DTTT_button {
+div.DTTT_button,
+a.DTTT_button {
 	position: relative;
 	float: left;
-	height: 30px;
 	margin-right: 3px;
-	padding: 3px 8px;
+	padding: 5px 8px;
 	border: 1px solid #999;
 	cursor: pointer;
 	*cursor: hand;
+	font-size: 0.88em;
 
 	-webkit-border-radius: 2px;
 	   -moz-border-radius: 2px;
@@ -65,13 +66,21 @@ div.DTTT_button {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f9f9f9',GradientType=0 ); /* IE6-9 */
 }
 
+
+/* Buttons are cunning border-box sizing - we can't just use that for A and DIV due to IE6/7 */
+button.DTTT_button {
+	height: 30px;
+	padding: 3px 8px;
+}
+
 button.DTTT_button::-moz-focus-inner { 
 	border: none !important;
 	padding: 0;
 }
 
 button.DTTT_button:hover,
-div.DTTT_button:hover {
+div.DTTT_button:hover,
+a.DTTT_button:hover {
 	border: 1px solid #666;
 
 	-webkit-box-shadow: 1px 1px 3px #999;
@@ -90,7 +99,8 @@ div.DTTT_button:hover {
 }
 
 button.DTTT_disabled,
-div.DTTT_disabled {
+div.DTTT_disabled,
+a.DTTT_disabled {
 	color: #999;
 	border: 1px solid #d0d0d0;
 	
