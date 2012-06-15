@@ -2318,12 +2318,6 @@ TableTools.classes_themeroller = {
 };
 
 
-// This is fairly horrible, but it is a work around for what appears to be an IE issue.
-// Basically when the Flash <embed> is inside a <button> in IE9- (10+ not tested) then
-// the Flash element doesn't see the mouse[down|up] or click events (although it does get
-// the mouse[over|out] events). So as a work around, DIV elements are used for IE.
-var ie = navigator.userAgent.match(/(msie) ([\w.]+)/i);
-
 /**
  * @namespace TableTools default settings for initialisation
  */
@@ -2337,11 +2331,12 @@ TableTools.DEFAULTS = {
 	"aButtons":        [ "copy", "csv", "xls", "pdf", "print" ],
 	"oTags": {
 		"container": "div",
-		"button": ie ? "div" : "button",
+		"button": "a", // We really want to use buttons here, but Firefox and IE ignore the
+		                 // click on the Flash element in the button (but not mouse[in|out]).
 		"liner": "span",
 		"collection": {
 			"container": "div",
-			"button": ie ? "div" : "button",
+			"button": "a",
 			"liner": "span"
 		}
 	}

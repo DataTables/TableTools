@@ -43,6 +43,7 @@ a.DTTT_button {
 	cursor: pointer;
 	*cursor: hand;
 	font-size: 0.88em;
+	color: black !important;
 
 	-webkit-border-radius: 2px;
 	   -moz-border-radius: 2px;
@@ -73,15 +74,15 @@ button.DTTT_button {
 	padding: 3px 8px;
 }
 
-button.DTTT_button::-moz-focus-inner { 
-	border: none !important;
-	padding: 0;
+.DTTT_button embed { 
+	outline: none;
 }
 
 button.DTTT_button:hover,
 div.DTTT_button:hover,
 a.DTTT_button:hover {
 	border: 1px solid #666;
+	text-decoration: none !important;
 
 	-webkit-box-shadow: 1px 1px 3px #999;
 	   -moz-box-shadow: 1px 1px 3px #999;
