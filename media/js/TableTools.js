@@ -1486,7 +1486,7 @@ TableTools.prototype = {
 					var mTypeData = dt.oApi._fnGetCellData( dt, aDataIndex[j], i, 'display' );
 					if ( oConfig.fnCellRender )
 					{
-						sLoopData = oConfig.fnCellRender( mTypeData, i )+"";
+						sLoopData = oConfig.fnCellRender( mTypeData, i, tr, aDataIndex[j] )+"";
 					}
 					else if ( typeof mTypeData == "string" )
 					{
