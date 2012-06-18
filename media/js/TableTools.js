@@ -1461,62 +1461,67 @@ TableTools.prototype = {
 		/*
 		 * Body
 		 */
-		for ( j=0, jLen=dt.aiDisplay.length ; j<jLen ; j++ )
+		var aDataIndex = dt.aiDisplay;
+		var aSelected = this.fnGetSelected();
+		if ( this.s.select.type !== "none" && bSelectedOnly && aSelected.length !== 0 )
 		{
-			tr = dt.aoData[ dt.aiDisplay[j] ].nTr;
-
-			if ( this.s.select.type == "none" || !bSelectedOnly ||
-				   (bSelectedOnly && $(tr).hasClass( this.classes.select.row )) ||
-			     (bSelectedOnly && this.s.select.selected.length == 0) )
+			aDataIndex = [];
+			for ( i=0, iLen=aSelected.length ; i<iLen ; i++ )
 			{
-				aRow = [];
-				
-				/* Columns */
-				for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
+				aDataIndex.push( dt.oInstance.fnGetPosition( aSelected[i] ) );
+			}
+		}
+		
+		for ( j=0, jLen=aDataIndex.length ; j<jLen ; j++ )
+		{
+			tr = dt.aoData[ aDataIndex[j] ].nTr;
+			aRow = [];
+			
+			/* Columns */
+			for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
+			{
+				if ( aColumnsInc[i] )
 				{
-					if ( aColumnsInc[i] )
+					/* Convert to strings (with small optimisation) */
+					var mTypeData = dt.oApi._fnGetCellData( dt, aDataIndex[j], i, 'display' );
+					if ( oConfig.fnCellRender )
 					{
-						/* Convert to strings (with small optimisation) */
-						var mTypeData = dt.oApi._fnGetCellData( dt, dt.aiDisplay[j], i, 'display' );
-						if ( oConfig.fnCellRender )
-						{
-							sLoopData = oConfig.fnCellRender( mTypeData, i )+"";
-						}
-						else if ( typeof mTypeData == "string" )
-						{
-							/* Strip newlines, replace img tags with alt attr. and finally strip html... */
-							sLoopData = mTypeData.replace(/\n/g," ");
-							sLoopData =
-							 	sLoopData.replace(/<img.*?\s+alt\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s>]+)).*?>/gi,
-							 		'$1$2$3');
-							sLoopData = sLoopData.replace( /<.*?>/g, "" );
-						}
-						else
-						{
-							sLoopData = mTypeData+"";
-						}
-						
-						/* Trim and clean the data */
-						sLoopData = sLoopData.replace(/^\s+/, '').replace(/\s+$/, '');
-						sLoopData = this._fnHtmlDecode( sLoopData );
-						
-						/* Bound it and add it to the total data */
-						aRow.push( this._fnBoundData( sLoopData, oConfig.sFieldBoundary, regex ) );
+						sLoopData = oConfig.fnCellRender( mTypeData, i )+"";
 					}
-				}
-
-				aData.push( aRow.join(oConfig.sFieldSeperator) );
-
-				/* Details rows from fnOpen */
-				if ( oConfig.bOpenRows )
-				{
-					arr = $.grep(dt.aoOpenRows, function(o) { return o.nParent === tr; });
+					else if ( typeof mTypeData == "string" )
+					{
+						/* Strip newlines, replace img tags with alt attr. and finally strip html... */
+						sLoopData = mTypeData.replace(/\n/g," ");
+						sLoopData =
+						 	sLoopData.replace(/<img.*?\s+alt\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s>]+)).*?>/gi,
+						 		'$1$2$3');
+						sLoopData = sLoopData.replace( /<.*?>/g, "" );
+					}
+					else
+					{
+						sLoopData = mTypeData+"";
+					}
 					
-					if ( arr.length === 1 )
-					{
-						sLoopData = this._fnBoundData( $('td', arr[0].nTr).html(), oConfig.sFieldBoundary, regex );
-						aData.push( sLoopData );
-					}
+					/* Trim and clean the data */
+					sLoopData = sLoopData.replace(/^\s+/, '').replace(/\s+$/, '');
+					sLoopData = this._fnHtmlDecode( sLoopData );
+					
+					/* Bound it and add it to the total data */
+					aRow.push( this._fnBoundData( sLoopData, oConfig.sFieldBoundary, regex ) );
+				}
+			}
+      
+			aData.push( aRow.join(oConfig.sFieldSeperator) );
+      
+			/* Details rows from fnOpen */
+			if ( oConfig.bOpenRows )
+			{
+				arr = $.grep(dt.aoOpenRows, function(o) { return o.nParent === tr; });
+				
+				if ( arr.length === 1 )
+				{
+					sLoopData = this._fnBoundData( $('td', arr[0].nTr).html(), oConfig.sFieldBoundary, regex );
+					aData.push( sLoopData );
 				}
 			}
 		}
