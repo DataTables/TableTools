@@ -178,13 +178,14 @@ package {
 		{
 			var
 				pdf:PDF,
-				i:int, iLen:int,
+				i:int, iLen:int, j:int, jLen:int,
 				splitText:Array    = clipText.split("--/TableToolsOpts--\n"),
 				opts:Array         = splitText[0].split("\n"),
 				dataIn:Array       = splitText[1].split("\n"),
 				aColRatio:Array    = getProp( 'colWidth', opts ).split('\t'),
 				title:String       = getProp( 'title', opts ),
 				message:String     = getProp( 'message', opts ),
+				extras:Array       = getProp( 'extras', opts ).split('\r'),
 				orientation:String = getProp( 'orientation', opts ),
 				size:String        = getProp( 'size', opts ),
 				iPageWidth:int     = 0,
@@ -211,6 +212,14 @@ package {
 			if ( message != "" )
 			{
 				pdf.writeText(11, message+"\n");
+			}
+			
+			for ( j=0, jLen=extras.length ; j<jLen ; j++ )
+			{
+				if ( extras[j] != "" )
+				{
+					pdf.writeText(11, extras[j]+"\n");
+				}
 			}
 			
 			/* Data setup. Split up the headers, and then construct the columns */
