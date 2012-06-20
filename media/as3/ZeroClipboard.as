@@ -65,7 +65,7 @@ package {
 			ExternalInterface.call( 'ZeroClipboard_TableTools.dispatch', domId, 'load', null );
 		}
 		
-		public function addCallbacks ():void {
+		public function addCallbacks (evt:Event = null):void {
 			ExternalInterface.addCallback("setHandCursor", setHandCursor);
 			ExternalInterface.addCallback("clearText", clearText);
 			ExternalInterface.addCallback("setText", setText);
