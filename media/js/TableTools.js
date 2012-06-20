@@ -1045,6 +1045,7 @@ TableTools.prototype = {
 	"_fnRowSelect": function ( src )
 	{
 		var data = this._fnSelectData( src );
+		var firstTr = data.length===0 ? null : data[0].nTr;
 
 		for ( var i=0, iLen=data.length ; i<iLen ; i++ )
 		{
@@ -1058,10 +1059,10 @@ TableTools.prototype = {
 
 		if ( this.s.select.postSelected !== null )
 		{
-			this.s.select.postSelected.call( this, data[0].nTr );
+			this.s.select.postSelected.call( this, firstTr );
 		}
 
-		TableTools._fnEventDispatch( this, 'select', data[0].nTr );
+		TableTools._fnEventDispatch( this, 'select', firstTr );
 	},
 
 	/**
@@ -1072,6 +1073,7 @@ TableTools.prototype = {
 	"_fnRowDeselect": function ( src )
 	{
 		var data = this._fnSelectData( src );
+		var firstTr = data.length===0 ? null : data[0].nTr;
 
 		for ( var i=0, iLen=data.length ; i<iLen ; i++ )
 		{
@@ -1085,10 +1087,10 @@ TableTools.prototype = {
 
 		if ( this.s.select.postDeselected !== null )
 		{
-			this.s.select.postDeselected.call( this, data[0].nTr );
+			this.s.select.postDeselected.call( this, firstTr );
 		}
 
-		TableTools._fnEventDispatch( this, 'select', data[0].nTr );
+		TableTools._fnEventDispatch( this, 'select', firstTr );
 	},
 	
 	/**
