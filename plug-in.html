@@ -481,29 +481,15 @@
 			
 			
 			<h1>Initialisation code</h1>
-			<pre>TableTools.BUTTONS.copy_to_div = {
-	"sAction": "text",
-	"sFieldBoundary": "",
-	"sFieldSeperator": "\t",
+			<pre>TableTools.BUTTONS.copy_to_div = $.extend( true, TableTools.buttonBase, {
 	"sNewLine": "&lt;br&gt;",
-	"sToolTip": "",
-	"sButtonClass": "DTTT_button_text",
-	"sButtonClassHover": "DTTT_button_text_hover",
 	"sButtonText": "Copy to element",
-	"mColumns": "all",
-	"bHeader": true,
-	"bFooter": true,
 	"sDiv": "",
-	"fnMouseover": null,
-	"fnMouseout": null,
 	"fnClick": function( nButton, oConfig ) {
 		document.getElementById(oConfig.sDiv).innerHTML = 
 			this.fnGetTableData(oConfig);
-	},
-	"fnSelect": null,
-	"fnComplete": null,
-	"fnInit": null
-};
+	}
+} );
 
 $(document).ready( function () {
 	$('#example').dataTable( {
