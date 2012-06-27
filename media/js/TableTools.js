@@ -1,6 +1,6 @@
 /*
  * File:        TableTools.js
- * Version:     2.1.2
+ * Version:     2.1.3.dev
  * Description: Tools and buttons for DataTables
  * Author:      Allan Jardine (www.sprymedia.co.uk)
  * Language:    Javascript
@@ -379,21 +379,35 @@ TableTools.prototype = {
 	
 	/**
 	 * Select all rows in the table
+	 *  @param {boolean} [filtered=false] Select only rows which are available 
+	 *    given the filtering applied to the table. By default this is false - 
+	 *    i.e. all rows, regardless of filtering are selected.
 	 */
-	"fnSelectAll": function ()
+	"fnSelectAll": function ( filtered )
 	{
 		var s = this._fnGetMasterSettings();
-		this._fnRowSelect( s.dt.aoData );
+		
+		this._fnRowSelect( (filtered === true) ?
+			s.dt.aiDisplay :
+			s.dt.aoData
+		);
 	},
 
 	
 	/**
 	 * Deselect all rows in the table
+	 *  @param {boolean} [filtered=false] Deselect only rows which are available 
+	 *    given the filtering applied to the table. By default this is false - 
+	 *    i.e. all rows, regardless of filtering are deselected.
 	 */
-	"fnSelectNone": function ()
+	"fnSelectNone": function ( filtered )
 	{
 		var s = this._fnGetMasterSettings();
-		this._fnRowDeselect( s.dt.aoData );
+
+		this._fnRowDeselect( (filtered === true) ?
+			s.dt.aiDisplay :
+			s.dt.aoData
+		);
 	},
 
 	
@@ -1096,8 +1110,8 @@ TableTools.prototype = {
 	/**
 	 * Take a data source for row selection and convert it into aoData points for the DT
 	 *   @param {*} src Can be a single DOM TR node, an array of TR nodes (including a
-	 *     a jQuery object), a single aoData point from DataTables or an array of aoData
-	 *     points.
+	 *     a jQuery object), a single aoData point from DataTables, an array of aoData
+	 *     points or an array of aoData indexes
 	 *   @returns {array} An array of aoData points
 	 */
 	"_fnSelectData": function ( src )
@@ -1112,13 +1126,17 @@ TableTools.prototype = {
 		}
 		else if ( typeof src.length !== 'undefined' )
 		{
-			// jQuery oject or an array of nodes, or aoData points
+			// jQuery object or an array of nodes, or aoData points
 			for ( i=0, iLen=src.length ; i<iLen ; i++ )
 			{
 				if ( src[i].nodeName )
 				{
 					pos = this.s.dt.oInstance.fnGetPosition( src[i] );
 					out.push( this.s.dt.aoData[pos] );
+				}
+				else if ( typeof src[i] === 'number' )
+				{
+					out.push( this.s.dt.aoData[ src[i] ] );
 				}
 				else
 				{
@@ -2365,7 +2383,7 @@ TableTools.prototype.CLASS = "TableTools";
  *  @type	  String
  *  @default   See code
  */
-TableTools.VERSION = "2.1.2";
+TableTools.VERSION = "2.1.3.dev";
 TableTools.prototype.VERSION = TableTools.VERSION;
 
 
