@@ -245,11 +245,17 @@ div.DTTT_collection_background {
 	z-index: 2001;
 }
 
-div.DTTT_collection button.DTTT_button {
-	float: none;
-	width: 100%;
-	margin-bottom: 4px;
+div.DTTT_collection button.DTTT_button,
+div.DTTT_collection div.DTTT_button,
+div.DTTT_collection a.DTTT_button {
+	position: relative;
+	left: 0;
+	right: 0;
 
+	display: block;
+	float: none;
+	margin-bottom: 4px;
+	
 	-webkit-box-shadow: 1px 1px 3px #999;
 	   -moz-box-shadow: 1px 1px 3px #999;
 	    -ms-box-shadow: 1px 1px 3px #999;
