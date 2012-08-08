@@ -51,7 +51,7 @@ TableTools = function( oDT, oOpts )
 	 */
 	this.s = {
 		/**
-		 * Store 'this' so the instance can be retreieved from the settings object
+		 * Store 'this' so the instance can be retrieved from the settings object
 		 * @property that
 		 * @type	 object
 		 * @default  this
@@ -247,7 +247,7 @@ TableTools = function( oDT, oOpts )
 		  "hidden": [],
 			
 			/**
-			 * The information display saying tellng the user about the print display
+			 * The information display saying telling the user about the print display
 			 *  @property message
 			 *  @type	 node
 		 	 *  @default  null
@@ -864,7 +864,7 @@ TableTools.prototype = {
 	 */
 	
 	/**
-	 * Create a collection button, when activated will present a drop downlist of other buttons
+	 * Create a collection button, when activated will present a drop down list of other buttons
 	 *  @param   {Node} nButton Button to use for the collection activation
 	 *  @param   {Object} oConfig Button configuration object
 	 *  @returns void
@@ -1327,9 +1327,9 @@ TableTools.prototype = {
 	 * Set the text for the flash clip to deal with
 	 * 
 	 * This function is required for large information sets. There is a limit on the 
-	 * amount of data that can be transfered between Javascript and Flash in a single call, so
+	 * amount of data that can be transferred between Javascript and Flash in a single call, so
 	 * we use this method to build up the text in Flash by sending over chunks. It is estimated
-	 * that the data limit is around 64k, although it is undocuments, and appears to be different
+	 * that the data limit is around 64k, although it is undocumented, and appears to be different
 	 * between different flash versions. We chunk at 8KiB.
 	 *  @method  _fnFlashSetText
 	 *  @param   {Object} clip the ZeroClipboard object
@@ -1358,7 +1358,7 @@ TableTools.prototype = {
 	 * Convert the mixed columns variable into a boolean array the same size as the columns, which
 	 * indicates which columns we want to include
 	 *  @method  _fnColumnTargets
-	 *  @param   {String|Array} mColumns The columns to be included in data retreieval. If a string
+	 *  @param   {String|Array} mColumns The columns to be included in data retrieval. If a string
 	 *			 then it can take the value of "visible" or "hidden" (to include all visible or
 	 *			 hidden columns respectively). Or an array of column indexes
 	 *  @returns {Array} A boolean array the length of the columns of the table, which each value
@@ -1439,13 +1439,13 @@ TableTools.prototype = {
 	 *  @method  _fnGetDataTablesData
 	 *  @param   {Object} oConfig Button configuration object
 	 *  @param   {String} oConfig.sFieldBoundary Field boundary for the data cells in the string
-	 *  @param   {String} oConfig.sFieldSeperator Field seperator for the data cells
+	 *  @param   {String} oConfig.sFieldSeperator Field separator for the data cells
 	 *  @param   {String} oConfig.sNewline New line options
 	 *  @param   {Mixed} oConfig.mColumns Which columns should be included in the output
 	 *  @param   {Boolean} oConfig.bHeader Include the header
 	 *  @param   {Boolean} oConfig.bFooter Include the footer
 	 *  @param   {Boolean} oConfig.bSelectedOnly Include only the selected rows in the output
-	 *  @returns {String} Concatinated string of data
+	 *  @returns {String} Concatenated string of data
 	 *  @private 
 	 */
 	"_fnGetDataTablesData": function ( oConfig )
@@ -1577,7 +1577,7 @@ TableTools.prototype = {
 	 *  @method  _fnBoundData
 	 *  @param   {String} sData data to bound
 	 *  @param   {String} sBoundary bounding char(s)
-	 *  @param   {RegExp} regex search for the bounding chars - constructed outside for efficincy
+	 *  @param   {RegExp} regex search for the bounding chars - constructed outside for efficiency
 	 *			 in the loop
 	 *  @returns {String} bound data
 	 *  @private 
@@ -1740,7 +1740,7 @@ TableTools.prototype = {
 			document.body.insertBefore( this.dom.print.message, document.body.childNodes[0] );
 		}
 		
-		/* Cache the scrolling and the jump to the top of the t=page */
+		/* Cache the scrolling and the jump to the top of the page */
 		this.s.print.saveScroll = $(window).scrollTop();
 		window.scrollTo( 0, 0 );
 
@@ -1862,7 +1862,7 @@ TableTools.prototype = {
 	
 	/**
 	 * Take account of scrolling in DataTables by showing the full table. Note that the redraw of
-	 * the DataTable that we do will actually deal with the majority of the hardword here
+	 * the DataTable that we do will actually deal with the majority of the hard work here
 	 *  @returns void
 	 *  @private 
 	 */
@@ -2038,12 +2038,12 @@ TableTools._fnEventListen = function ( that, type, fn )
 	
 
 /**
- * An event has occured - look up every listener and fire it off. We check that the event we are
+ * An event has occurred - look up every listener and fire it off. We check that the event we are
  * going to fire is attached to the same table (using the table node as reference) before firing
  *  @method  _fnEventDispatch
  *  @param   {Object} that Scope of the listening function (i.e. 'this' in the caller)
  *  @param   {String} type Event type
- *  @param   {Node} node Element that the event occured on (may be null)
+ *  @param   {Node} node Element that the event occurred on (may be null)
  *  @returns void
  *  @private
  *  @static
@@ -2298,7 +2298,7 @@ TableTools.BUTTONS = {
 
 
 /**
- * @namespace Classes used by TableTools - allows the styles to be overriden easily.
+ * @namespace Classes used by TableTools - allows the styles to be override easily.
  *   Note that when TableTools initialises it will take a copy of the classes object
  *   and will use its internal copy for the remainder of its run time.
  */
@@ -2329,7 +2329,7 @@ TableTools.classes = {
 
 
 /**
- * @namespace ThemeRoller classes - built in for compability with DataTables' 
+ * @namespace ThemeRoller classes - built in for compatibility with DataTables' 
  *   bJQueryUI option.
  */
 TableTools.classes_themeroller = {
