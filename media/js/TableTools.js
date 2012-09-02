@@ -1633,7 +1633,7 @@ TableTools.prototype = {
 	 */
 	"_fnHtmlDecode": function ( sData )
 	{
-		if ( sData.indexOf('&') == -1 )
+		if ( sData.indexOf('&') === -1 )
 		{
 			return sData;
 		}
@@ -1648,14 +1648,18 @@ TableTools.prototype = {
 		 * up the string. Note that the 'trick' here is to remember than we might have split over
 		 * an HTML entity, so we backtrack a little to make sure this doesn't happen
 		 */
-		for ( i=0, iLen=aData.length ; i<iLen ; i++ )
+		for ( i=0 ; i<aData.length ; i++ )
 		{
 			/* Magic number 8 is because no entity is longer then strlen 8 in ISO 8859-1 */
 			iIndex = aData[i].lastIndexOf( '&' );
-			if ( iIndex != -1 && aData[i].length >= 8 && iIndex > aData[i].length - 8 )
+			if ( iIndex !== -1 && aData[i].length >= 8 && iIndex > aData[i].length - 8 )
 			{
 				sInner = aData[i].substr( iIndex );
 				aData[i] = aData[i].substr( 0, iIndex );
+
+				aData[i+1] = aData[i+1] ?
+					sInner + aData[i+1] :
+					sInner;
 			}
 			
 			n.innerHTML = aData[i];
