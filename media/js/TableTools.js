@@ -1638,35 +1638,19 @@ TableTools.prototype = {
 			return sData;
 		}
 		
-		var 
-			aData = this._fnChunkData( sData, 2048 ),
-			n = document.createElement('div'),
-			i, iLen, iIndex,
-			sReturn = "", sInner;
-		
-		/* nodeValue has a limit in browsers - so we chunk the data into smaller segments to build
-		 * up the string. Note that the 'trick' here is to remember than we might have split over
-		 * an HTML entity, so we backtrack a little to make sure this doesn't happen
-		 */
-		for ( i=0 ; i<aData.length ; i++ )
-		{
-			/* Magic number 8 is because no entity is longer then strlen 8 in ISO 8859-1 */
-			iIndex = aData[i].lastIndexOf( '&' );
-			if ( iIndex !== -1 && aData[i].length >= 8 && iIndex > aData[i].length - 8 )
-			{
-				sInner = aData[i].substr( iIndex );
-				aData[i] = aData[i].substr( 0, iIndex );
+		var n = document.createElement('div');
 
-				aData[i+1] = aData[i+1] ?
-					sInner + aData[i+1] :
-					sInner;
+		return sData.replace( /&([^\s]*);/g, function( match, match2 ) {
+			if ( match.substr(1, 1) === '#' )
+			{
+				return String.fromCharCode( Number(match2.substr(1)) );
 			}
-			
-			n.innerHTML = aData[i];
-			sReturn += n.childNodes[0].nodeValue;
-		}
-		
-		return sReturn;
+			else
+			{
+				n.innerHTML = match;
+				return n.childNodes[0].nodeValue;
+			}
+		} );
 	},
 	
 	
