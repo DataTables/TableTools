@@ -1079,7 +1079,7 @@ TableTools.prototype = {
 			this.s.select.postSelected.call( this, anSelected );
 		}
 
-		TableTools._fnEventDispatch( this, 'select', anSelected );
+		TableTools._fnEventDispatch( this, 'select', anSelected, true );
 	},
 
 	/**
@@ -1110,7 +1110,7 @@ TableTools.prototype = {
 			this.s.select.postDeselected.call( this, anDeselectedTrs );
 		}
 
-		TableTools._fnEventDispatch( this, 'select', anDeselectedTrs );
+		TableTools._fnEventDispatch( this, 'select', anDeselectedTrs, false );
 	},
 	
 	/**
@@ -2038,18 +2038,19 @@ TableTools._fnEventListen = function ( that, type, fn )
  *  @param   {Object} that Scope of the listening function (i.e. 'this' in the caller)
  *  @param   {String} type Event type
  *  @param   {Node} node Element that the event occurred on (may be null)
+ *  @param   {boolean} [selected] Indicate if the node was selected (true) or deselected (false)
  *  @returns void
  *  @private
  *  @static
  */
-TableTools._fnEventDispatch = function ( that, type, node )
+TableTools._fnEventDispatch = function ( that, type, node, selected )
 {
 	var listeners = TableTools._aListeners;
 	for ( var i=0, iLen=listeners.length ; i<iLen ; i++ )
 	{
 		if ( that.dom.table == listeners[i].that.dom.table && listeners[i].type == type )
 		{
-			listeners[i].fn( node );
+			listeners[i].fn( node, selected );
 		}
 	}
 };
