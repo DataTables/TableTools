@@ -1058,8 +1058,10 @@ TableTools.prototype = {
 	 */
 	"_fnRowSelect": function ( src )
 	{
-		var data = this._fnSelectData( src );
-		var firstTr = data.length===0 ? null : data[0].nTr;
+		var
+			data = this._fnSelectData( src ),
+			firstTr = data.length===0 ? null : data[0].nTr,
+			anSelected = [];
 
 		for ( var i=0, iLen=data.length ; i<iLen ; i++ )
 		{
@@ -1068,15 +1070,16 @@ TableTools.prototype = {
 			if ( data[i].nTr )
 			{
 				$(data[i].nTr).addClass( this.classes.select.row );
+				anSelected.push( data[i].nTr );
 			}
 		}
 
 		if ( this.s.select.postSelected !== null )
 		{
-			this.s.select.postSelected.call( this, firstTr );
+			this.s.select.postSelected.call( this, anSelected );
 		}
 
-		TableTools._fnEventDispatch( this, 'select', firstTr );
+		TableTools._fnEventDispatch( this, 'select', anSelected );
 	},
 
 	/**
@@ -1086,14 +1089,17 @@ TableTools.prototype = {
 	 */
 	"_fnRowDeselect": function ( src )
 	{
-		var data = this._fnSelectData( src );
-		var firstTr = data.length===0 ? null : data[0].nTr;
+		var
+			data = this._fnSelectData( src ),
+			firstTr = data.length===0 ? null : data[0].nTr,
+			anDeselectedTrs = [];
 
 		for ( var i=0, iLen=data.length ; i<iLen ; i++ )
 		{
 			if ( data[i].nTr && data[i]._DTTT_selected )
 			{
 				$(data[i].nTr).removeClass( this.classes.select.row );
+				anDeselectedTrs.push( data[i].nTr );
 			}
 
 			data[i]._DTTT_selected = false;
@@ -1101,10 +1107,10 @@ TableTools.prototype = {
 
 		if ( this.s.select.postDeselected !== null )
 		{
-			this.s.select.postDeselected.call( this, firstTr );
+			this.s.select.postDeselected.call( this, anDeselectedTrs );
 		}
 
-		TableTools._fnEventDispatch( this, 'select', firstTr );
+		TableTools._fnEventDispatch( this, 'select', anDeselectedTrs );
 	},
 	
 	/**
