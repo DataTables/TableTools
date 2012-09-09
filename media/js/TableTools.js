@@ -1018,25 +1018,19 @@ TableTools.prototype = {
 				{
 				    return;
 				}
-				
-				/* User defined selection function */
-				if ( that.s.select.preRowSelect !== null && !that.s.select.preRowSelect.call(that, e) )
-				{
-					return;
-				}
 
 				if ( that.fnIsSelected( this ) )
 				{
-					that._fnRowDeselect( this );
+					that._fnRowDeselect( this, e );
 				}
 				else if ( that.s.select.type == "single" )
 				{
 					that.fnSelectNone();
-					that._fnRowSelect( this );
+					that._fnRowSelect( this, e );
 				}
 				else if ( that.s.select.type == "multi" )
 				{
-					that._fnRowSelect( this );
+					that._fnRowSelect( this, e );
 				}
 			} );
 
@@ -1056,24 +1050,36 @@ TableTools.prototype = {
 	 *  @param   {*} src Rows to select - see _fnSelectData for a description of valid inputs
 	 *  @private 
 	 */
-	"_fnRowSelect": function ( src )
+	"_fnRowSelect": function ( src, e )
 	{
 		var
+			that = this,
 			data = this._fnSelectData( src ),
 			firstTr = data.length===0 ? null : data[0].nTr,
 			anSelected = [];
 
+		// Get all the rows that will be selected
 		for ( var i=0, iLen=data.length ; i<iLen ; i++ )
 		{
-			data[i]._DTTT_selected = true;
-
 			if ( data[i].nTr )
 			{
-				$(data[i].nTr).addClass( this.classes.select.row );
 				anSelected.push( data[i].nTr );
 			}
 		}
+		
+		// User defined pre-selection function
+		if ( this.s.select.preRowSelect !== null && !this.s.select.preRowSelect.call(this, e, anSelected, true) )
+		{
+			return;
+		}
 
+		// Mark them as selected
+		$.each( anSelected, function( i, node ) {
+			node._DTTT_selected = true;
+			$(node).addClass( that.classes.select.row );
+		} );
+
+		// Post-selection function
 		if ( this.s.select.postSelected !== null )
 		{
 			this.s.select.postSelected.call( this, anSelected );
@@ -1087,24 +1093,36 @@ TableTools.prototype = {
 	 *  @param   {*} src Rows to deselect - see _fnSelectData for a description of valid inputs
 	 *  @private 
 	 */
-	"_fnRowDeselect": function ( src )
+	"_fnRowDeselect": function ( src, e )
 	{
 		var
+			that = this,
 			data = this._fnSelectData( src ),
 			firstTr = data.length===0 ? null : data[0].nTr,
 			anDeselectedTrs = [];
 
+		// Get all the rows that will be deselected
 		for ( var i=0, iLen=data.length ; i<iLen ; i++ )
 		{
-			if ( data[i].nTr && data[i]._DTTT_selected )
+			if ( data[i].nTr )
 			{
-				$(data[i].nTr).removeClass( this.classes.select.row );
 				anDeselectedTrs.push( data[i].nTr );
 			}
-
-			data[i]._DTTT_selected = false;
 		}
 
+		// User defined pre-selection function
+		if ( this.s.select.preRowSelect !== null && !this.s.select.preRowSelect.call(this, e, anDeselectedTrs, false) )
+		{
+			return;
+		}
+
+		// Mark them as deselected
+		$.each( anDeselectedTrs, function( i, node ) {
+			node._DTTT_selected = false;
+			$(node).removeClass( that.classes.select.row );
+		} );
+
+		// Post-deselection function
 		if ( this.s.select.postDeselected !== null )
 		{
 			this.s.select.postDeselected.call( this, anDeselectedTrs );
