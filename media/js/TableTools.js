@@ -323,18 +323,39 @@ TableTools.prototype = {
 	/**
 	 * Retreieve the settings object from an instance
 	 *  @returns {array} List of TR nodes which are currently selected
+	 *  @param {boolean} [filtered=false] Get only selected rows which are  
+	 *    available given the filtering applied to the table. By default
+	 *    this is false -  i.e. all rows, regardless of filtering are 
+	      selected.
 	 */
-	"fnGetSelected": function ()
+	"fnGetSelected": function ( filtered )
 	{
-		var out=[];
-		var data=this.s.dt.aoData;
-		var i, iLen;
+		var
+			out = [],
+			data = this.s.dt.aoData,
+			displayed = this.s.dt.aiDisplay,
+			i, iLen;
 
-		for ( i=0, iLen=data.length ; i<iLen ; i++ )
+		if ( filtered )
 		{
-			if ( data[i]._DTTT_selected )
+			// Only consider filtered rows
+			for ( i=0, iLen=displayed.length ; i<iLen ; i++ )
 			{
-				out.push( data[i].nTr );
+				if ( data[ displayed[i] ]._DTTT_selected )
+				{
+					out.push( data[ displayed[i] ].nTr );
+				}
+			}
+		}
+		else
+		{
+			// Use all rows
+			for ( i=0, iLen=data.length ; i<iLen ; i++ )
+			{
+				if ( data[i]._DTTT_selected )
+				{
+					out.push( data[i].nTr );
+				}
 			}
 		}
 
@@ -404,10 +425,7 @@ TableTools.prototype = {
 	{
 		var s = this._fnGetMasterSettings();
 
-		this._fnRowDeselect( (filtered === true) ?
-			s.dt.aiDisplay :
-			s.dt.aoData
-		);
+		this._fnRowDeselect( this.fnGetSelected(filtered) );
 	},
 
 	
@@ -1056,10 +1074,11 @@ TableTools.prototype = {
 			that = this,
 			data = this._fnSelectData( src ),
 			firstTr = data.length===0 ? null : data[0].nTr,
-			anSelected = [];
+			anSelected = [],
+			i, len;
 
 		// Get all the rows that will be selected
-		for ( var i=0, iLen=data.length ; i<iLen ; i++ )
+		for ( i=0, len=data.length ; i<len ; i++ )
 		{
 			if ( data[i].nTr )
 			{
@@ -1074,10 +1093,15 @@ TableTools.prototype = {
 		}
 
 		// Mark them as selected
-		$.each( anSelected, function( i, node ) {
-			node._DTTT_selected = true;
-			$(node).addClass( that.classes.select.row );
-		} );
+		for ( i=0, len=data.length ; i<len ; i++ )
+		{
+			data[i]._DTTT_selected = true;
+
+			if ( data[i].nTr )
+			{
+				$(data[i].nTr).addClass( that.classes.select.row );
+			}
+		}
 
 		// Post-selection function
 		if ( this.s.select.postSelected !== null )
@@ -1099,10 +1123,11 @@ TableTools.prototype = {
 			that = this,
 			data = this._fnSelectData( src ),
 			firstTr = data.length===0 ? null : data[0].nTr,
-			anDeselectedTrs = [];
+			anDeselectedTrs = [],
+			i, len;
 
 		// Get all the rows that will be deselected
-		for ( var i=0, iLen=data.length ; i<iLen ; i++ )
+		for ( i=0, len=data.length ; i<len ; i++ )
 		{
 			if ( data[i].nTr )
 			{
@@ -1117,10 +1142,15 @@ TableTools.prototype = {
 		}
 
 		// Mark them as deselected
-		$.each( anDeselectedTrs, function( i, node ) {
-			node._DTTT_selected = false;
-			$(node).removeClass( that.classes.select.row );
-		} );
+		for ( i=0, len=data.length ; i<len ; i++ )
+		{
+			data[i]._DTTT_selected = false;
+
+			if ( data[i].nTr )
+			{
+				$(data[i].nTr).removeClass( that.classes.select.row );
+			}
+		}
 
 		// Post-deselection function
 		if ( this.s.select.postDeselected !== null )
