@@ -2202,10 +2202,12 @@ TableTools.BUTTONS = {
 		"sPdfOrientation": "portrait",
 		"sPdfSize": "A4",
 		"sPdfMessage": "",
+		"sPdfExtras": "",
 		"fnClick": function( nButton, oConfig, flash ) {
 			this.fnSetText( flash, 
 				"title:"+ this.fnGetTitle(oConfig) +"\n"+
 				"message:"+ oConfig.sPdfMessage +"\n"+
+				"extras:" + oConfig.sPdfExtras +"\n"+
 				"colWidth:"+ this.fnCalcColRatios(oConfig) +"\n"+
 				"orientation:"+ oConfig.sPdfOrientation +"\n"+
 				"size:"+ oConfig.sPdfSize +"\n"+
