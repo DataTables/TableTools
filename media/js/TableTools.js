@@ -1,6 +1,6 @@
 /*
  * File:        TableTools.js
- * Version:     2.1.4.dev
+ * Version:     2.1.4
  * Description: Tools and buttons for DataTables
  * Author:      Allan Jardine (www.sprymedia.co.uk)
  * Language:    Javascript
@@ -1745,6 +1745,12 @@ TableTools.prototype = {
 		if ( oSetDT.oScroll.sX !== "" || oSetDT.oScroll.sY !== "" )
 		{
 			this._fnPrintScrollStart( oSetDT );
+
+			// If the table redraws while in print view, the DataTables scrolling
+			// setup would hide the header, so we need to readd it on draw
+			$(this.s.dt.nTable).bind('draw.DTTT_Print', function () {
+				that._fnPrintScrollStart( oSetDT );
+			} );
 		}
 		
 		/* Remove the other DataTables feature nodes - but leave the table! and info div */
@@ -1820,6 +1826,8 @@ TableTools.prototype = {
 		/* Restore DataTables' scrolling */
 		if ( oSetDT.oScroll.sX !== "" || oSetDT.oScroll.sY !== "" )
 		{
+			$(this.s.dt.nTable).unbind('draw.DTTT_Print');
+
 			this._fnPrintScrollEnd();
 		}
 		
@@ -2426,7 +2434,7 @@ TableTools.prototype.CLASS = "TableTools";
  *  @type	  String
  *  @default   See code
  */
-TableTools.VERSION = "2.1.4.dev";
+TableTools.VERSION = "2.1.4";
 TableTools.prototype.VERSION = TableTools.VERSION;
 
 
