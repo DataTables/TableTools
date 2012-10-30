@@ -1260,7 +1260,7 @@ TableTools.prototype = {
 			
 			if ( oConfig.fnClick !== null )
 			{
-				oConfig.fnClick.call( that, nButton, oConfig, null );
+				oConfig.fnClick.call( that, nButton, oConfig, null, e );
 			}
 			
 			/* Provide a complete function to match the behaviour of the flash elements */
