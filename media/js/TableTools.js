@@ -1,6 +1,6 @@
 /*
  * File:        TableTools.js
- * Version:     2.1.4
+ * Version:     2.1.5.dev
  * Description: Tools and buttons for DataTables
  * Author:      Allan Jardine (www.sprymedia.co.uk)
  * Language:    Javascript
@@ -673,11 +673,12 @@ TableTools.prototype = {
 		/* Buttons */
 		this._fnButtonDefinations( this.s.buttonSet, this.dom.container );
 		
-		/* Destructor - need to wipe the DOM for IE's garbage collector */
+		/* Destructor */
 		this.s.dt.aoDestroyCallback.push( {
 			"sName": "TableTools",
 			"fn": function () {
-				that.dom.container.innerHTML = "";
+				$('tr', that.s.dt.nTBody).die( 'click.DTTT_Select' );
+				$(that.dom.container).empty();
 			}
 		} );
 	},
@@ -1024,7 +1025,7 @@ TableTools.prototype = {
 			
 			$(dt.nTable).addClass( this.classes.select.table );
 			
-			$('tr', dt.nTBody).live( 'click', function(e) {
+			$('tr', dt.nTBody).live( 'click.DTTT_Select', function(e) {
 				/* Sub-table must be ignored (odd that the selector won't do this with >) */
 				if ( this.parentNode != dt.nTBody )
 				{
@@ -2434,7 +2435,7 @@ TableTools.prototype.CLASS = "TableTools";
  *  @type	  String
  *  @default   See code
  */
-TableTools.VERSION = "2.1.4";
+TableTools.VERSION = "2.1.5.dev";
 TableTools.prototype.VERSION = TableTools.VERSION;
 
 
