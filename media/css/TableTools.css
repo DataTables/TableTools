@@ -121,19 +121,19 @@ a.DTTT_disabled {
  * Action specific button styles
  * If you want images - comment this back in
 
-button.DTTT_button_csv,
-button.DTTT_button_xls,
-button.DTTT_button_copy,
-button.DTTT_button_pdf,
-button.DTTT_button_print {
+a.DTTT_button_csv,
+a.DTTT_button_xls,
+a.DTTT_button_copy,
+a.DTTT_button_pdf,
+a.DTTT_button_print {
 	padding-right: 0px;
 }
 
-button.DTTT_button_csv span,
-button.DTTT_button_xls span,
-button.DTTT_button_copy span,
-button.DTTT_button_pdf span,
-button.DTTT_button_print span {
+a.DTTT_button_csv span,
+a.DTTT_button_xls span,
+a.DTTT_button_copy span,
+a.DTTT_button_pdf span,
+a.DTTT_button_print span {
 	display: inline-block;
 	height: 24px;
 	line-height: 24px;
@@ -141,20 +141,20 @@ button.DTTT_button_print span {
 }
 
 
-button.DTTT_button_csv span { background: url(../images/csv.png) no-repeat bottom right; }
-button.DTTT_button_csv:hover span { background: url(../images/csv_hover.png) no-repeat center right; }
+a.DTTT_button_csv span { background: url(../images/csv.png) no-repeat bottom right; }
+a.DTTT_button_csv:hover span { background: url(../images/csv_hover.png) no-repeat center right; }
 
-button.DTTT_button_xls span { background: url(../images/xls.png) no-repeat center right; }
-button.DTTT_button_xls:hover span { background: #f0f0f0 url(../images/xls_hover.png) no-repeat center right; }
+a.DTTT_button_xls span { background: url(../images/xls.png) no-repeat center right; }
+a.DTTT_button_xls:hover span { background: #f0f0f0 url(../images/xls_hover.png) no-repeat center right; }
 
-button.DTTT_button_copy span { background: url(../images/copy.png) no-repeat center right; }
-button.DTTT_button_copy:hover span { background: #f0f0f0 url(../images/copy_hover.png) no-repeat center right; }
+a.DTTT_button_copy span { background: url(../images/copy.png) no-repeat center right; }
+a.DTTT_button_copy:hover span { background: #f0f0f0 url(../images/copy_hover.png) no-repeat center right; }
 
-button.DTTT_button_pdf span { background: url(../images/pdf.png) no-repeat center right; }
-button.DTTT_button_pdf:hover span { background: #f0f0f0 url(../images/pdf_hover.png) no-repeat center right; }
+a.DTTT_button_pdf span { background: url(../images/pdf.png) no-repeat center right; }
+a.DTTT_button_pdf:hover span { background: #f0f0f0 url(../images/pdf_hover.png) no-repeat center right; }
 
-button.DTTT_button_print span { background: url(../images/print.png) no-repeat center right; }
-button.DTTT_button_print:hover span { background: #f0f0f0 url(../images/print_hover.png) no-repeat center right; }
+a.DTTT_button_print span { background: url(../images/print.png) no-repeat center right; }
+a.DTTT_button_print:hover span { background: #f0f0f0 url(../images/print_hover.png) no-repeat center right; }
 
  */
 
