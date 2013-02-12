@@ -677,7 +677,7 @@ TableTools.prototype = {
 		this.s.dt.aoDestroyCallback.push( {
 			"sName": "TableTools",
 			"fn": function () {
-				$('tr', that.s.dt.nTBody).die( 'click.DTTT_Select' );
+				$(that.s.dt.nTBody).off( 'click.DTTT_Select', 'tr' );
 				$(that.dom.container).empty();
 			}
 		} );
