@@ -813,7 +813,7 @@ TableTools.prototype = {
 	 *  @method  _fnButtonBase
 	 *  @param   {o} oConfig Button configuration object
 	 *  @returns {Node} DIV element for the button
-	 *  @private 
+	 *  @private
 	 */
 	"_fnButtonBase": function ( o, bCollectionButton )
 	{
@@ -821,14 +821,14 @@ TableTools.prototype = {
 
 		if ( bCollectionButton )
 		{
-			sTag = o.sTag !== "default" ? o.sTag : this.s.tags.collection.button;
-			sLiner = o.sLinerTag !== "default" ? o.sLiner : this.s.tags.collection.liner;
+			sTag = o.sTag && o.sTag !== "default" ? o.sTag : this.s.tags.collection.button;
+			sLiner = o.sLinerTag && o.sLinerTag !== "default" ? o.sLiner : this.s.tags.collection.liner;
 			sClass = this.classes.collection.buttons.normal;
 		}
 		else
 		{
-			sTag = o.sTag !== "default" ? o.sTag : this.s.tags.button;
-			sLiner = o.sLinerTag !== "default" ? o.sLiner : this.s.tags.liner;
+			sTag = o.sTag && o.sTag !== "default" ? o.sTag : this.s.tags.button;
+			sLiner = o.sLinerTag && o.sLinerTag !== "default" ? o.sLiner : this.s.tags.liner;
 			sClass = this.classes.buttons.normal;
 		}
 
