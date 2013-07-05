@@ -131,7 +131,7 @@ ZeroClipboard_TableTools.Client.prototype = {
 		// style.backgroundColor = '#f00'; // debug
 		if ( this.domElement ) {
 			this.domElement.appendChild(this.div);
-			this.div.innerHTML = this.getHTML( box.width, box.height );
+			this.div.innerHTML = this.getHTML( box.width, box.height ).replace(/&/g, '&amp;');
 		}
 	},
 	
