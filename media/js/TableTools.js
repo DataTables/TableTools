@@ -628,15 +628,14 @@ TableTools.prototype = {
 	 *  @param {int} time The duration the message is to be shown on screen for (mS)
 	 */
 	"fnInfo": function ( message, time ) {
-		var nInfo = document.createElement( "div" );
-		nInfo.className = this.classes.print.info;
-		nInfo.innerHTML = message;
+		var info = $('<div/>')
+			.addClass( this.classes.print.info )
+			.html( message )
+			.append( 'body' );
 
-		document.body.appendChild( nInfo );
-		
 		setTimeout( function() {
-			$(nInfo).fadeOut( "normal", function() {
-				document.body.removeChild( nInfo );
+			info.fadeOut( "normal", function() {
+				info.remove();
 			} );
 		}, time );
 	},
@@ -1783,10 +1782,10 @@ TableTools.prototype = {
 		/* Add a message at the top of the page */
 		if ( oConfig.sMessage )
 		{
-			this.dom.print.message = document.createElement( "div" );
-			this.dom.print.message.className = this.classes.print.message;
-			this.dom.print.message.innerHTML = oConfig.sMessage;
-			document.body.insertBefore( this.dom.print.message, document.body.childNodes[0] );
+			$('<div/>')
+				.addClass( this.classes.print.message )
+				.html( oConfig.sMessage )
+				.prepend( 'body' );
 		}
 		
 		/* Cache the scrolling and the jump to the top of the page */
@@ -1965,8 +1964,8 @@ TableTools.prototype = {
 	 */
 	"_fnPrintHideNodes": function ( nNode )
 	{
-	  var anHidden = this.dom.print.hidden;
-	  
+		var anHidden = this.dom.print.hidden;
+
 		var nParent = nNode.parentNode;
 		var nChildren = nParent.childNodes;
 		for ( var i=0, iLen=nChildren.length ; i<iLen ; i++ )
@@ -1987,7 +1986,7 @@ TableTools.prototype = {
 			}
 		}
 		
-		if ( nParent.nodeName != "BODY" )
+		if ( nParent.nodeName.toUpperCase() != "BODY" )
 		{
 			this._fnPrintHideNodes( nParent );
 		}
@@ -2226,7 +2225,7 @@ TableTools.BUTTONS = {
 
 	"print": $.extend( {}, TableTools.buttonBase, {
 		"sInfo": "<h6>Print view</h6><p>Please use your browser's print function to "+
-		  "print this table. Press escape when finished.",
+		  "print this table. Press escape when finished.</p>",
 		"sMessage": null,
 		"bShowAll": true,
 		"sToolTip": "View print view",
