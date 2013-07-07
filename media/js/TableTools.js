@@ -631,7 +631,7 @@ TableTools.prototype = {
 		var info = $('<div/>')
 			.addClass( this.classes.print.info )
 			.html( message )
-			.append( 'body' );
+			.appendTo( 'body' );
 
 		setTimeout( function() {
 			info.fadeOut( "normal", function() {
