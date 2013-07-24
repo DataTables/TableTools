@@ -996,7 +996,7 @@ TableTools.prototype = {
 			} );
 			
 			this.dom.collection.collection = null;
-			this.dom.collection.background = null;
+			$("." + TableTools.classes.collection.background).remove()
 		}
 	},
 	
