@@ -785,7 +785,7 @@ TableTools.prototype = {
 	{
 	  var nButton = this._fnButtonBase( oConfig, bCollectionButton );
 		
-		if ( oConfig.sAction.match(/flash/) )
+		if ( oConfig.sAction.match(/flash/) && this._fnHasFlash() )
 		{
 			this._fnFlashConfig( nButton, oConfig );
 		}
@@ -1278,7 +1278,26 @@ TableTools.prototype = {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Flash button functions
 	 */
-	
+
+	/**
+	 * Detects if the browser supports Flash. No params needed.
+	 *  @method  _fnHasFlash
+	 *  @returns {boolean} Browser supports Flash
+	 *  @private
+	 */
+	 
+	"_fnHasFlash": function ()
+	{
+		var flashCapable = false;
+		try {
+			var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+			if(fo) flashCapable = true;
+		} catch(e) {
+			if(navigator.mimeTypes ["application/x-shockwave-flash"] != undefined) flashCapable = true;
+		}
+		return flashCapable;
+	},
+
 	/**
 	 * Configure a flash based button for interaction events
 	 *  @method  _fnFlashConfig
