@@ -1535,17 +1535,19 @@ TableTools.prototype = {
 		/*
 		 * Body
 		 */
-		var aDataIndex = dt.aiDisplay;
 		var aSelected = this.fnGetSelected();
-		if ( this.s.select.type !== "none" && bSelectedOnly && aSelected.length !== 0 )
-		{
-			aDataIndex = [];
-			for ( i=0, iLen=aSelected.length ; i<iLen ; i++ )
-			{
-				aDataIndex.push( dt.oInstance.fnGetPosition( aSelected[i] ) );
-			}
-		}
+		bSelectedOnly = this.s.select.type !== "none" && bSelectedOnly && aSelected.length !== 0;
 		
+		var aDataIndex = dt.oInstance
+			.$('tr', oConfig.oSelectorOpts)
+			.map( function (id, row) {
+				// If "selected only", then ensure that the row is in the selected list
+				return bSelectedOnly && $.inArray( row, aSelected ) === -1 ?
+					null :
+					dt.oInstance.fnGetPosition( row );
+			} )
+			.get();
+
 		for ( j=0, jLen=aDataIndex.length ; j<jLen ; j++ )
 		{
 			tr = dt.aoData[ aDataIndex[j] ].nTr;
@@ -2144,6 +2146,7 @@ TableTools.buttonBase = {
 	"bFooter": true,
 	"bOpenRows": false,
 	"bSelectedOnly": false,
+	"oSelectorOpts": undefined, // See http://datatables.net/docs/DataTables/1.9.4/#$ for full options
 
 	// Callbacks
 	"fnMouseover": null,
@@ -2369,7 +2372,7 @@ TableTools.classes = {
 	},
 	"select": {
 		"table": "DTTT_selectable",
-		"row": "DTTT_selected"
+		"row": "DTTT_selected selected"
 	},
 	"print": {
 		"body": "DTTT_Print",
