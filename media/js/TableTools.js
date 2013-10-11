@@ -680,6 +680,11 @@ TableTools.prototype = {
 				$(that.dom.container).empty();
 			}
 		} );
+
+		var dt = $.fn.dataTable;
+		if( dt.versionCheck ) { // DataTables 1.10 all have the registerPlugin
+			new dt.Api( this.s.dt ).plugin.register( 'tabletools', this );
+		}
 	},
 	
 	
