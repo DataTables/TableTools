@@ -32,7 +32,14 @@
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>As well as providing a button toolbar, TableTools provides everything needed to have selectable rows in the table. Row selection is turned off by default in TableTools, but can be enabled using the <i>sRowSelect</i> parameter, set to either 'multi' or 'single'. When set the end user can select rows by simply clicking on them. TableTools provides <a href="http://datatables.net/extras/tabletools/api">a set of API methods</a> and <a href="http://datatables.net/extras/tabletools/initialisation">callbacks</a> for controlling and monitoring the row selection in TableTools. This example shows single row selection enabled.</p>
+			<p>As well as providing a button toolbar, TableTools provides everything needed to have selectable rows in the table.  TableTools has four row selection modes of operation:</p>
+			<ul>
+				<li><code>none</code> - Default, where no user row selection options are available</li>
+				<li><code>single</code> - A single row can be selected</li>
+				<li><code>multi</code> - Multiple rows can be selected simply by clicking on the rows</li>
+				<li><code>os</code> - Operating System like selection where you can use the shift and ctrl / cmd keys on your keyboard to add / remove rows from the selection.</li>
+			</ul>
+			<p>This example shows the <code>single</code> select option. There are also a number of <a href="http://datatables.net/extras/tabletools/buttons">pre-defined buttons</a> to provide functions such as select-all and select-none, as shown in this example.</p>
 			
 			
 			<h1>Live example</h1>
@@ -486,6 +493,7 @@
 				<li><a href="multiple_tables.html">Multiple DataTables with a single initialisation</a></li>
 				<li><a href="select_multi.html">User selectable rows (multiple rows)</a></li>
 				<li><a href="select_single.html">User selectable rows (single row)</a></li>
+				<li><a href="select_os.html">User selectable rows (shift / ctrl select multiple rows)</a></li>
 				<li><a href="alt_init.html">Alternative initialisation using 'new TableTools()'</a></li>
 				<li><a href="defaults.html">Altering the TableTools defaults</a></li>
 				<li><a href="plug-in.html">TableTools plug-in buttons</a></li>
