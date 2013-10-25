@@ -29,7 +29,7 @@ var TableTools;
  * @param {Object} oDT DataTables instance
  * @param {Object} oOpts TableTools options
  * @param {String} oOpts.sSwfPath ZeroClipboard SWF path
- * @param {String} oOpts.sRowSelect Row selection options - 'none', 'single' or 'multi'
+ * @param {String} oOpts.sRowSelect Row selection options - 'none', 'single', 'multi' or 'os'
  * @param {Function} oOpts.fnPreRowSelect Callback function just prior to row selection
  * @param {Function} oOpts.fnRowSelected Callback function just after row selection
  * @param {Function} oOpts.fnRowDeselected Callback function when row is deselected
@@ -1031,33 +1031,112 @@ TableTools.prototype = {
 
 			$(dt.nTable).addClass( this.classes.select.table );
 
+			// When using OS style selection, we want to cancel the shift text
+			// selection, but only when the shift key is used (so you can
+			// actually still select text in the table)
+			if ( this.s.select.type === 'os' ) {
+				$(dt.nTBody).on( 'mousedown.DTTT_Select', 'tr', function(e) {
+					if ( e.shiftKey ) {
+
+						$(dt.nTBody)
+							.css( '-moz-user-select', 'none' )
+							.one('selectstart.DTTT_Select', 'tr', function () {
+								return false;
+							} );
+					}
+				} );
+
+				$(dt.nTBody).on( 'mouseup.DTTT_Select', 'tr', function(e) {
+					$(dt.nTBody).css( '-moz-user-select', '' );
+				} );
+			}
+
+			// Row selection
 			$(dt.nTBody).on( 'click.DTTT_Select', 'tr', function(e) {
+				var select = that.s.select;
+				var pos = that.s.dt.oInstance.fnGetPosition( this );
+
 				/* Sub-table must be ignored (odd that the selector won't do this with >) */
-				if ( this.parentNode != dt.nTBody )
-				{
+				if ( this.parentNode != dt.nTBody ) {
 					return;
 				}
 
 				/* Check that we are actually working with a DataTables controlled row */
-				if ( dt.oInstance.fnGetData(this) === null )
-				{
+				if ( dt.oInstance.fnGetData(this) === null ) {
 				    return;
 				}
 
-				if ( that.fnIsSelected( this ) )
-				{
+				// Shift click, ctrl click and simple click handling to make
+				// row selection a lot like a file system in desktop OSs
+				if ( select.type == 'os' ) {
+					if ( e.ctrlKey || e.metaKey ) {
+						// Add or remove from the selection
+						if ( that.fnIsSelected( this ) ) {
+							that._fnRowDeselect( this, e );
+						}
+						else {
+							that._fnRowSelect( this, e );
+						}
+					}
+					else if ( e.shiftKey ) {
+						// Add a range of rows, from the last selected row to
+						// this one
+						var rowIdxs = that.s.dt.aiDisplay.slice(); // visible rows
+						var idx1 = $.inArray( select.lastRow, rowIdxs );
+						var idx2 = $.inArray( pos, rowIdxs );
+
+						if ( that.fnGetSelected().length === 0 || idx1 === -1 ) {
+							// select from top to here - slightly odd, but both
+							// Windows and Mac OS do this
+							rowIdxs.splice( $.inArray( pos, rowIdxs )+1, rowIdxs.length );
+						}
+						else {
+							// reverse so we can shift click 'up' as well as down
+							if ( idx1 > idx2 ) {
+								var tmp = idx2;
+								idx2 = idx1;
+								idx1 = tmp;
+							}
+
+							rowIdxs.splice( idx2+1, rowIdxs.length );
+							rowIdxs.splice( 0, idx1 );
+						}
+
+						if ( ! that.fnIsSelected( this ) ) {
+							// Select range
+							that._fnRowSelect( rowIdxs, e );
+						}
+						else {
+							// Deselect range - need to keep the clicked on row selected
+							rowIdxs.splice( $.inArray( pos, rowIdxs ), 1 );
+							that._fnRowDeselect( rowIdxs, e );
+						}
+					}
+					else {
+						// No cmd or shift click. Deselect current if selected,
+						// or select this row only
+						if ( that.fnIsSelected( this ) && that.fnGetSelected().length === 1 ) {
+							that._fnRowDeselect( this, e );
+						}
+						else {
+							that.fnSelectNone();
+							that._fnRowSelect( this, e );
+						}
+					}
+				}
+				else if ( that.fnIsSelected( this ) ) {
 					that._fnRowDeselect( this, e );
 				}
-				else if ( that.s.select.type == "single" )
-				{
+				else if ( select.type == "single" ) {
 					that.fnSelectNone();
 					that._fnRowSelect( this, e );
 				}
-				else if ( that.s.select.type == "multi" )
-				{
+				else if ( select.type == "multi" ) {
 					that._fnRowSelect( this, e );
 				}
-			} );
+
+				select.lastRow = pos;
+			} );//.on('selectstart', function () { return false; } );
 
 			// Bind a listener to the DataTable for when new rows are created.
 			// This allows rows to be visually selected when they should be and
