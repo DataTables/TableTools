@@ -682,11 +682,6 @@ TableTools.prototype = {
 				$(that.dom.container).empty();
 			}
 		} );
-
-		var dt = $.fn.dataTable;
-		if( dt.versionCheck ) { // DataTables 1.10 all have the registerPlugin
-			new dt.Api( this.s.dt ).plugin.register( 'tabletools', this );
-		}
 	},
 
 
@@ -2527,6 +2522,26 @@ TableTools.prototype.CLASS = "TableTools";
  */
 TableTools.VERSION = "2.1.6-dev";
 TableTools.prototype.VERSION = TableTools.VERSION;
+
+
+
+// DataTables 1.10 API
+// 
+// This will be extended in a big way in in TableTools 3 to provide API methods
+// such as rows().select() and rows.selected() etc, but for the moment the
+// tabletools() method simply returns the instance.
+
+if ( $.fn.dataTable.Api ) {
+	$.fn.dataTable.Api.register( 'tabletools()', function () {
+		var tt = null;
+
+		if ( this.context.length > 0 ) {
+			tt = TableTools.fnGetInstance( this.context[0].nTable );
+		}
+
+		return tt;
+	} );
+}
 
 
 
