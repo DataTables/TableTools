@@ -1821,7 +1821,9 @@ TableTools.prototype = {
 		{
 			oSetDT._iDisplayStart = 0;
 			oSetDT._iDisplayLength = -1;
-			oSetDT.oApi._fnCalculateEnd( oSetDT );
+			if ( oSetDT.oApi._fnCalculateEnd ) {
+				oSetDT.oApi._fnCalculateEnd( oSetDT );
+			}
 			oSetDT.oApi._fnDraw( oSetDT );
 		}
 
@@ -1931,7 +1933,9 @@ TableTools.prototype = {
 		/* Restore the table length */
 		oSetDT._iDisplayStart = oSetPrint.saveStart;
 		oSetDT._iDisplayLength = oSetPrint.saveLength;
-		oSetDT.oApi._fnCalculateEnd( oSetDT );
+		if ( oSetDT.oApi._fnCalculateEnd ) {
+			oSetDT.oApi._fnCalculateEnd( oSetDT );
+		}
 		oSetDT.oApi._fnDraw( oSetDT );
 
 		$(document).unbind( "keydown.DTTT" );
