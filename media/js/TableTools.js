@@ -2276,6 +2276,9 @@ TableTools.BUTTONS = {
 		"sAction": "flash_copy",
 		"sButtonClass": "DTTT_button_copy",
 		"sButtonText": "Copy",
+		"sInfo": "<h6>Table copied</h6><p>Table copied to the clipboard.</p>",
+		"sLines": "lines",
+		"sLine": "line",
 		"fnClick": function( nButton, oConfig, flash ) {
 			this.fnSetText( flash, this.fnGetTableData(oConfig) );
 		},
@@ -2283,11 +2286,8 @@ TableTools.BUTTONS = {
 			var
 				lines = text.split('\n').length,
 				len = this.s.dt.nTFoot === null ? lines-1 : lines-2,
-				plural = (len==1) ? "" : "s";
-			this.fnInfo( '<h6>Table copied</h6>'+
-				'<p>Copied '+len+' row'+plural+' to the clipboard.</p>',
-				1500
-			);
+				text = (len==1) ? oConfig.sInfo + "(" + lines + " " + oConfig.sLine + ")" : oConfig.sInfo + "(" + lines + " " + oConfig.sLines + ")";
+			this.fnInfo( text, 1500 );
 		}
 	} ),
 
