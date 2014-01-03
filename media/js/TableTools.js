@@ -17,10 +17,26 @@
 
 /*globals ZeroClipboard_TableTools*/
 
+(function(window, document) {
+"use strict";
+
+(function(factory) {
+	// Define as an AMD module if possible
+	if ( typeof define === 'function' && define.amd )
+	{
+	  define( ['jquery', 'datatables'], factory );
+	}
+	/* Define using browser globals otherwise
+	 * Prevent multiple instantiations if the script is loaded twice
+	 */
+	else if ( jQuery && !jQuery.fn.dataTable.TableTools )
+	{
+	  window.TableTools = factory( jQuery );
+	}
+})(function($) {
+
 /* Global scope for TableTools */
 var TableTools;
-
-(function($, window, document) {
 
 /** 
  * TableTools provides flexible buttons and other tools for a DataTables enhanced table
@@ -2582,4 +2598,8 @@ else
 
 $.fn.DataTable.TableTools = TableTools;
 
-})(jQuery, window, document);
+return TableTools;
+
+});
+
+})(window, document);
