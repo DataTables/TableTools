@@ -1,19 +1,26 @@
-/*
- * File:        TableTools.js
- * Version:     2.2.0-dev
- * Description: Tools and buttons for DataTables
- * Author:      Allan Jardine (www.sprymedia.co.uk)
- * Language:    Javascript
- * License:	    GPL v2 or BSD 3 point style
- * Project:	    DataTables
- * 
- * Copyright 2009-2013 Allan Jardine, all rights reserved.
- *
- * This source file is free software, under either the GPL v2 license or a
- * BSD style license, available at:
- *   http://datatables.net/license_gpl2
- *   http://datatables.net/license_bsd
+/*! TableTools 2.2.0-dev
+ * 2009-2014 SpryMedia Ltd - datatables.net/license
  */
+
+/**
+ * @summary     TableTools
+ * @description Tools and buttons for DataTables
+ * @version     2.2.0-dev
+ * @file        dataTables.tableTools.js
+ * @author      SpryMedia Ltd (www.sprymedia.co.uk)
+ * @contact     www.sprymedia.co.uk/contact
+ * @copyright   Copyright 2009-2014 SpryMedia Ltd.
+ *
+ * This source file is free software, available under the following license:
+ *   MIT license - http://datatables.net/license/mit
+ *
+ * This source file is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
+ *
+ * For details please refer to: http://www.datatables.net
+ */
+
 
 /* Global scope for TableTools for backwards compatibility.
  * Will be removed in 2.3
