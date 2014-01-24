@@ -26,7 +26,9 @@ var TableTools;
  * TableTools provides flexible buttons and other tools for a DataTables enhanced table
  * @class TableTools
  * @constructor
- * @param {Object} oDT DataTables instance
+ * @param {Object} oDT DataTables instance. When using DataTables 1.10 this can
+ *   also be a jQuery collection, jQuery selector, table node, DataTables API
+ *   instance or DataTables settings object.
  * @param {Object} oOpts TableTools options
  * @param {String} oOpts.sSwfPath ZeroClipboard SWF path
  * @param {String} oOpts.sRowSelect Row selection options - 'none', 'single', 'multi' or 'os'
@@ -42,6 +44,12 @@ TableTools = function( oDT, oOpts )
 	{
 		alert( "Warning: TableTools must be initialised with the keyword 'new'" );
 	}
+
+	// In 1.10 we can use the API to get the settings object from a number of
+	// sources
+	var dtSettings = $.fn.dataTable.Api ?
+		new $.fn.dataTable.Api( oDT ).settings()[0] :
+		oDT.fnSettings();
 
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -66,7 +74,7 @@ TableTools = function( oDT, oOpts )
 		 * @type	 object
 		 * @default  <i>From the oDT init option</i>
 		 */
-		"dt": oDT.fnSettings(),
+		"dt": dtSettings,
 
 		/**
 		 * @namespace Print specific information
@@ -640,6 +648,16 @@ TableTools.prototype = {
 				info.remove();
 			} );
 		}, time );
+	},
+
+
+
+	/**
+	 * Get the container element of the instance for attaching to the DOM
+	 *   @returns {node} DOM node
+	 */
+	"fnContainer": function () {
+		return this.dom.container;
 	},
 
 
@@ -2436,6 +2454,8 @@ TableTools.BUTTONS = {
  *     4. string - Returned string from Flash (flash button only - and only on 'complete')
  */
 
+// Alias to match the other plug-ins styling
+TableTools.buttons = TableTools.BUTTONS;
 
 
 /**
@@ -2488,7 +2508,7 @@ TableTools.classes_themeroller = {
  * @namespace TableTools default settings for initialisation
  */
 TableTools.DEFAULTS = {
-	"sSwfPath":        "media/swf/copy_csv_xls_pdf.swf",
+	"sSwfPath":        "../swf/copy_csv_xls_pdf.swf",
 	"sRowSelect":      "none",
 	"sSelectedClass":  null,
 	"fnPreRowSelect":  null,
@@ -2508,6 +2528,9 @@ TableTools.DEFAULTS = {
 	}
 };
 
+// Alias to match the other plug-ins
+TableTools.defaults = TableTools.DEFAULTS;
+
 
 /**
  * Name of this class
@@ -2524,8 +2547,7 @@ TableTools.prototype.CLASS = "TableTools";
  *  @type	  String
  *  @default   See code
  */
-TableTools.VERSION = "2.1.6-dev";
-TableTools.prototype.VERSION = TableTools.VERSION;
+TableTools.version = "2.2.0-dev";
 
 
 
@@ -2563,10 +2585,10 @@ if ( typeof $.fn.dataTable == "function" &&
 {
 	$.fn.dataTableExt.aoFeatures.push( {
 		"fnInit": function( oDTSettings ) {
-			var oOpts = typeof oDTSettings.oInit.oTableTools != 'undefined' ?
-				oDTSettings.oInit.oTableTools : {};
+			var init = oDTSettings.oInit;
+			var opts = init.tableTools || init.oTableTools || {};
 
-			var oTT = new TableTools( oDTSettings.oInstance, oOpts );
+			var oTT = new TableTools( oDTSettings.oInstance, opts );
 			TableTools._aInstances.push( oTT );
 
 			return oTT.dom.container;
@@ -2577,7 +2599,7 @@ if ( typeof $.fn.dataTable == "function" &&
 }
 else
 {
-	alert( "Warning: TableTools 2 requires DataTables 1.9.0 or newer - www.datatables.net/download");
+	alert( "Warning: TableTools requires DataTables 1.9.0 or newer - www.datatables.net/download");
 }
 
 $.fn.DataTable.TableTools = TableTools;
