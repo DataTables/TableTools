@@ -27,7 +27,12 @@
  */
 var TableTools;
 
-(function($, window, document) {
+(function(window, document, undefined) {
+
+
+var factory = function( $, DataTable ) {
+"use strict";
+
 
 //include ZeroClipboard.js
 //include TableTools.js
@@ -62,4 +67,20 @@ else
 $.fn.dataTable.TableTools = TableTools;
 $.fn.DataTable.TableTools = TableTools;
 
-})(jQuery, window, document);
+
+return TableTools;
+}; // /factory
+
+
+// Define as an AMD module if possible
+if ( typeof define === 'function' && define.amd ) {
+	define( 'datatables-tabletools', ['jquery', 'datatables'], factory );
+}
+else if ( jQuery && !jQuery.fn.dataTable.TableTools ) {
+	// Otherwise simply initialise as normal, stopping multiple evaluation
+	factory( jQuery, jQuery.fn.dataTable );
+}
+
+
+})(window, document);
+
