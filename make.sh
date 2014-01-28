@@ -57,3 +57,6 @@ if [ -e /usr/local/flex_sdk_4.0.0.14159 -a "$DEBUG" = "" ]; then
 fi
 
 rsync -r swf $OUT_DIR
+
+# Readme
+cp Readme.txt $OUT_DIR
