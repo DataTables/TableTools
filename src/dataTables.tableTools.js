@@ -1,11 +1,14 @@
-/*! TableTools 2.2.0-dev
+/*! TableTools 2.2.0
  * 2009-2014 SpryMedia Ltd - datatables.net/license
+ *
+ * ZeroClipboard 1.0.4
+ * Author: Joseph Huckaby - MIT licensed
  */
 
 /**
  * @summary     TableTools
  * @description Tools and buttons for DataTables
- * @version     2.2.0-dev
+ * @version     2.2.0
  * @file        dataTables.tableTools.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact

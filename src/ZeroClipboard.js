@@ -1,5 +1,6 @@
-// Simple Set Clipboard System
-// Author: Joseph Huckaby
+/* ZeroClipboard 1.0.4
+ * Author: Joseph Huckaby
+ */
 
 var ZeroClipboard_TableTools = {
 

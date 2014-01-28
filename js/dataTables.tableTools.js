@@ -1,11 +1,14 @@
-/*! TableTools 2.2.0-dev
+/*! TableTools 2.2.0
  * 2009-2014 SpryMedia Ltd - datatables.net/license
+ *
+ * ZeroClipboard 1.0.4
+ * Author: Joseph Huckaby - MIT licensed
  */
 
 /**
  * @summary     TableTools
  * @description Tools and buttons for DataTables
- * @version     2.2.0-dev
+ * @version     2.2.0
  * @file        dataTables.tableTools.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
@@ -35,8 +38,9 @@ var factory = function( $, DataTable ) {
 
 
 //include ZeroClipboard.js
-// Simple Set Clipboard System
-// Author: Joseph Huckaby
+/* ZeroClipboard 1.0.4
+ * Author: Joseph Huckaby
+ */
 
 var ZeroClipboard_TableTools = {
 
@@ -429,21 +433,8 @@ ZeroClipboard_TableTools.Client.prototype = {
 // object list
 window.ZeroClipboard_TableTools = ZeroClipboard_TableTools;
 //include TableTools.js
-/*
- * File:        TableTools.js
- * Version:     2.1.6-dev
- * Description: Tools and buttons for DataTables
- * Author:      Allan Jardine (www.sprymedia.co.uk)
- * Language:    Javascript
- * License:	    GPL v2 or BSD 3 point style
- * Project:	    DataTables
- * 
- * Copyright 2009-2013 Allan Jardine, all rights reserved.
- *
- * This source file is free software, under either the GPL v2 license or a
- * BSD style license, available at:
- *   http://datatables.net/license_gpl2
- *   http://datatables.net/license_bsd
+/* TableTools
+ * 2009-2014 SpryMedia Ltd - datatables.net/license
  */
 
 /*globals ZeroClipboard_TableTools*/
