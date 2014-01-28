@@ -17,16 +17,18 @@ css_compress $OUT_DIR/css/dataTables.tableTools.css
 # Copy images
 rsync -r images $OUT_DIR
 
-# Copy JS
+# Combine JS files
 if [ ! -d $OUT_DIR/js ]; then
 	mkdir $OUT_DIR/js
 fi
-cp js/dataTables.tableTools.js $OUT_DIR/js
+cp src/dataTables.tableTools.js js
 
-sed -i -e "/\/\/include ZeroClipboard.js/r js/ZeroClipboard.js" $OUT_DIR/js/dataTables.tableTools.js
-sed -i -e "/\/\/include TableTools.js/r js/TableTools.js" $OUT_DIR/js/dataTables.tableTools.js
-rm $OUT_DIR/js/dataTables.tableTools.js-e
+sed -i -e "/\/\/include ZeroClipboard.js/r src/ZeroClipboard.js" js/dataTables.tableTools.js
+sed -i -e "/\/\/include TableTools.js/r src/TableTools.js" js/dataTables.tableTools.js
+rm js/dataTables.tableTools.js-e
 
+# Copy JS input place
+cp js/dataTables.tableTools.js $OUT_DIR/js/dataTables.tableTools.js
 js_compress $OUT_DIR/js/dataTables.tableTools.js
 
 # Copy and build examples
