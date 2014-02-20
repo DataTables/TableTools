@@ -2,10 +2,8 @@
  * 2009-2014 SpryMedia Ltd - datatables.net/license
  */
 
-/*globals ZeroClipboard_TableTools*/
+/*globals TableTools,ZeroClipboard_TableTools*/
 
-/* Global scope for TableTools */
-var TableTools;
 
 (function($, window, document) {
 
@@ -2534,7 +2532,7 @@ TableTools.prototype.CLASS = "TableTools";
  *  @type	  String
  *  @default   See code
  */
-TableTools.version = "2.2.0-dev";
+TableTools.version = "2.2.1-dev";
 
 
 
