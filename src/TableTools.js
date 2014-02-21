@@ -436,7 +436,7 @@ TableTools.prototype = {
 			this.fnSelectNone();
 			this._fnRowSelect( n );
 		}
-		else if ( this.s.select.type == "multi" )
+		else
 		{
 			this._fnRowSelect( n );
 		}
