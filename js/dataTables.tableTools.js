@@ -3006,7 +3006,9 @@ if ( typeof $.fn.dataTable == "function" &&
 	$.fn.dataTableExt.aoFeatures.push( {
 		"fnInit": function( oDTSettings ) {
 			var init = oDTSettings.oInit;
-			var opts = init.tableTools || init.oTableTools || {};
+			var opts = init ?
+				init.tableTools || init.oTableTools || {} :
+				{};
 
 			var oTT = new TableTools( oDTSettings.oInstance, opts );
 			TableTools._aInstances.push( oTT );
