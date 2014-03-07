@@ -1485,17 +1485,21 @@ TableTools.prototype = {
 			}
 
 			// Row selection
-			$(dt.nTBody).on( 'click.DTTT_Select', 'tr', function(e) {
+			$(dt.nTBody).on( 'click.DTTT_Select', this.s.custom.sRowSelector, function(e) {
+				var row = this.nodeName.toLowerCase() === 'tr' ?
+					this :
+					$(this).parents('tr')[0];
+
 				var select = that.s.select;
-				var pos = that.s.dt.oInstance.fnGetPosition( this );
+				var pos = that.s.dt.oInstance.fnGetPosition( row );
 
 				/* Sub-table must be ignored (odd that the selector won't do this with >) */
-				if ( this.parentNode != dt.nTBody ) {
+				if ( row.parentNode != dt.nTBody ) {
 					return;
 				}
 
 				/* Check that we are actually working with a DataTables controlled row */
-				if ( dt.oInstance.fnGetData(this) === null ) {
+				if ( dt.oInstance.fnGetData(row) === null ) {
 				    return;
 				}
 
@@ -1504,11 +1508,11 @@ TableTools.prototype = {
 				if ( select.type == 'os' ) {
 					if ( e.ctrlKey || e.metaKey ) {
 						// Add or remove from the selection
-						if ( that.fnIsSelected( this ) ) {
-							that._fnRowDeselect( this, e );
+						if ( that.fnIsSelected( row ) ) {
+							that._fnRowDeselect( row, e );
 						}
 						else {
-							that._fnRowSelect( this, e );
+							that._fnRowSelect( row, e );
 						}
 					}
 					else if ( e.shiftKey ) {
@@ -1535,7 +1539,7 @@ TableTools.prototype = {
 							rowIdxs.splice( 0, idx1 );
 						}
 
-						if ( ! that.fnIsSelected( this ) ) {
+						if ( ! that.fnIsSelected( row ) ) {
 							// Select range
 							that._fnRowSelect( rowIdxs, e );
 						}
@@ -1548,24 +1552,24 @@ TableTools.prototype = {
 					else {
 						// No cmd or shift click. Deselect current if selected,
 						// or select this row only
-						if ( that.fnIsSelected( this ) && that.fnGetSelected().length === 1 ) {
-							that._fnRowDeselect( this, e );
+						if ( that.fnIsSelected( row ) && that.fnGetSelected().length === 1 ) {
+							that._fnRowDeselect( row, e );
 						}
 						else {
 							that.fnSelectNone();
-							that._fnRowSelect( this, e );
+							that._fnRowSelect( row, e );
 						}
 					}
 				}
-				else if ( that.fnIsSelected( this ) ) {
-					that._fnRowDeselect( this, e );
+				else if ( that.fnIsSelected( row ) ) {
+					that._fnRowDeselect( row, e );
 				}
 				else if ( select.type == "single" ) {
 					that.fnSelectNone();
-					that._fnRowSelect( this, e );
+					that._fnRowSelect( row, e );
 				}
 				else if ( select.type == "multi" ) {
-					that._fnRowSelect( this, e );
+					that._fnRowSelect( row, e );
 				}
 
 				select.lastRow = pos;
@@ -2930,6 +2934,7 @@ TableTools.classes_themeroller = {
 TableTools.DEFAULTS = {
 	"sSwfPath":        "../swf/copy_csv_xls_pdf.swf",
 	"sRowSelect":      "none",
+	"sRowSelector":    "tr",
 	"sSelectedClass":  null,
 	"fnPreRowSelect":  null,
 	"fnRowSelected":   null,
