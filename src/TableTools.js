@@ -1878,7 +1878,7 @@ TableTools.prototype = {
 			$('<div/>')
 				.addClass( this.classes.print.message )
 				.html( oConfig.sMessage )
-				.prepend( 'body' );
+				.prependTo( 'body' );
 		}
 
 		/* Cache the scrolling and the jump to the top of the page */
@@ -1928,11 +1928,7 @@ TableTools.prototype = {
 		window.scrollTo( 0, oSetPrint.saveScroll );
 
 		/* Drop the print message */
-		if ( oDomPrint.message !== null )
-		{
-			document.body.removeChild( oDomPrint.message );
-			oDomPrint.message = null;
-		}
+		$('div.'+this.classes.print.message).remove();
 
 		/* Styling class */
 		$(document.body).removeClass( 'DTTT_Print' );
