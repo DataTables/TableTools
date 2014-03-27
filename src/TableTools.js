@@ -683,6 +683,12 @@ TableTools.prototype = {
 			"fn": function () {
 				$(that.s.dt.nTBody).off( 'click.DTTT_Select', 'tr' );
 				$(that.dom.container).empty();
+
+				// Remove the instance
+				var idx = $.inArray( that, TableTools._aInstances );
+				if ( idx !== -1 ) {
+					TableTools._aInstances.splice( idx, 1 );
+				}
 			}
 		} );
 	},
