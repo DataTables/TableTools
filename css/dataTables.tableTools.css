@@ -32,11 +32,27 @@ div.DTTT_container {
 	margin-bottom: 1em;
 }
 
+@media screen and (max-width: 640px) {
+	div.DTTT_container {
+		float: none !important;
+		text-align: center;
+	}
+
+	div.DTTT_container:after {
+		visibility: hidden;
+		display: block;
+		content: "";
+		clear: both;
+		height: 0;
+	}
+}
+
+
 button.DTTT_button,
 div.DTTT_button,
 a.DTTT_button {
 	position: relative;
-	float: left;
+	display: inline-block;
 	margin-right: 3px;
 	padding: 5px 8px;
 	border: 1px solid #999;
