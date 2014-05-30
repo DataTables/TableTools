@@ -1,4 +1,4 @@
-/*! TableTools 2.2.1
+/*! TableTools 2.2.2-dev
  * 2009-2014 SpryMedia Ltd - datatables.net/license
  *
  * ZeroClipboard 1.0.4
@@ -8,7 +8,7 @@
 /**
  * @summary     TableTools
  * @description Tools and buttons for DataTables
- * @version     2.2.1
+ * @version     2.2.2-dev
  * @file        dataTables.tableTools.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
@@ -738,6 +738,8 @@ TableTools = function( oDT, oOpts )
 		oOpts = {};
 	}
 
+
+	TableTools._aInstances.push( this );
 	this._fnConstruct( oOpts );
 
 	return this;
@@ -2974,7 +2976,7 @@ TableTools.prototype.CLASS = "TableTools";
  *  @type	  String
  *  @default   See code
  */
-TableTools.version = "2.2.1";
+TableTools.version = "2.2.2-dev";
 
 
 
@@ -3017,10 +3019,7 @@ if ( typeof $.fn.dataTable == "function" &&
 				init.tableTools || init.oTableTools || {} :
 				{};
 
-			var oTT = new TableTools( oDTSettings.oInstance, opts );
-			TableTools._aInstances.push( oTT );
-
-			return oTT.dom.container;
+			return new TableTools( oDTSettings.oInstance, opts ).dom.container;
 		},
 		"cFeature": "T",
 		"sFeature": "TableTools"

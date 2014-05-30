@@ -303,6 +303,8 @@ TableTools = function( oDT, oOpts )
 		oOpts = {};
 	}
 
+
+	TableTools._aInstances.push( this );
 	this._fnConstruct( oOpts );
 
 	return this;
@@ -2539,7 +2541,7 @@ TableTools.prototype.CLASS = "TableTools";
  *  @type	  String
  *  @default   See code
  */
-TableTools.version = "2.2.1";
+TableTools.version = "2.2.2-dev";
 
 
 
@@ -2582,10 +2584,7 @@ if ( typeof $.fn.dataTable == "function" &&
 				init.tableTools || init.oTableTools || {} :
 				{};
 
-			var oTT = new TableTools( oDTSettings.oInstance, opts );
-			TableTools._aInstances.push( oTT );
-
-			return oTT.dom.container;
+			return new TableTools( oDTSettings.oInstance, opts ).dom.container;
 		},
 		"cFeature": "T",
 		"sFeature": "TableTools"

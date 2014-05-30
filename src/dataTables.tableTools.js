@@ -1,4 +1,4 @@
-/*! TableTools 2.2.1
+/*! TableTools 2.2.2-dev
  * 2009-2014 SpryMedia Ltd - datatables.net/license
  *
  * ZeroClipboard 1.0.4
@@ -8,7 +8,7 @@
 /**
  * @summary     TableTools
  * @description Tools and buttons for DataTables
- * @version     2.2.1
+ * @version     2.2.2-dev
  * @file        dataTables.tableTools.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
