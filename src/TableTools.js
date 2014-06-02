@@ -1793,7 +1793,7 @@ TableTools.prototype = {
 
 		var n = document.createElement('div');
 
-		return sData.replace( /&([^\s]*);/g, function( match, match2 ) {
+		return sData.replace( /&([^\s]*?);/g, function( match, match2 ) {
 			if ( match.substr(1, 1) === '#' )
 			{
 				return String.fromCharCode( Number(match2.substr(1)) );
