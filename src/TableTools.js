@@ -2291,8 +2291,7 @@ TableTools.BUTTONS = {
 			this.fnSetText( flash, this.fnGetTableData(oConfig) );
 		},
 		"fnComplete": function(nButton, oConfig, flash, text) {
-			var
-				lines = text.split('\n').length;
+			var lines = text.split('\n').length;
             if (oConfig.bHeader) lines--;
             if (oConfig.bFooter) lines--;
 			var plural = (lines==1) ? "" : "s";
