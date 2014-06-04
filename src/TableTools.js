@@ -2293,7 +2293,7 @@ TableTools.BUTTONS = {
 		"fnComplete": function(nButton, oConfig, flash, text) {
 			var lines = text.split('\n').length;
             if (oConfig.bHeader) lines--;
-            if (oConfig.bFooter) lines--;
+            if (this.s.dt.nTFoot !== null && oConfig.bFooter) lines--;
 			var plural = (lines==1) ? "" : "s";
 			this.fnInfo( '<h6>Table copied</h6>'+
 				'<p>Copied '+lines+' row'+plural+' to the clipboard.</p>',
