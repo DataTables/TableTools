@@ -857,7 +857,10 @@ TableTools.prototype = {
 	{
 		var s = this._fnGetMasterSettings();
 
-		this._fnRowDeselect( this.fnGetSelected(filtered) );
+		this._fnRowDeselect( (filtered === true) ?
+			s.dt.aiDisplay :
+			s.dt.aoData
+		);
 	},
 
 
