@@ -1636,7 +1636,13 @@ TableTools.prototype = {
 				$(data[i].nTr).addClass( that.classes.select.row );
 			}
 		}
-
+		
+		// Fixed columns update
+		if ( typeof this.s.dt._oFixedColumns !== 'undefined' )
+		{
+			this.s.dt._oFixedColumns.fnUpdate();
+		}
+		
 		// Post-selection function
 		if ( this.s.select.postSelected !== null )
 		{
@@ -1684,6 +1690,12 @@ TableTools.prototype = {
 			{
 				$(data[i].nTr).removeClass( that.classes.select.row );
 			}
+		}
+		
+		// Fixed columns update
+		if ( typeof this.s.dt._oFixedColumns !== 'undefined' )
+		{
+			this.s.dt._oFixedColumns.fnUpdate();
 		}
 
 		// Post-deselection function
