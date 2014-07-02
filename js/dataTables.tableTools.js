@@ -1497,9 +1497,9 @@ TableTools.prototype = {
 
 			// Row selection
 			$(dt.nTBody).on( 'click.DTTT_Select', this.s.custom.sRowSelector, function(e) {
-				var row = this.nodeName.toLowerCase() === 'tr' ?
-					this :
-					$(this).parents('tr')[0];
+				var row = e.delegateTarget.offsetParent.className.indexOf('DTFC_Cloned') > -1 ?
+					dt.nTBody.rows[this.rowIndex -1] :
+					this.nodeName.toLowerCase() === 'tr' ? this : $(this).parents('tr')[0];
 
 				var select = that.s.select;
 				var pos = that.s.dt.oInstance.fnGetPosition( row );
