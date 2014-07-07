@@ -1635,15 +1635,18 @@ TableTools.prototype = {
 		var aSelected = this.fnGetSelected();
 		bSelectedOnly = this.s.select.type !== "none" && bSelectedOnly && aSelected.length !== 0;
 
-		var aDataIndex = dt.oInstance
-			.$('tr', oConfig.oSelectorOpts)
-			.map( function (id, row) {
-				// If "selected only", then ensure that the row is in the selected list
-				return bSelectedOnly && $.inArray( row, aSelected ) === -1 ?
-					null :
-					dt.oInstance.fnGetPosition( row );
-			} )
-			.get();
+		var api = $.fn.dataTable.Api;
+		var aDataIndex = api ?
+			new api( dt ).rows( oConfig.oSelectorOpts ).indexes().flatten().toArray() :
+			dt.oInstance
+				.$('tr', oConfig.oSelectorOpts)
+				.map( function (id, row) {
+					// If "selected only", then ensure that the row is in the selected list
+					return bSelectedOnly && $.inArray( row, aSelected ) === -1 ?
+						null :
+						dt.oInstance.fnGetPosition( row );
+				} )
+				.get();
 
 		for ( j=0, jLen=aDataIndex.length ; j<jLen ; j++ )
 		{

@@ -857,10 +857,7 @@ TableTools.prototype = {
 	{
 		var s = this._fnGetMasterSettings();
 
-		this._fnRowDeselect( (filtered === true) ?
-			s.dt.aiDisplay :
-			s.dt.aoData
-		);
+		this._fnRowDeselect( this.fnGetSelected(filtered) );
 	},
 
 
@@ -2073,15 +2070,18 @@ TableTools.prototype = {
 		var aSelected = this.fnGetSelected();
 		bSelectedOnly = this.s.select.type !== "none" && bSelectedOnly && aSelected.length !== 0;
 
-		var aDataIndex = dt.oInstance
-			.$('tr', oConfig.oSelectorOpts)
-			.map( function (id, row) {
-				// If "selected only", then ensure that the row is in the selected list
-				return bSelectedOnly && $.inArray( row, aSelected ) === -1 ?
-					null :
-					dt.oInstance.fnGetPosition( row );
-			} )
-			.get();
+		var api = $.fn.dataTable.Api;
+		var aDataIndex = api ?
+			new api( dt ).rows( oConfig.oSelectorOpts ).indexes().flatten().toArray() :
+			dt.oInstance
+				.$('tr', oConfig.oSelectorOpts)
+				.map( function (id, row) {
+					// If "selected only", then ensure that the row is in the selected list
+					return bSelectedOnly && $.inArray( row, aSelected ) === -1 ?
+						null :
+						dt.oInstance.fnGetPosition( row );
+				} )
+				.get();
 
 		for ( j=0, jLen=aDataIndex.length ; j<jLen ; j++ )
 		{
@@ -2231,7 +2231,7 @@ TableTools.prototype = {
 
 		var n = document.createElement('div');
 
-		return sData.replace( /&([^\s]*);/g, function( match, match2 ) {
+		return sData.replace( /&([^\s]*?);/g, function( match, match2 ) {
 			if ( match.substr(1, 1) === '#' )
 			{
 				return String.fromCharCode( Number(match2.substr(1)) );
@@ -2729,12 +2729,12 @@ TableTools.BUTTONS = {
 			this.fnSetText( flash, this.fnGetTableData(oConfig) );
 		},
 		"fnComplete": function(nButton, oConfig, flash, text) {
-			var
-				lines = text.split('\n').length,
-				len = this.s.dt.nTFoot === null ? lines-1 : lines-2,
-				plural = (len==1) ? "" : "s";
+			var lines = text.split('\n').length;
+            if (oConfig.bHeader) lines--;
+            if (this.s.dt.nTFoot !== null && oConfig.bFooter) lines--;
+			var plural = (lines==1) ? "" : "s";
 			this.fnInfo( '<h6>Table copied</h6>'+
-				'<p>Copied '+len+' row'+plural+' to the clipboard.</p>',
+				'<p>Copied '+lines+' row'+plural+' to the clipboard.</p>',
 				1500
 			);
 		}
