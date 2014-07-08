@@ -819,6 +819,49 @@ TableTools.prototype = {
 
 
 	/**
+	 * Get the indexes of the selected rows
+	 *  @returns {array} List of row indexes
+	 *  @param {boolean} [filtered=false] Get only selected rows which are  
+	 *    available given the filtering applied to the table. By default
+	 *    this is false -  i.e. all rows, regardless of filtering are 
+	      selected.
+	 */
+	"fnGetSelectedIndexes": function ( filtered )
+	{
+		var
+			out = [],
+			data = this.s.dt.aoData,
+			displayed = this.s.dt.aiDisplay,
+			i, iLen;
+
+		if ( filtered )
+		{
+			// Only consider filtered rows
+			for ( i=0, iLen=displayed.length ; i<iLen ; i++ )
+			{
+				if ( data[ displayed[i] ]._DTTT_selected )
+				{
+					out.push( displayed[i] );
+				}
+			}
+		}
+		else
+		{
+			// Use all rows
+			for ( i=0, iLen=data.length ; i<iLen ; i++ )
+			{
+				if ( data[i]._DTTT_selected )
+				{
+					out.push( i );
+				}
+			}
+		}
+
+		return out;
+	},
+
+
+	/**
 	 * Check to see if a current row is selected or not
 	 *  @param {Node} n TR node to check if it is currently selected or not
 	 *  @returns {Boolean} true if select, false otherwise
@@ -838,11 +881,9 @@ TableTools.prototype = {
 	 */
 	"fnSelectAll": function ( filtered )
 	{
-		var s = this._fnGetMasterSettings();
-
-		this._fnRowSelect( (filtered === true) ?
-			s.dt.aiDisplay :
-			s.dt.aoData
+		this._fnRowSelect( filtered ?
+			this.s.dt.aiDisplay :
+			this.s.dt.aoData
 		);
 	},
 
@@ -855,9 +896,7 @@ TableTools.prototype = {
 	 */
 	"fnSelectNone": function ( filtered )
 	{
-		var s = this._fnGetMasterSettings();
-
-		this._fnRowDeselect( this.fnGetSelected(filtered) );
+		this._fnRowDeselect( this.fnGetSelectedIndexes(filtered) );
 	},
 
 
