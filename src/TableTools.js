@@ -818,10 +818,14 @@ TableTools.prototype = {
 				buttonDef = $.extend( o, buttonSet[i], true );
 			}
 
-			wrapper.appendChild( this._fnCreateButton(
+			var button = this._fnCreateButton(
 				buttonDef,
 				$(wrapper).hasClass(this.classes.collection.container)
-			) );
+			);
+
+			if ( button ) {
+				wrapper.appendChild( button );
+			}
 		}
 	},
 
@@ -839,6 +843,10 @@ TableTools.prototype = {
 
 		if ( oConfig.sAction.match(/flash/) )
 		{
+			if ( ! this._fnHasFlash() ) {
+				return false;
+			}
+
 			this._fnFlashConfig( nButton, oConfig );
 		}
 		else if ( oConfig.sAction == "text" )
@@ -1413,6 +1421,34 @@ TableTools.prototype = {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Flash button functions
 	 */
+	
+	/**
+	 * Check if the Flash plug-in is available
+	 *  @method  _fnHasFlash
+	 *  @returns {boolean} `true` if Flash available, `false` otherwise
+	 *  @private 
+	 */
+	"_fnHasFlash": function ()
+	{
+		try {
+			var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+			if (fo) {
+				return true;
+			}
+		}
+		catch (e) {
+			if (
+				navigator.mimeTypes &&
+				navigator.mimeTypes['application/x-shockwave-flash'] !== undefined &&
+				navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin
+			) {
+				return true;
+			}
+		}
+
+		return false;
+	},
+
 
 	/**
 	 * Configure a flash based button for interaction events
