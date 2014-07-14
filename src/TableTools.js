@@ -2619,7 +2619,7 @@ TableTools.prototype.CLASS = "TableTools";
  *  @type	  String
  *  @default   See code
  */
-TableTools.version = "2.2.2-dev";
+TableTools.version = "2.2.2";
 
 
 
