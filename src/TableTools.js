@@ -1595,10 +1595,21 @@ TableTools.prototype = {
 		var aColumns = [];
 		var dt = this.s.dt;
 		var i, iLen;
+		var columns = dt.aoColumns;
+		var columnCount = columns.length;
 
-		if ( typeof mColumns == "object" )
+		if ( typeof mColumns == "function" )
 		{
-			for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
+			var a = mColumns.call( this, dt );
+
+			for ( i=0, iLen=columnCount ; i<iLen ; i++ )
+			{
+				aColumns.push( $.inArray( i, a ) !== -1 ? true : false );
+			}
+		}
+		else if ( typeof mColumns == "object" )
+		{
+			for ( i=0, iLen=columnCount ; i<iLen ; i++ )
 			{
 				aColumns.push( false );
 			}
@@ -1610,28 +1621,28 @@ TableTools.prototype = {
 		}
 		else if ( mColumns == "visible" )
 		{
-			for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
+			for ( i=0, iLen=columnCount ; i<iLen ; i++ )
 			{
-				aColumns.push( dt.aoColumns[i].bVisible ? true : false );
+				aColumns.push( columns[i].bVisible ? true : false );
 			}
 		}
 		else if ( mColumns == "hidden" )
 		{
-			for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
+			for ( i=0, iLen=columnCount ; i<iLen ; i++ )
 			{
-				aColumns.push( dt.aoColumns[i].bVisible ? false : true );
+				aColumns.push( columns[i].bVisible ? false : true );
 			}
 		}
 		else if ( mColumns == "sortable" )
 		{
-			for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
+			for ( i=0, iLen=columnCount ; i<iLen ; i++ )
 			{
-				aColumns.push( dt.aoColumns[i].bSortable ? true : false );
+				aColumns.push( columns[i].bSortable ? true : false );
 			}
 		}
 		else /* all */
 		{
-			for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
+			for ( i=0, iLen=columnCount ; i<iLen ; i++ )
 			{
 				aColumns.push( true );
 			}
