@@ -1723,7 +1723,9 @@ TableTools.prototype = {
 
 		var api = $.fn.dataTable.Api;
 		var aDataIndex = api ?
-			new api( dt ).rows( oConfig.oSelectorOpts ).indexes().flatten().toArray() :
+			new api( dt ).rows( oConfig.oSelectorOpts ).indexes().flatten().toArray().filter(function(ind){
+				return !bSelectedOnly || (bSelectedOnly && $.inArray( ind, this.fnGetSelectedIndexes() ) !== -1);
+			}, this) :
 			dt.oInstance
 				.$('tr', oConfig.oSelectorOpts)
 				.map( function (id, row) {
