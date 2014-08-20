@@ -31,7 +31,7 @@ $(document).ready( function () {
 
 # Documentation / support
 
-* Documentation: http://datatables.net/extensions/TableTools/
+* Documentation: http://datatables.net/extensions/tabletools/
 * DataTables support forums: http://datatables.net/forums
 
 
