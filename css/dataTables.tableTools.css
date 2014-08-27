@@ -115,6 +115,30 @@ a.DTTT_button:hover {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f3f3f3', endColorstr='#f4f4f4',GradientType=0 ); /* IE6-9 */
 }
 
+button.DTTT_button:focus,
+div.DTTT_button:focus,
+a.DTTT_button:focus {
+	border: 1px solid #426c9e;
+	text-shadow: 0 1px 0 #c4def1;
+	outline: none;
+
+	background-color: #a3d0ef 100%;
+	background-image: -webkit-linear-gradient(top, #a3d0ef 0%, #79ace9 65%, #a3d0ef 100%);
+	background-image:    -moz-linear-gradient(top, #a3d0ef 0%, #79ace9 65%, #a3d0ef 100%);
+	background-image:     -ms-linear-gradient(top, #a3d0ef 0%, #79ace9 65%, #a3d0ef 100%);
+	background-image:      -o-linear-gradient(top, #a3d0ef 0%, #79ace9 65%, #a3d0ef 100%);
+	background-image:         linear-gradient(top, #a3d0ef 0%, #79ace9 65%, #a3d0ef 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#a3d0ef', EndColorStr='#a3d0ef');
+}
+
+button.DTTT_button:active,
+div.DTTT_button:active,
+a.DTTT_button:active {
+	-webkit-box-shadow: inset 1px 1px 3px #999999;
+	-moz-box-shadow: inset 1px 1px 3px #999999;
+	box-shadow: inset 1px 1px 3px #999999;
+}
+
 button.DTTT_disabled,
 div.DTTT_disabled,
 a.DTTT_disabled {

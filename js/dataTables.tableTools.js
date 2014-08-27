@@ -1298,6 +1298,33 @@ TableTools.prototype = {
 			this._fnCollectionConfig( nButton, oConfig );
 		}
 
+		if ( this.s.dt.iTabIndex !== -1 ) {
+			$(nButton)
+				.attr( 'tabindex', this.s.dt.iTabIndex )
+				.attr( 'aria-controls', this.s.dt.sTableId )
+				.on( 'keyup.DTTT', function (e) {
+					// Trigger the click event on return key when focused.
+					// Note that for Flash buttons this has no effect since we
+					// can't programmatically trigger the Flash export
+					if ( e.keyCode === 13 ) {
+						e.stopPropagation();
+
+						$(this).trigger( 'click' );
+					}
+				} )
+				.on( 'mousedown.DTTT', function (e) {
+					// On mousedown we want to stop the focus occurring on the
+					// button, focus is used only for the keyboard navigation.
+					// But using preventDefault for the flash buttons stops the
+					// flash action. However, it is not the button that gets
+					// focused but the flash element for flash buttons, so this
+					// works
+					if ( ! oConfig.sAction.match(/flash/) ) {
+						e.preventDefault();
+					}
+				} );
+		}
+
 		return nButton;
 	},
 
