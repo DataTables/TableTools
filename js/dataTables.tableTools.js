@@ -2177,24 +2177,38 @@ TableTools.prototype = {
 			aData.push( aRow.join(oConfig.sFieldSeperator) );
 		}
 
+		bSelectedOnly = true;
+
 		/*
 		 * Body
 		 */
-		var aSelected = this.fnGetSelected();
+		var aDataIndex;
+		var aSelected = this.fnGetSelectedIndexes();
 		bSelectedOnly = this.s.select.type !== "none" && bSelectedOnly && aSelected.length !== 0;
 
-		var api = $.fn.dataTable.Api;
-		var aDataIndex = api ?
-			new api( dt ).rows( oConfig.oSelectorOpts ).indexes().flatten().toArray() :
-			dt.oInstance
+		if ( bSelectedOnly ) {
+			// Use the selected indexes
+			aDataIndex = aSelected;
+		}
+		else if ( DataTable.Api ) {
+			// 1.10+ style
+			aDataIndex = new DataTable.Api( dt )
+				.rows( oConfig.oSelectorOpts )
+				.indexes()
+				.flatten()
+				.toArray();
+		}
+		else {
+			// 1.9- style
+			aDataIndex = dt.oInstance
 				.$('tr', oConfig.oSelectorOpts)
 				.map( function (id, row) {
-					// If "selected only", then ensure that the row is in the selected list
-					return bSelectedOnly && $.inArray( row, aSelected ) === -1 ?
-						null :
-						dt.oInstance.fnGetPosition( row );
+					return dt.oInstance.fnGetPosition( row );
 				} )
 				.get();
+		}
+
+		console.log( aDataIndex, bSelectedOnly, aSelected );
 
 		for ( j=0, jLen=aDataIndex.length ; j<jLen ; j++ )
 		{
