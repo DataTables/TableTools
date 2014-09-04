@@ -2208,8 +2208,6 @@ TableTools.prototype = {
 				.get();
 		}
 
-		console.log( aDataIndex, bSelectedOnly, aSelected );
-
 		for ( j=0, jLen=aDataIndex.length ; j<jLen ; j++ )
 		{
 			tr = dt.aoData[ aDataIndex[j] ].nTr;
