@@ -1543,6 +1543,13 @@ TableTools.prototype = {
 			that._fnCollectionHide( nButton, oConfig );
 		} );
 
+		if ( oConfig.fnSelect !== null )
+		{
+			TableTools._fnEventListen( this, 'select', function (n) {
+				oConfig.fnSelect.call( that, nButton, oConfig, n );
+			} );
+		}
+
 		this._fnFlashGlue( flash, nButton, oConfig.sToolTip );
 	},
 
@@ -2669,7 +2676,7 @@ TableTools.prototype.CLASS = "TableTools";
  *  @type	  String
  *  @default   See code
  */
-TableTools.version = "2.2.3";
+TableTools.version = "2.2.4-dev";
 
 
 
