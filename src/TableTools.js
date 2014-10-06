@@ -722,7 +722,11 @@ TableTools.prototype = {
 		this.s.dt.aoDestroyCallback.push( {
 			"sName": "TableTools",
 			"fn": function () {
-				$(that.s.dt.nTBody).off( 'click.DTTT_Select', 'tr' );
+				$(that.s.dt.nTBody)
+					.off( 'click.DTTT_Select', that.s.custom.sRowSelector )
+					.off( 'mousedown.DTTT_Select', 'tr' )
+					.off( 'mouseup.DTTT_Select', 'tr' );
+
 				$(that.dom.container).empty();
 
 				// Remove the instance
