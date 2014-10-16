@@ -281,7 +281,7 @@ div.DTTT_collection {
 }
 
 div.DTTT_collection_background {
-	background: transparent url(../images/background.png) repeat top left;
+	background: black;
 	z-index: 2001;
 }
 
