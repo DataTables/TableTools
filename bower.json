@@ -1,5 +1,5 @@
 {
-	"name": "datatables-tabletools",
+	"name": "rjm-datatables-tabletools",
 	"version": "2.2.2",
 	"main": [
 		"js/dataTables.tableTools.js",

@@ -1,3 +1,10 @@
+/*! RJM Change:
+*	Modified this extension.
+* - Edited styles for export button div (172)
+* - Modified function to support multiple header rows (2169)
+* - Edited button text (2847)
+*/
+
 /*! TableTools 2.2.4-dev
  * 2009-2014 SpryMedia Ltd - datatables.net/license
  *
@@ -161,6 +168,8 @@ ZeroClipboard_TableTools.Client.prototype = {
 		// create floating DIV above element
 		this.div = document.createElement('div');
 		var style = this.div.style;
+
+		// RJM Change: added absolute position
 		style.position = 'absolute';
 		style.left = '0px';
 		style.top = '0px';
@@ -2168,24 +2177,31 @@ TableTools.prototype = {
 		var bSelectedOnly = (typeof oConfig.bSelectedOnly != 'undefined') ? oConfig.bSelectedOnly : false;
 
 		/*
+		 * RJM Change:
+		 * Edited to support multiple rows of headers.
 		 * Header
 		 */
 		if ( oConfig.bHeader )
 		{
 			aRow = [];
 
-			for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
-			{
-				if ( aColumnsInc[i] )
+			var headerColLabel;
+
+			var rowCount = dt.nTHead.rows.length;
+
+			for (j = 0; j < rowCount; j++) {
+				aRow = []; // clear row data
+				for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
 				{
-					sLoopData = dt.aoColumns[i].sTitle.replace(/\n/g," ").replace( /<.*?>/g, "" ).replace(/^\s+|\s+$/g,"");
-					sLoopData = this._fnHtmlDecode( sLoopData );
+					headerColLabel = '';
+					if (dt.aoHeader[j][i].cell.hasOwnProperty("innerText")) {
+						headerColLabel = dt.aoHeader[j][i].cell.innerText;
+					}
 
-					aRow.push( this._fnBoundData( sLoopData, oConfig.sFieldBoundary, regex ) );
+					aRow.push( this._fnBoundData( headerColLabel, oConfig.sFieldBoundary, regex ) );
 				}
+				aData.push( aRow.join(oConfig.sFieldSeperator) );
 			}
-
-			aData.push( aRow.join(oConfig.sFieldSeperator) );
 		}
 
 		bSelectedOnly = true;
@@ -2838,7 +2854,7 @@ TableTools.BUTTONS = {
 	"csv": $.extend( {}, TableTools.buttonBase, {
 		"sAction": "flash_save",
 		"sButtonClass": "DTTT_button_csv",
-		"sButtonText": "CSV",
+		"sButtonText": "Export to CSV", // RJM Change: 'CSV' to 'Export to CSV'
 		"sFieldBoundary": '"',
 		"sFieldSeperator": ",",
 		"fnClick": function( nButton, oConfig, flash ) {
