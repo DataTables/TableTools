@@ -1705,17 +1705,11 @@ var TableTools;
 
                         return out;
                     }
+                    else if (typeof src === 'number') {
+                        out.push(this.s.dt.aoData[src]);
+                    }
                     else {
-                        if (src.nodeName) {
-                            pos = this.s.dt.oInstance.fnGetPosition(src);
-                            out.push(this.s.dt.aoData[pos]);
-                        }
-                        else if (typeof src === 'number') {
-                            out.push(this.s.dt.aoData[src]);
-                        }
-                        else {
-                            out.push(src);
-                        }
+                        out.push(src);
                     }
 
                     return out;
