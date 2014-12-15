@@ -1809,6 +1809,10 @@ TableTools.prototype = {
 
 			return out;
 		}
+		else if ( typeof src === 'number' )
+		{
+		    out.push(this.s.dt.aoData[src]);
+		}
 		else
 		{
 			// A single aoData point
