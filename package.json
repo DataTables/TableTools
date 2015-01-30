@@ -1,0 +1,36 @@
+{
+    "name": "datatables-tabletools",
+    "description": "TableTools Plugin for DataTables",
+    "homepage": "https://datatables.net/extensions/tabletools/",
+    "author": {
+        "name": "Allan Jardine",
+        "url": "http://sprymedia.co.uk"
+    },
+    "version": "2.2.2",
+    "main": [
+        "js/dataTables.tableTools.js",
+        "css/dataTables.tableTools.css"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DataTables/TableTools.git"
+    },
+    "dependencies": {
+        "jquery": ">=1.7.0",
+        "datatables": ">=1.9.0"
+    },
+    "jspm": {
+        "main": "js/dataTables.tableTools",
+        "dependencies": {
+            "jquery": "*",
+            "datatables": "^1.9.0"
+        },
+        "shim": {
+            "dataTables.tableTools": {
+                "deps": ["jquery", "datatables"],
+                "imports": "jquery",
+                "exports": "TableTools"
+            }
+        }
+    }
+}
