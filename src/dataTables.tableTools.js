@@ -83,7 +83,13 @@ else if ( typeof exports === 'object' ) {
     // Node/CommonJS
     factory( require('jquery'), require('datatables') );
 }
-else if ( jQuery && !jQuery.fn.dataTable.TableTools ) {
+else if ( !jQuery ) {
+    console.log( "jQuery is not loaded! Could not initialize extension." );
+}
+else if ( !jQuery.fn.dataTable ) {
+    console.log( "dataTables is not loaded! Could not initialize extension." );
+}
+else if ( !jQuery.fn.dataTable.TableTools ) {
 	// Otherwise simply initialise as normal, stopping multiple evaluation
 	factory( jQuery, jQuery.fn.dataTable );
 }
