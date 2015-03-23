@@ -94,9 +94,9 @@ button.DTTT_button {
 	outline: none;
 }
 
-button.DTTT_button:hover,
-div.DTTT_button:hover,
-a.DTTT_button:hover {
+button.DTTT_button:hover:not(.DTTT_disabled),
+div.DTTT_button:hover:not(.DTTT_disabled),
+a.DTTT_button:hover:not(.DTTT_disabled) {
 	border: 1px solid #666;
 	text-decoration: none !important;
 
@@ -131,9 +131,9 @@ a.DTTT_button:focus {
 	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#a3d0ef', EndColorStr='#a3d0ef');
 }
 
-button.DTTT_button:active,
-div.DTTT_button:active,
-a.DTTT_button:active {
+button.DTTT_button:active:not(.DTTT_disabled),
+div.DTTT_button:active:not(.DTTT_disabled),
+a.DTTT_button:active:not(.DTTT_disabled) {
 	-webkit-box-shadow: inset 1px 1px 3px #999999;
 	-moz-box-shadow: inset 1px 1px 3px #999999;
 	box-shadow: inset 1px 1px 3px #999999;
@@ -144,7 +144,7 @@ div.DTTT_disabled,
 a.DTTT_disabled {
 	color: #999;
 	border: 1px solid #d0d0d0;
-	
+	cursor: default;
 	background: #ffffff; /* Old browsers */
 	background: -webkit-linear-gradient(top, #ffffff 0%,#f9f9f9 89%,#fafafa 100%); /* Chrome10+,Safari5.1+ */
 	background:    -moz-linear-gradient(top, #ffffff 0%,#f9f9f9 89%,#fafafa 100%); /* FF3.6+ */
