@@ -142,7 +142,7 @@ a.DTTT_button:active:not(.DTTT_disabled) {
 button.DTTT_disabled,
 div.DTTT_disabled,
 a.DTTT_disabled {
-	color: #999;
+	color: #999 !important;
 	border: 1px solid #d0d0d0;
 	cursor: default;
 	background: #ffffff; /* Old browsers */
