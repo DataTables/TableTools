@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<dt-example table-type="html" order="1">
+<dt-example table-type="html" order="12">
 
 <css lib="datatables tabletools" />
 <js lib="jquery datatables tabletools">
@@ -7,6 +7,7 @@
 
 $.fn.dataTable.TableTools.buttons.copy_to_div = $.extend(
 	true,
+	{},
 	$.fn.dataTable.TableTools.buttonBase,
 	{
 		"sNewLine":    "<br>",
@@ -18,13 +19,14 @@ $.fn.dataTable.TableTools.buttons.copy_to_div = $.extend(
 	}
 );
 
+
 $(document).ready(function() {
 	$('#example').DataTable( {
 		dom: 'T<"clear">lfrtip',
 		tableTools: {
 			"aButtons": [ {
 				"sExtends":    "copy_to_div",
-				"sButtonText": "Copy to div",
+				"sButtonText": "Copy to HTML",
 				"target":      "#copy"
 			} ]
 		}
