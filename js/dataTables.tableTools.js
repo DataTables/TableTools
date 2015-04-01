@@ -1811,7 +1811,7 @@ TableTools.prototype = {
 		}
 		else if ( typeof src === 'number' )
 		{
-		    out.push(this.s.dt.aoData[src]);
+			out.push(this.s.dt.aoData[src]);
 		}
 		else
 		{
