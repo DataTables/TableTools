@@ -1,5 +1,5 @@
 /* TableTools
- * 2009-2014 SpryMedia Ltd - datatables.net/license
+ * 2009-2015 SpryMedia Ltd - datatables.net/license
  */
 
 /*globals TableTools,ZeroClipboard_TableTools*/
@@ -1376,7 +1376,7 @@ TableTools.prototype = {
 		}
 		else if ( typeof src === 'number' )
 		{
-		    out.push(this.s.dt.aoData[src]);
+			out.push(this.s.dt.aoData[src]);
 		}
 		else
 		{
@@ -2684,7 +2684,7 @@ TableTools.prototype.CLASS = "TableTools";
  *  @type	  String
  *  @default   See code
  */
-TableTools.version = "2.2.4-dev";
+TableTools.version = "2.2.4";
 
 
 
