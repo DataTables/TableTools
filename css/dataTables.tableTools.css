@@ -320,6 +320,7 @@ div.DTTT_collection a.DTTT_button {
 	text-align: center;
 	color: #333;
 	padding: 10px 30px;
+	z-index: 2001;
 
 	background: #ffffff; /* Old browsers */
 	background: -webkit-linear-gradient(top, #ffffff 0%,#f3f3f3 89%,#f9f9f9 100%); /* Chrome10+,Safari5.1+ */
