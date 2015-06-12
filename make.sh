@@ -59,4 +59,4 @@ fi
 rsync -r swf $OUT_DIR
 
 # Readme
-cp Readme.txt $OUT_DIR
+cp Readme.md $OUT_DIR
