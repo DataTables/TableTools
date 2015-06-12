@@ -2197,11 +2197,7 @@ TableTools.prototype = {
 				aRow = []; // clear row data
 				for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
 				{
-					headerColLabel = '';
-					if (dt.aoHeader[j][i].cell.hasOwnProperty("innerText")) {
-						headerColLabel = dt.aoHeader[j][i].cell.innerText;
-					}
-
+					headerColLabel = dt.aoHeader[j][i].cell.innerText;
 					aRow.push( this._fnBoundData( headerColLabel, oConfig.sFieldBoundary, regex ) );
 				}
 				aData.push( aRow.join(oConfig.sFieldSeperator) );
