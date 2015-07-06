@@ -550,6 +550,7 @@ TableTools.prototype = {
 			}
 		}
 
+
 		for ( i=0, iLen=aColWidths.length ; i<iLen ; i++ )
 		{
 			aColWidths[i] = aColWidths[i] / iTotal;
@@ -726,6 +727,12 @@ TableTools.prototype = {
 					.off( 'click.DTTT_Select', that.s.custom.sRowSelector )
 					.off( 'mousedown.DTTT_Select', 'tr' )
 					.off( 'mouseup.DTTT_Select', 'tr' );
+
+				$.each( ZeroClipboard_TableTools.clients, function ( id, client ) {
+					if ( $(client.domElement).parents( that.dom.container ).length ) {
+						delete ZeroClipboard_TableTools.clients[ id ];
+					}
+				} );
 
 				$(that.dom.container).empty();
 
