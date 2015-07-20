@@ -2089,7 +2089,7 @@ TableTools.prototype = {
 		$('div.'+this.classes.print.message).remove();
 
 		/* Styling class */
-		$(document.body).removeClass( 'DTTT_Print' );
+		$(document.body).removeClass( this.classes.print.body );
 
 		/* Restore the table length */
 		oSetDT._iDisplayStart = oSetPrint.saveStart;
