@@ -1,3 +1,10 @@
+# Important - this is retired software
+
+Please note that TableTools has now been retired and replaced by the [Buttons](//datatables.net/extensions/buttons) and [Select](//datatables.net/extensions/select) extensions which offers significant improvements and API integration with the rest of DataTables and the other extensions.
+
+It is strongly recommended that you upgrade if possible to Buttons and Select, and to not use TableTools in any new projects.
+
+
 # TableTools
 
 TableTools is a plug-in for the DataTables HTML table enhancer, which adds a highly customisable button toolbar to a DataTable. Key features include:
