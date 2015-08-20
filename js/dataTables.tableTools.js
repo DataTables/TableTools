@@ -2197,7 +2197,12 @@ TableTools.prototype = {
 				aRow = []; // clear row data
 				for ( i=0, iLen=dt.aoColumns.length ; i<iLen ; i++ )
 				{
-					headerColLabel = dt.aoHeader[j][i].cell.innerText;
+					headerColLabel = '';
+					if (dt.aoHeader[j][i].cell.innerText !== undefined) {
+						headerColLabel = dt.aoHeader[j][i].cell.innerText;
+					} else if (dt.aoHeader[j][i].cell.innerHTML !== undefined) {
+						headerColLabel = dt.aoHeader[j][i].cell.innerHTML;
+					}
 					aRow.push( this._fnBoundData( headerColLabel, oConfig.sFieldBoundary, regex ) );
 				}
 				aData.push( aRow.join(oConfig.sFieldSeperator) );
