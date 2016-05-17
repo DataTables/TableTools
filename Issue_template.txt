@@ -1,0 +1,1 @@
+TableTools has now been retired and replaced by the Buttons and Select extensions for DataTables: https://datatables.net/extensions . TableTools is no longer being developed in favour of its replacements.
