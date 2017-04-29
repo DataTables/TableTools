@@ -1,0 +1,38 @@
+{
+    "name": "datatables/tabletools",
+    "description": "TableTools Plugin for DataTables",
+    "version": "2.2.3",
+    "homepage": "http://www.datatables.net/",
+    "author": {
+        "name": "Allan Jardine",
+        "url": "http://sprymedia.co.uk"
+    },
+    "dependencies": {
+        "components/jquery": ">=1.7"
+    },
+    "main": "js/dataTables.tableTools.js",
+    "scripts": [
+        "js/dataTables.tableTools.js"
+    ],
+    "styles": [
+        "css/dataTables.tableTools.css"
+    ],
+    "files": [
+        "js/dataTables.tableTools.js",
+        "css/dataTables.tableTools.css",
+        "images/collection.png",
+        "images/collection_hover.png",
+        "images/copy.png",
+        "images/copy_hover.png",
+        "images/csv.png",
+        "images/csv_hover.png",
+        "images/pdf.png",
+        "images/pdf_hover.png",
+        "images/print.png",
+        "images/print_hover.png",
+        "images/xls.png",
+        "images/xls_hover.png",
+        "swf/copy_csv_xls.swf",
+        "swf/copy_csv_xls_pdf.swf"
+    ]
+}
